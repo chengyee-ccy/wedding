@@ -19,7 +19,7 @@
   <!-- SheetJS Library (for parsing Excel files on client-side) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-  <!-- Firebase Legacy Compat SDK (safest and easiest for standalone iframe environments) -->
+  <!-- Firebase Legacy Compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -156,6 +156,7 @@
 </head>
 <body class="text-themeBrownDark font-sans overflow-x-hidden min-h-screen flex justify-center selection:bg-themeGold selection:text-themeBrownDark">
 
+  <!-- Ambient background elements -->
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
     <div class="shimmer-star absolute top-[15%] left-[10%] text-themeBrown/40 text-xl">✦</div>
     <div class="shimmer-star absolute top-[30%] right-[15%] text-themeBrown/30 text-2xl" style="animation-delay: 1.5s;">✦</div>
@@ -165,7 +166,7 @@
   </div>
 
   <!-- Full-width Layout container fitting seamlessly left-to-right without extra margins -->
-  <main class="relative z-10 w-full min-h-screen flex flex-col bg-themeGold/35 shadow-2xl relative overflow-hidden pb-12">
+  <main class="relative z-10 w-full min-h-screen flex flex-col bg-themeGold/35 shadow-2xl overflow-hidden pb-12">
     
     <!-- HEADER: Seamless top wedding image banner with faded cream mask -->
     <div class="relative w-full h-[45vh] md:h-[60vh] overflow-hidden">
@@ -176,7 +177,7 @@
       <div class="absolute inset-0 bg-gradient-to-t from-[#f5df9e] via-transparent to-black/10"></div>
 
       <!-- Top Right Floating Admin Lock/Auth Button -->
-      <button onclick="openModal('auth-modal')" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-themeGold/80 backdrop-blur-md border border-themeBrown/40 text-themeBrownDark shadow-lg hover:bg-white transition z-40" title="Admin Auth / 管理員登入">
+      <button id="admin-lock-btn" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-themeGold/80 backdrop-blur-md border border-themeBrown/40 text-themeBrownDark shadow-lg hover:bg-white transition z-40" title="Admin Auth / 管理员登录">
         <i class="fa-solid fa-lock text-sm"></i>
       </button>
     </div>
@@ -188,15 +189,12 @@
         <span class="heart-beat text-red-700 text-2xl">❤️</span>
         <span>Cheng Yee</span>
       </h1>
-      <h2 class="text-lg md:text-xl font-medium text-themeBrown tracking-wide mt-1 font-sans">
-        陈炜立 <span class="text-red-600">❤️</span> 张靖椬
-      </h2>
       
       <p class="mt-3 text-sm md:text-md font-semibold text-themeBrownDark/90 uppercase tracking-widest font-sans">
         Welcome to Our Wedding
       </p>
       <p class="text-xs text-themeBrownMuted mt-0.5 tracking-wide">
-        歡迎來到我們的婚禮
+        欢迎来到我们的婚礼
       </p>
 
       <div class="w-16 h-[1.5px] bg-gradient-to-r from-transparent via-themeBrown to-transparent mx-auto mt-4 mb-6"></div>
@@ -206,14 +204,14 @@
       
       <!-- Conditional Check-In Management Button (shown to authenticated admin users) -->
       <div id="checkin-management-wrapper" class="hidden animate-in fade-in slide-in-from-top-4 duration-300">
-        <button onclick="openModal('management-modal')" class="w-full primary-gold-btn p-4 rounded-[24px] flex items-center justify-between text-left group">
+        <button id="btn-open-management" class="w-full primary-gold-btn p-4 rounded-[24px] flex items-center justify-between text-left group">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center border border-white/40 shadow-sm text-white">
               <i class="fa-solid fa-clipboard-user text-xl"></i>
             </div>
             <div>
               <h2 class="font-bold text-[16px] tracking-wide text-white uppercase">Check-In Management Panel</h2>
-              <p class="text-xs text-white/80 font-medium">賓客簽到與座次管理後台</p>
+              <p class="text-xs text-white/80 font-medium">宾客签到与座次管理后台</p>
             </div>
           </div>
           <div class="w-8 h-8 flex items-center justify-center rounded-full bg-white/15 group-hover:bg-white/25 transition mr-1">
@@ -223,12 +221,12 @@
       </div>
 
       <!-- 1. Find Your Seat -->
-      <button onclick="openModal('seat-modal')" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+      <button id="btn-open-seat" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
         <div class="flex items-center gap-4">
           <div class="sprite-thumbnail thumb-seat"></div>
           <div>
             <h2 class="font-bold text-[15px] tracking-wide text-themeBrownDark">Find Your Seat</h2>
-            <p class="text-xs text-themeBrownMuted font-medium">查詢您的座位</p>
+            <p class="text-xs text-themeBrownMuted font-medium">查询您的座位</p>
           </div>
         </div>
         <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1">
@@ -237,7 +235,7 @@
       </button>
 
       <!-- 2. Floor Plan -->
-      <button onclick="openModal('floor-modal')" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+      <button id="btn-open-floor" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
         <div class="flex items-center gap-4">
           <div class="sprite-thumbnail thumb-floor"></div>
           <div>
@@ -251,12 +249,12 @@
       </button>
 
       <!-- 3. Menu -->
-      <button onclick="openModal('menu-modal')" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+      <button id="btn-open-menu" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
         <div class="flex items-center gap-4">
           <div class="sprite-thumbnail thumb-menu"></div>
           <div>
             <h2 class="font-bold text-[15px] tracking-wide text-themeBrownDark">Wedding Menu</h2>
-            <p class="text-xs text-themeBrownMuted font-medium">婚宴菜單</p>
+            <p class="text-xs text-themeBrownMuted font-medium">婚宴菜单</p>
           </div>
         </div>
         <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1">
@@ -281,41 +279,45 @@
       <!-- Divider for Social Media Tags -->
       <div class="flex items-center justify-between py-4 opacity-70">
         <div class="h-[0.5px] bg-gradient-to-r from-transparent to-[#967b5f] w-1/4"></div>
-        <span class="text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us! / 記得標記我們！</span>
+        <span class="text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us! / 记得标记我们！</span>
         <div class="h-[0.5px] bg-gradient-to-l from-transparent to-[#967b5f] w-1/4"></div>
       </div>
 
       <!-- 5. Tag Groom Instagram -->
-      <a href="https://instagram.com/wailikchan" target="_blank" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+      <div onclick="window.copyToClipboard('@wailikchan')" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
-          <div class="w-[48px] h-[48px] rounded-full overflow-hidden border-2 border-themeBrown shadow-md">
-            <img src="AT7P8576.jpg" alt="Wai Lik" class="w-full h-full object-cover object-top">
-          </div>
+          <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
+          <a href="https://instagram.com/wailikchan" target="_blank" onclick="event.stopPropagation()" class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0" title="打开新郎 Instagram / Open Instagram">
+            <i class="fa-brands fa-instagram text-white text-xl"></i>
+          </a>
           <div>
             <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新郎 Wai Lik</h2>
             <p class="text-xs text-themeBrownMuted font-mono font-medium">@wailikchan • Instagram</p>
           </div>
         </div>
-        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 group-hover:bg-[#967b5f]/10 transition mr-1">
-          <i class="fa-brands fa-instagram text-md text-[#967b5f]"></i>
-        </div>
-      </a>
+        <!-- Click to Copy Username Button -->
+        <button onclick="event.stopPropagation(); window.copyToClipboard('@wailikchan')" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 hover:bg-[#967b5f]/15 transition mr-1 shrink-0 text-themeBrown" title="复制账号 / Copy Username">
+          <i class="fa-regular fa-copy text-sm"></i>
+        </button>
+      </div>
 
       <!-- 6. Tag Bride Instagram -->
-      <a href="https://instagram.com/chengyee.ccy" target="_blank" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+      <div onclick="window.copyToClipboard('@chengyee.ccy')" class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
-          <div class="w-[48px] h-[48px] rounded-full overflow-hidden border-2 border-themeBrown shadow-md">
-            <img src="AT7P8576.jpg" alt="Cheng Yee" class="w-full h-full object-cover object-center scale-150 translate-x-[2px] translate-y-[2px]">
-          </div>
+          <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
+          <a href="https://instagram.com/chengyee.ccy" target="_blank" onclick="event.stopPropagation()" class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0" title="打开新娘 Instagram / Open Instagram">
+            <i class="fa-brands fa-instagram text-white text-xl"></i>
+          </a>
           <div>
             <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新娘 Cheng Yee</h2>
             <p class="text-xs text-themeBrownMuted font-mono font-medium">@chengyee.ccy • Instagram</p>
           </div>
         </div>
-        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 group-hover:bg-[#967b5f]/10 transition mr-1">
-          <i class="fa-brands fa-instagram text-md text-[#967b5f]"></i>
-        </div>
-      </a>
+        <!-- Click to Copy Username Button -->
+        <button onclick="event.stopPropagation(); window.copyToClipboard('@chengyee.ccy')" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 hover:bg-[#967b5f]/15 transition mr-1 shrink-0 text-themeBrown" title="复制账号 / Copy Username">
+          <i class="fa-regular fa-copy text-sm"></i>
+        </button>
+      </div>
 
     </div>
 
@@ -331,7 +333,6 @@
   <!-- MODALS SYSTEM (EACH FEATURE OPENS ELEGANTLY) -->
   <!-- ============================================= -->
 
-
   <!-- ADMIN AUTH MODAL -->
   <div id="auth-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[380px] p-6 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -342,17 +343,17 @@
         <div>
           <h3 class="font-bold text-lg text-themeBrownDark">Admin Access</h3>
           <p class="text-xs text-themeBrownMuted">Enter Passcode to unlock check-in desk</p>
-          <p class="text-[11px] text-themeBrownMuted/70">請輸入管理員密碼解鎖後台管理</p>
+          <p class="text-[11px] text-themeBrownMuted/70">请输入管理员密码解锁后台管理</p>
         </div>
         <div>
           <input id="admin-passcode-input" type="password" placeholder="Passcode (Default: 8888)" class="w-full text-center bg-white border border-themeBrown/35 rounded-xl py-3 px-4 font-mono font-bold tracking-widest text-themeBrownDark placeholder-themeBrownMuted/40 focus:outline-none focus:ring-2 focus:ring-themeBrown/30">
         </div>
         <div class="flex gap-2">
-          <button onclick="closeModal('auth-modal')" class="w-1/2 bg-white border border-themeBrown/30 hover:bg-white/80 text-themeBrownDark text-xs font-bold py-3 rounded-xl transition">
+          <button id="btn-cancel-auth" class="w-1/2 bg-white border border-themeBrown/30 hover:bg-white/80 text-themeBrownDark text-xs font-bold py-3 rounded-xl transition">
             Cancel / 取消
           </button>
-          <button onclick="verifyPasscode()" class="w-1/2 bg-[#967b5f] text-white hover:bg-[#bd9e7f] text-xs font-bold py-3 rounded-xl transition shadow-md">
-            Verify / 驗證
+          <button id="btn-submit-auth" class="w-1/2 bg-[#967b5f] text-white hover:bg-[#bd9e7f] text-xs font-bold py-3 rounded-xl transition shadow-md">
+            Verify / 验证
           </button>
         </div>
       </div>
@@ -371,10 +372,10 @@
           </div>
           <div>
             <h3 class="font-bold text-lg text-themeBrownDark">Find Your Seat</h3>
-            <p class="text-[11px] text-themeBrownMuted -mt-0.5">查詢您的宴席座位</p>
+            <p class="text-[11px] text-themeBrownMuted -mt-0.5">查询您的宴席座位</p>
           </div>
         </div>
-        <button onclick="closeModal('seat-modal')" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
+        <button id="btn-close-seat" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
@@ -383,12 +384,12 @@
       <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-4">
         <p class="text-xs md:text-sm text-themeBrownMuted text-center leading-relaxed">
           Enter your name to easily locate your assigned Table and see who is sharing the celebration with you!<br>
-          <span class="text-[11px] opacity-80 block mt-1 font-medium">請輸入您的姓名以輕鬆查詢您的宴席座位，並查看與您同桌共慶的賓客！</span>
+          <span class="text-[11px] opacity-80 block mt-1 font-medium">请输入您的姓名以轻松查询您的宴席座位，并查看与您同桌共庆的宾客！</span>
         </p>
 
         <!-- Search Input Bar -->
         <div class="relative">
-          <input id="seat-search" type="text" oninput="searchGuests()" placeholder="Type your name (e.g. David, Uncle Lim, Chen...) / 請輸入姓名..." 
+          <input id="seat-search" type="text" placeholder="Type your name (e.g. David, Uncle Lim, Chen...) / 请输入姓名..." 
                  class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
             <i class="fa-solid fa-search"></i>
@@ -399,7 +400,7 @@
         <div id="search-results" class="space-y-3 min-h-[150px]">
           <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
             <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
-            Enter your name to lookup table / 輸入姓名開始查詢...
+            Enter your name to lookup table / 输入姓名开始查询...
           </div>
         </div>
       </div>
@@ -419,10 +420,10 @@
           </div>
           <div>
             <h3 class="font-bold text-lg text-themeBrownDark">Floor Plan Layout</h3>
-            <p class="text-[11px] text-themeBrownMuted -mt-0.5">婚宴桌子分佈位置</p>
+            <p class="text-[11px] text-themeBrownMuted -mt-0.5">婚宴桌子分布位置</p>
           </div>
         </div>
-        <button onclick="closeModal('floor-modal')" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
+        <button id="btn-close-floor" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
@@ -442,32 +443,32 @@
 
         <p class="text-xs text-themeBrownMuted text-center leading-relaxed italic">
           <i class="fa-solid fa-circle-info mr-1"></i> Use zoom to explore table alignments relative to the central stage.<br>
-          <span class="opacity-85 not-italic text-[10px]">可縮放以查看相對於中央舞台的桌子排列。</span>
+          <span class="opacity-85 not-italic text-[10px]">可缩放以查看相对于中央舞台的桌子排列。</span>
         </p>
 
         <!-- Detailed list of tables to scroll/view -->
         <div class="bg-white/70 p-4 rounded-2xl space-y-3 border border-themeBrown/10 shadow-sm">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南與詳情:</h4>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南与详情:</h4>
           
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
               <span class="font-bold text-[#967b5f] block">Table 1-2 / 第1-2桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP 與新郎家屬</span>
+              <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP 与新郎家属</span>
             </div>
             
             <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
               <span class="font-bold text-[#967b5f] block">Table 3-4 / 第3-4桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">Bride Family / 新娘家屬</span>
+              <span class="text-[10px] text-themeBrownMuted leading-tight block">Bride Family / 新娘家属</span>
             </div>
             
             <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
               <span class="font-bold text-[#967b5f] block">Table 5-6 / 第5-6桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">Highschool Friends / 中學摯友</span>
+              <span class="text-[10px] text-themeBrownMuted leading-tight block">Highschool Friends / 中学挚友</span>
             </div>
             
             <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
               <span class="font-bold text-[#967b5f] block">Table 7-12 / 第7-12桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">College & Colleagues / 大學同學與同事</span>
+              <span class="text-[10px] text-themeBrownMuted leading-tight block">College & Colleagues / 大学同学与同事</span>
             </div>
           </div>
         </div>
@@ -489,10 +490,10 @@
           </div>
           <div>
             <h3 class="font-bold text-lg text-themeBrownDark">Wedding Menu</h3>
-            <p class="text-[11px] text-themeBrownMuted -mt-0.5">精心定製婚宴菜單</p>
+            <p class="text-[11px] text-themeBrownMuted -mt-0.5">精心定制婚宴菜单</p>
           </div>
         </div>
-        <button onclick="closeModal('menu-modal')" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
+        <button id="btn-close-menu" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
@@ -500,15 +501,15 @@
       <!-- Menu Course Cards List with Bilingual Labels -->
       <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-4">
         
-        <div class="text-center font-romantic text-3xl text-themeBrown mb-2">Grand Feast / 喜慶婚宴</div>
+        <div class="text-center font-romantic text-3xl text-themeBrown mb-2">Grand Feast / 喜庆婚宴</div>
 
         <!-- Course 1 -->
         <div class="relative bg-white border border-themeBrown/15 p-4 rounded-2xl flex gap-4 items-center shadow-sm">
           <div class="text-2xl w-10 h-10 rounded-full bg-themeGoldLight flex items-center justify-center shrink-0">🍲</div>
           <div>
-            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Appetizer / 開胃錦繡</span>
+            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Appetizer / 开胃锦绣</span>
             <h4 class="font-bold text-sm text-themeBrownDark">Four Season Combinations</h4>
-            <p class="text-xs text-themeBrownMuted">喜慶滿堂四喜大拼盤</p>
+            <p class="text-xs text-themeBrownMuted">喜庆满堂四喜大拼盘</p>
           </div>
         </div>
 
@@ -516,9 +517,9 @@
         <div class="relative bg-white border border-themeBrown/15 p-4 rounded-2xl flex gap-4 items-center shadow-sm">
           <div class="text-2xl w-10 h-10 rounded-full bg-themeGoldLight flex items-center justify-center shrink-0">🍤</div>
           <div>
-            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Seafood / 海味歡騰</span>
+            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Seafood / 海味欢腾</span>
             <h4 class="font-bold text-sm text-themeBrownDark">Wok-Fried Tiger Prawn with Golden Oats</h4>
-            <p class="text-xs text-themeBrownMuted">麥香金絲大明蝦</p>
+            <p class="text-xs text-themeBrownMuted">麦香金丝大明虾</p>
           </div>
         </div>
 
@@ -526,9 +527,9 @@
         <div class="relative bg-white border border-themeBrown/15 p-4 rounded-2xl flex gap-4 items-center shadow-sm">
           <div class="text-2xl w-10 h-10 rounded-full bg-themeGoldLight flex items-center justify-center shrink-0">🍗</div>
           <div>
-            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Poultry / 喜鳳來儀</span>
+            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Poultry / 喜凤来仪</span>
             <h4 class="font-bold text-sm text-themeBrownDark">Roasted Crispy Emperor Chicken</h4>
-            <p class="text-xs text-themeBrownMuted">鴻運金牌脆皮吊燒雞</p>
+            <p class="text-xs text-themeBrownMuted">鸿运金牌脆皮吊烧鸡</p>
           </div>
         </div>
 
@@ -536,9 +537,9 @@
         <div class="relative bg-white border border-themeBrown/15 p-4 rounded-2xl flex gap-4 items-center shadow-sm">
           <div class="text-2xl w-10 h-10 rounded-full bg-themeGoldLight flex items-center justify-center shrink-0">🐟</div>
           <div>
-            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Fish / 年年有餘</span>
-            <h4 class="font-bold text-sm text-themeBrownDark">Steamed Dragon Grouper in Premium Soy Sauce</h4>
-            <p class="text-xs text-themeBrownMuted">清蒸金牌遊龍斑魚</p>
+            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Fish / 年年有余</span>
+            <h4 class="font-bold text-sm text-pink-900">Steamed Dragon Grouper in Premium Soy Sauce</h4>
+            <p class="text-xs text-themeBrownMuted">清蒸金牌游龙斑鱼</p>
           </div>
         </div>
 
@@ -546,9 +547,9 @@
         <div class="relative bg-white border border-themeBrown/15 p-4 rounded-2xl flex gap-4 items-center shadow-sm">
           <div class="text-2xl w-10 h-10 rounded-full bg-themeGoldLight flex items-center justify-center shrink-0">🍚</div>
           <div>
-            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Rice & Noodles / 幸福美滿</span>
-            <h4 class="font-bold text-sm text-themeBrownDark">Traditional Fragrant Fried Rice in Lotus Leaf</h4>
-            <p class="text-xs text-themeBrownMuted">荷葉古法香荷八寶飯</p>
+            <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Rice & Noodles / 幸福美满</span>
+            <h4 class="font-bold text-sm text-[#3d3128]">Traditional Fragrant Fried Rice in Lotus Leaf</h4>
+            <p class="text-xs text-themeBrownMuted">荷叶古法香荷八宝饭</p>
           </div>
         </div>
 
@@ -558,7 +559,7 @@
           <div>
             <span class="text-[10px] text-themeBrown font-semibold tracking-wider uppercase block">Dessert / 甜甜蜜蜜</span>
             <h4 class="font-bold text-sm text-themeBrownDark">Chilled Sweet Lily Buds & Lotus Seeds soup</h4>
-            <p class="text-xs text-themeBrownMuted">百年好合紅豆蓮子羹</p>
+            <p class="text-xs text-themeBrownMuted">百年好合红豆莲子羹</p>
           </div>
         </div>
 
@@ -582,110 +583,135 @@
             <!-- DB Connection Status Indicator -->
             <div class="flex items-center gap-2 mt-0.5">
               <span id="db-status-pill" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-800">
-                <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> Connecting / 正在連接...
+                <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> Connecting / 正在连接...
               </span>
             </div>
           </div>
         </div>
-        <button onclick="closeModal('management-modal')" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
+        <button id="btn-close-management" class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
 
-      <!-- Split Layout inside Panel -->
-      <div class="flex-1 overflow-y-auto no-scrollbar p-6 space-y-6">
+      <!-- Split Layout inside Panel Content Area -->
+      <div class="flex-1 overflow-y-auto no-scrollbar p-6">
         
-        <!-- Top Toolbar Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- PAGE 1: GUEST LIST VIEW (Default Active) -->
+        <div id="mgmt-list-page" class="space-y-6">
           
-          <!-- Box A: Excel Upload & Global Controls -->
-          <div class="bg-white p-5 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
-            <h4 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2">
-              <i class="fa-solid fa-file-excel"></i> Batch Import / 批次匯入
-            </h4>
-            <p class="text-xs text-[#7a6655] leading-relaxed">
-              Upload your Excel file (`.xlsx`, `.xls`). It will match headers like <strong>Name, Guests Attend, Relation, Table</strong> automatically.
-            </p>
-            
-            <div class="flex flex-col gap-3">
-              <label class="w-full flex items-center justify-center gap-2 bg-themeGoldLight hover:bg-[#fbf6e9] border-2 border-dashed border-themeBrown/30 rounded-xl py-3 px-4 text-xs font-bold text-themeBrownDark cursor-pointer transition">
-                <i class="fa-solid fa-cloud-arrow-up text-md"></i>
-                Choose Excel File / 選擇Excel檔案
-                <input type="file" id="excel-upload-input" accept=".xlsx, .xls" class="hidden" onchange="handleExcelUpload(event)">
-              </label>
-
-              <!-- Reset Actions -->
-              <div class="flex gap-2">
-                <button onclick="promptDeleteAll()" class="w-full bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-trash-can"></i> Clear Database / 刪除全部
-                </button>
+          <!-- Filter/Search Bar & Stats -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
+            <div class="relative w-full md:max-w-sm">
+              <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table / Relation..." class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown">
+              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
+                <i class="fa-solid fa-filter"></i>
               </div>
+            </div>
+
+            <!-- Live Stats counter -->
+            <div class="flex gap-4 text-xs font-medium text-themeBrownDark">
+              <span class="px-2.5 py-1.5 bg-white rounded-lg border border-themeBrown/10 shadow-sm">
+                Total / 总人数: <strong class="text-themeBrown" id="stat-total-guests">0</strong>
+              </span>
+              <span class="px-2.5 py-1.5 bg-green-50 text-green-800 rounded-lg border border-green-200 shadow-sm">
+                Arrived / 已签到: <strong class="text-green-700" id="stat-arrived">0</strong>
+              </span>
             </div>
           </div>
 
-          <!-- Box B: Single Guest Insert Form -->
-          <div class="bg-white p-5 rounded-2xl border border-themeBrown/15 shadow-sm space-y-3">
-            <h4 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2">
-              <i class="fa-solid fa-user-plus"></i> Single Add / 手動新增賓客
-            </h4>
-            
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <input id="form-name" type="text" placeholder="* Name / 姓名" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-lg p-2.5 focus:outline-none">
-              <input id="form-attend" type="number" min="1" placeholder="* Guests Count / 出席人數" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-lg p-2.5 focus:outline-none">
-              <input id="form-relation" type="text" placeholder="Relation / 關係" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-lg p-2.5 focus:outline-none col-span-2">
-              <input id="form-table" type="text" placeholder="Table No. / 桌號 (e.g. Table 5)" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-lg p-2.5 focus:outline-none col-span-2">
+          <!-- Live Table View -->
+          <div class="bg-white rounded-2xl border border-themeBrown/15 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-[#edd185]/20 text-[#967b5f] font-bold border-b border-themeBrown/10">
+                    <th class="p-3">Guest Name / 姓名</th>
+                    <th class="p-3">Guests / 出席</th>
+                    <th class="p-3">Relation / 关系</th>
+                    <th class="p-3">Table / 桌号</th>
+                    <th class="p-3 text-center">Status / 签到状态</th>
+                    <th class="p-3 text-center">Action / 操作</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-guest-table-body" class="divide-y divide-themeBrown/5">
+                  <tr>
+                    <td colspan="6" class="text-center py-8 text-themeBrownMuted/50">
+                      <i class="fa-solid fa-spinner fa-spin text-xl mb-1 block"></i> Loading Database...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            <button onclick="addSingleGuest()" class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1 shadow-sm">
-              <i class="fa-solid fa-plus"></i> Add to List / 手動加入
+          <!-- NEW ADD BUTTON below the guest list table as requested -->
+          <div class="flex justify-center pt-2">
+            <button id="btn-switch-to-add-page" class="primary-gold-btn px-8 py-3.5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wider shadow-md">
+              <i class="fa-solid fa-user-plus text-sm"></i> Add & Import Guests / 新增与导入宾客
             </button>
           </div>
 
         </div>
 
-        <!-- Filter/Search Bar & Stats -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
-          <div class="relative w-full md:max-w-sm">
-            <input id="admin-guest-filter" type="text" oninput="renderAdminTable()" placeholder="Quick filter by Name / Table / Relation..." class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown">
-            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
-              <i class="fa-solid fa-filter"></i>
+        <!-- PAGE 2: ADD & IMPORT PAGE (Hidden by Default, triggers on ADD button click) -->
+        <div id="mgmt-add-page" class="hidden space-y-6">
+          
+          <!-- Back Navigation Bar -->
+          <div class="flex items-center justify-between border-b border-themeBrown/15 pb-3">
+            <button id="btn-back-to-list" class="flex items-center gap-2 text-xs font-bold text-themeBrown hover:text-[#bd9e7f] transition duration-200">
+              <i class="fa-solid fa-arrow-left"></i> Back to Guest List / 返回宾客列表
+            </button>
+            <span class="text-xs text-themeBrownMuted font-semibold">New Entry Hub / 新建入口中心</span>
+          </div>
+
+          <!-- Toolbar Grid with the two boxes from image_3b67c6.png -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+            
+            <!-- Box A: Excel Upload & Global Controls -->
+            <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
+              <h4 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
+                <i class="fa-solid fa-file-excel text-sm"></i> BATCH IMPORT / 批量导入
+              </h4>
+              <p class="text-xs text-[#7a6655] leading-relaxed">
+                Upload your Excel file (`.xlsx`, `.xls`). It will match headers like <strong>Name, Guests Attend, Relation, Table</strong> automatically.
+              </p>
+              
+              <div class="flex flex-col gap-3 pt-2">
+                <label class="w-full flex items-center justify-center gap-2 bg-themeGoldLight hover:bg-[#fbf6e9] border-2 border-dashed border-themeBrown/30 rounded-xl py-4 px-4 text-xs font-bold text-themeBrownDark cursor-pointer transition">
+                  <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                  Choose Excel File / 选择Excel文件
+                  <input type="file" id="excel-upload-input" accept=".xlsx, .xls" class="hidden">
+                </label>
+
+                <!-- Reset Database Action -->
+                <div class="flex gap-2 mt-2">
+                  <button id="btn-clear-db" class="w-full bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-trash-can"></i> Clear Database / 删除全部
+                  </button>
+                </div>
+              </div>
             </div>
+
+            <!-- Box B: Single Guest Insert Form -->
+            <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
+              <h4 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
+                <i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客
+              </h4>
+              
+              <div class="grid grid-cols-2 gap-3 text-xs pt-1">
+                <input id="form-name" type="text" placeholder="* Name / 姓名" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
+                <input id="form-attend" type="number" min="1" placeholder="* Guests Count / 出席人数" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
+                <input id="form-relation" type="text" placeholder="Relation / 关系" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2">
+                <input id="form-table" type="text" placeholder="Table No. / 桌号 (e.g. Table 5)" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2">
+              </div>
+
+              <button id="btn-add-guest" class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-1 shadow-sm mt-2">
+                <i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入
+              </button>
+            </div>
+
           </div>
 
-          <!-- Live Stats counter -->
-          <div class="flex gap-4 text-xs font-medium text-themeBrownDark">
-            <span class="px-2.5 py-1.5 bg-white rounded-lg border border-themeBrown/10 shadow-sm">
-              Total / 總人數: <strong class="text-themeBrown" id="stat-total-guests">0</strong>
-            </span>
-            <span class="px-2.5 py-1.5 bg-green-50 text-green-800 rounded-lg border border-green-200 shadow-sm">
-              Arrived / 已簽到: <strong class="text-green-700" id="stat-arrived">0</strong>
-            </span>
-          </div>
-        </div>
-
-        <!-- Live Table View -->
-        <div class="bg-white rounded-2xl border border-themeBrown/15 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-[#edd185]/20 text-[#967b5f] font-bold border-b border-themeBrown/10">
-                  <th class="p-3">Guest Name / 姓名</th>
-                  <th class="p-3">Guests / 出席</th>
-                  <th class="p-3">Relation / 關係</th>
-                  <th class="p-3">Table / 桌號</th>
-                  <th class="p-3 text-center">Status / 簽到狀態</th>
-                  <th class="p-3 text-center">Action / 操作</th>
-                </tr>
-              </thead>
-              <tbody id="admin-guest-table-body" class="divide-y divide-themeBrown/5">
-                <tr>
-                  <td colspan="6" class="text-center py-8 text-themeBrownMuted/50">
-                    <i class="fa-solid fa-spinner fa-spin text-xl mb-1 block"></i> Loading Database...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
 
       </div>
@@ -703,11 +729,11 @@
         <p class="text-xs text-[#7a6655] mt-1" id="confirm-desc">This action cannot be undone.</p>
       </div>
       <div class="flex gap-2">
-        <button onclick="closeConfirmation()" class="w-1/2 bg-white border border-themeBrown/20 text-themeBrownDark text-xs font-bold py-2.5 rounded-xl hover:bg-white/50 transition">
+        <button id="btn-cancel-confirm" class="w-1/2 bg-white border border-themeBrown/20 text-themeBrownDark text-xs font-bold py-2.5 rounded-xl hover:bg-white/50 transition">
           Cancel / 取消
         </button>
         <button id="confirm-act-btn" class="w-1/2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
-          Delete / 確定刪除
+          Delete / 确定删除
         </button>
       </div>
     </div>
@@ -721,569 +747,756 @@
 
 
   <!-- ============================================= -->
-  <!-- JAVASCRIPT LOGIC & INTERACTION ENGINE -->
+  <!-- MODULE PATTERN & OBJECT ORIENTED CONTROLLER   -->
   <!-- ============================================= -->
   <script>
-    // Hybrid Local Database Mock backup to protect the system from throwing ANY cross-domain script crashes on load
-    const MOCK_DB_KEY = "wedding_portal_offline_guests";
-    const initialMockData = [
-      { id: "guest1", name: "Wai Lik", attendCount: 1, relation: "The Groom / 新郎", table: "Table 1 / 第1桌", checkedIn: true },
-      { id: "guest2", name: "Cheng Yee", attendCount: 1, relation: "The Bride / 新娘", table: "Table 3 / 第3桌", checkedIn: true },
-      { id: "guest3", name: "David Lim", attendCount: 2, relation: "Uncle / 叔叔", table: "Table 2 / 第2桌", checkedIn: false },
-      { id: "guest4", name: "Uncle Tan", attendCount: 4, relation: "Family Friend / 摯友", table: "Table 7 / 第7桌", checkedIn: false },
-      { id: "guest5", name: "Sarah Wong", attendCount: 1, relation: "Colleague / 同事", table: "Table 11 / 第11桌", checkedIn: false }
-    ];
-
-    function getLocalDatabase() {
-      const saved = localStorage.getItem(MOCK_DB_KEY);
-      if (!saved) {
-        localStorage.setItem(MOCK_DB_KEY, JSON.stringify(initialMockData));
-        return initialMockData;
-      }
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return initialMockData;
-      }
-    }
-
-    function saveLocalDatabase(data) {
-      localStorage.setItem(MOCK_DB_KEY, JSON.stringify(data));
-    }
-
-    // STATE CONTROLLER
-    const state = {
-      guests: [],
-      adminVerified: false,
-      isOfflineMode: true // Defaults to offline-mock mode until Firebase successfully initializes
-    };
-
-    // Firebase references initialized safely with fallback guards
-    let auth = null;
-    let database = null;
-    let dbGuestsRef = null;
-
-    try {
-      const firebaseConfig = {
-        databaseURL: "https://seat-allocation-a1596-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    /**
+     * MODULE 1: WeddingConfig
+     * Holds static resources, environment profiles, and static configurations.
+     */
+    class WeddingConfig {
+      static firebase = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "seat-allocation-a1596.firebaseapp.com",
+        databaseURL: "https://seat-allocation-a1596-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "seat-allocation-a1596",
+        storageBucket: "seat-allocation-a1596.firebasestorage.app",
+        messagingSenderId: "83260128140",
+        appId: "YOUR_APP_ID",
+        measurementId: "G-YOUR_MEASUREMENT_ID"
       };
 
-      // Initialize Firebase safely
-      firebase.initializeApp(firebaseConfig);
-      database = firebase.database();
-      dbGuestsRef = database.ref('guests');
-      
-      // Attempt auth initialization securely
-      try {
-        auth = firebase.auth();
-      } catch (authError) {
-        console.warn("Auth disabled: Missing apiKey config. Transitioning smoothly to direct database mode.");
-      }
+      static passcode = "8888";
+      static mockDbKey = "wedding_portal_offline_guests";
+      static initialMockData = [
+        { id: "guest1", name: "Wai Lik", attendCount: 1, relation: "The Groom / 新郎", table: "Table 1 / 第1桌", checkedIn: true },
+        { id: "guest2", name: "Cheng Yee", attendCount: 1, relation: "The Bride / 新娘", table: "Table 3 / 第3桌", checkedIn: true },
+        { id: "guest3", name: "David Lim", attendCount: 2, relation: "Uncle / 叔叔", table: "Table 2 / 第2桌", checkedIn: false },
+        { id: "guest4", name: "Uncle Tan", attendCount: 4, relation: "Family Friend / 挚友", table: "Table 7 / 第7桌", checkedIn: false },
+        { id: "guest5", name: "Sarah Wong", attendCount: 1, relation: "Colleague / 同事", table: "Table 11 / 第11桌", checkedIn: false }
+      ];
 
-      // Check if DB references exist
-      if (dbGuestsRef) {
-        state.isOfflineMode = false;
-        console.log("Firebase initialized successfully. Real-time cloud sync active.");
-      }
-    } catch (e) {
-      console.warn("Firebase config is incomplete/invalid. Gracefully falling back to fully-featured browser offline database mode.");
-      state.isOfflineMode = true;
-    }
-
-    // Initialize Database Operations based on Mode
-    if (state.isOfflineMode) {
-      state.guests = getLocalDatabase();
-      setTimeout(() => {
-        updateDbStatusUI();
-        renderAdminTable();
-        updateMainStats();
-        searchGuests();
-      }, 500);
-    } else {
-      // Connect Live to Realtime Database
-      if (auth) {
-        auth.signInAnonymously()
-          .then(() => {
-            console.log("Logged in anonymously.");
-            startDatabaseSync();
-          })
-          .catch((err) => {
-            console.warn("Anonymous auth failed, attempting connection directly without auth.");
-            startDatabaseSync();
-          });
-      } else {
-        startDatabaseSync();
+      static isConfigValid() {
+        return this.firebase.apiKey && 
+               this.firebase.apiKey !== "" && 
+               this.firebase.apiKey !== "YOUR_API_KEY";
       }
     }
 
-    function startDatabaseSync() {
-      dbGuestsRef.on('value', function(snapshot) {
-        const data = snapshot.val();
-        state.guests = [];
-        if (data) {
-          Object.keys(data).forEach(key => {
-            state.guests.push({
-              id: key,
-              ...data[key]
+
+    /**
+     * MODULE 2: NotificationSystem
+     * Toast notifications engine. Decoupled from application core state.
+     */
+    class NotificationSystem {
+      static show(message) {
+        const alertBox = document.getElementById('custom-alert');
+        const alertMsg = document.getElementById('alert-msg');
+        if (!alertBox || !alertMsg) return;
+
+        alertMsg.innerText = message;
+        alertBox.classList.remove('opacity-0', '-translate-y-24');
+        alertBox.classList.add('opacity-100', 'translate-y-0');
+
+        // Automatic dismissal
+        if (this.timeoutId) clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => {
+          alertBox.classList.add('opacity-0', '-translate-y-24');
+          alertBox.classList.remove('opacity-100', 'translate-y-0');
+        }, 3000);
+      }
+    }
+
+
+    /**
+     * MODULE 3: DatabaseService (Data Layer)
+     * Handles Firebase interactions or local mock persistence transparently.
+     */
+    class DatabaseService {
+      constructor() {
+        this.isOffline = true;
+        this.guests = [];
+        this.onUpdateCallbacks = [];
+        this.dbRef = null;
+        this.auth = null;
+      }
+
+      init() {
+        if (WeddingConfig.isConfigValid()) {
+          try {
+            firebase.initializeApp(WeddingConfig.firebase);
+            this.dbRef = firebase.database().ref('guests');
+            this.auth = firebase.auth();
+            this.isOffline = false;
+            this._setupCloudListeners();
+            this._authenticateAnonymously();
+          } catch (e) {
+            console.warn("Cloud connection error, failing over to client memory.", e);
+            this._setupLocalDatabase();
+          }
+        } else {
+          console.warn("Using placeholder credentials. Initializing Sandbox Database.");
+          this._setupLocalDatabase();
+        }
+      }
+
+      registerCallback(fn) {
+        this.onUpdateCallbacks.push(fn);
+        // Instant sync feed
+        fn(this.guests, this.isOffline);
+      }
+
+      _notifyListeners() {
+        this.onUpdateCallbacks.forEach(fn => fn(this.guests, this.isOffline));
+      }
+
+      _authenticateAnonymously() {
+        this.auth.signInAnonymously()
+          .then(() => console.log("Secured database access authenticated anonymously."))
+          .catch(err => console.warn("Secured anonymous auth missed. Accessing with rule limits.", err));
+      }
+
+      _setupCloudListeners() {
+        this.dbRef.on('value', (snapshot) => {
+          const data = snapshot.val();
+          this.guests = [];
+          if (data) {
+            Object.keys(data).forEach(key => {
+              this.guests.push({ id: key, ...data[key] });
             });
+          }
+          this._notifyListeners();
+        }, (err) => {
+          console.error("Read rules restriction hit. Graceful local failover triggered.", err);
+          this._setupLocalDatabase();
+        });
+      }
+
+      _setupLocalDatabase() {
+        this.isOffline = true;
+        const saved = localStorage.getItem(WeddingConfig.mockDbKey);
+        if (!saved) {
+          this.guests = [...WeddingConfig.initialMockData];
+          localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+        } else {
+          try {
+            this.guests = JSON.parse(saved);
+          } catch (e) {
+            this.guests = [...WeddingConfig.initialMockData];
+          }
+        }
+        // Artificial delay for local load dispatch to simulate network latency gracefully
+        setTimeout(() => this._notifyListeners(), 100);
+      }
+
+      // CRUD: Write actions
+      addGuest(guest) {
+        if (this.isOffline) {
+          guest.id = "local_" + Date.now();
+          this.guests.push(guest);
+          localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+          this._notifyListeners();
+          return Promise.resolve(true);
+        } else {
+          return new Promise((resolve, reject) => {
+            this.dbRef.push(guest, (err) => err ? reject(err) : resolve(true));
           });
         }
-        
-        updateDbStatusUI();
-        renderAdminTable();
-        updateMainStats();
-        searchGuests();
-      }, function(err) {
-        console.warn("Database rules restriction hit or connection refused. Switching to Offline Mode.");
-        state.isOfflineMode = true;
-        state.guests = getLocalDatabase();
-        updateDbStatusUI();
-        renderAdminTable();
-        updateMainStats();
-      });
-    }
-
-    function updateDbStatusUI() {
-      const pill = document.getElementById('db-status-pill');
-      if (!pill) return;
-
-      if (state.isOfflineMode) {
-        pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-800";
-        pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> Local Sandbox / 離線模擬資料庫`;
-      } else {
-        pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800";
-        pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span> Live Cloud Sync / 實時雲端連通`;
       }
-    }
 
-
-    // 3. ADMIN AUTH PASSCODE
-    function verifyPasscode() {
-      const pin = document.getElementById('admin-passcode-input').value;
-      if (pin === "8888") {
-        state.adminVerified = true;
-        sessionStorage.setItem('weddingAdminVerified', 'true');
-        
-        document.getElementById('checkin-management-wrapper').classList.remove('hidden');
-        closeModal('auth-modal');
-        document.getElementById('admin-passcode-input').value = '';
-        showAlert("Admin Panel Unlocked! 🔓 后台解鎖成功！");
-      } else {
-        showAlert("Invalid Passcode! / 密碼錯誤！❌");
-      }
-    }
-
-    // 4. MODAL UTILS
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeModal(id) {
-      const modal = document.getElementById(id);
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    // Close on backdrop click
-    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-      backdrop.addEventListener('click', function(e) {
-        if (e.target === this) {
-          closeModal(this.id);
+      updateCheckIn(id, status) {
+        if (this.isOffline) {
+          const idx = this.guests.findIndex(g => g.id === id);
+          if (idx !== -1) {
+            this.guests[idx].checkedIn = status;
+            localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+            this._notifyListeners();
+          }
+          return Promise.resolve(true);
+        } else {
+          return new Promise((resolve, reject) => {
+            this.dbRef.child(id).update({ checkedIn: status }, (err) => err ? reject(err) : resolve(true));
+          });
         }
-      });
-    });
-
-
-    // 5. SEARCH & LIVE ATTENDANCE GUEST FINDER (FOR GUESTS)
-    function searchGuests() {
-      const query = document.getElementById('seat-search').value.toLowerCase().trim();
-      const resultsContainer = document.getElementById('search-results');
-      
-      if (!query) {
-        resultsContainer.innerHTML = `
-          <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
-            <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
-            Enter your name to lookup table / 輸入姓名開始查詢...
-          </div>
-        `;
-        return;
       }
 
-      // Filter matched guests from live loaded state list
-      const matched = state.guests.filter(g => g.name && g.name.toLowerCase().includes(query));
+      deleteGuest(id) {
+        if (this.isOffline) {
+          this.guests = this.guests.filter(g => g.id !== id);
+          localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+          this._notifyListeners();
+          return Promise.resolve(true);
+        } else {
+          return new Promise((resolve, reject) => {
+            this.dbRef.child(id).remove((err) => err ? reject(err) : resolve(true));
+          });
+        }
+      }
 
-      if (matched.length > 0) {
-        let html = '<h4 class="text-xs font-bold text-[#967b5f] uppercase tracking-widest mt-2 mb-1">Guests Found / 查詢結果:</h4>';
-        matched.forEach(g => {
-          const isCheckedIn = g.checkedIn === true;
+      clearAll() {
+        if (this.isOffline) {
+          this.guests = [];
+          localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+          this._notifyListeners();
+          return Promise.resolve(true);
+        } else {
+          return new Promise((resolve, reject) => {
+            this.dbRef.remove((err) => err ? reject(err) : resolve(true));
+          });
+        }
+      }
+
+      batchImport(guestsMap) {
+        if (this.isOffline) {
+          this.guests = [...this.guests, ...guestsMap];
+          localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+          this._notifyListeners();
+          return Promise.resolve(guestsMap.length);
+        } else {
+          return new Promise((resolve, reject) => {
+            const updates = {};
+            guestsMap.forEach(g => {
+              const newKey = this.dbRef.push().key;
+              updates[newKey] = g;
+            });
+            this.dbRef.update(updates, (err) => err ? reject(err) : resolve(guestsMap.length));
+          });
+        }
+      }
+    }
+
+
+    /**
+     * MODULE 4: AuthController
+     * Security controls validation and credentials management.
+     */
+    class AuthController {
+      constructor() {
+        this.isAuthenticated = false;
+        this.onStateChangeCallbacks = [];
+      }
+
+      init() {
+        if (sessionStorage.getItem('weddingAdminVerified') === 'true') {
+          this.isAuthenticated = true;
+          this._notifyListeners();
+        }
+      }
+
+      registerCallback(fn) {
+        this.onStateChangeCallbacks.push(fn);
+        fn(this.isAuthenticated);
+      }
+
+      _notifyListeners() {
+        this.onStateChangeCallbacks.forEach(fn => fn(this.isAuthenticated));
+      }
+
+      verify(inputPasscode) {
+        if (inputPasscode === WeddingConfig.passcode) {
+          this.isAuthenticated = true;
+          sessionStorage.setItem('weddingAdminVerified', 'true');
+          this._notifyListeners();
+          return true;
+        }
+        return false;
+      }
+    }
+
+
+    /**
+     * MODULE 5: SeatingManager
+     * Executes queries, data formatting, statistics computing, and Excel mapping.
+     */
+    class SeatingManager {
+      constructor(dbService) {
+        this.db = dbService;
+      }
+
+      queryGuests(nameQuery) {
+        if (!nameQuery) return [];
+        return this.db.guests.filter(g => g.name && g.name.toLowerCase().includes(nameQuery.toLowerCase()));
+      }
+
+      filterGuestList(filterString) {
+        const target = filterString.toLowerCase().trim();
+        if (!target) return [...this.db.guests];
+        return this.db.guests.filter(g => {
+          return (g.name && g.name.toLowerCase().includes(target)) ||
+                 (g.table && g.table.toLowerCase().includes(target)) ||
+                 (g.relation && g.relation.toLowerCase().includes(target));
+        });
+      }
+
+      getStats() {
+        const total = this.db.guests.reduce((sum, g) => sum + parseInt(g.attendCount || 1), 0);
+        const arrived = this.db.guests.reduce((sum, g) => sum + (g.checkedIn ? parseInt(g.attendCount || 1) : 0), 0);
+        return { total, arrived };
+      }
+
+      parseExcel(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: 'array' });
+              const sheet = workbook.Sheets[workbook.SheetNames[0]];
+              const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+              if (rows.length < 2) {
+                reject("Sheet too small. Headings missing.");
+                return;
+              }
+
+              const headers = rows[0].map(h => String(h || '').toLowerCase().trim());
+              
+              let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('姓名') || h.includes('名字'));
+              let attendIdx = headers.findIndex(h => h.includes('attend') || h.includes('人数') || h.includes('出席'));
+              let relationIdx = headers.findIndex(h => h.includes('relation') || h.includes('关系'));
+              let tableIdx = headers.findIndex(h => h.includes('table') || h.includes('桌') || h.includes('座'));
+
+              // Logical fallbacks
+              if (nameIdx === -1) nameIdx = 0;
+              if (attendIdx === -1) attendIdx = 1;
+              if (relationIdx === -1) relationIdx = 2;
+              if (tableIdx === -1) tableIdx = 3;
+
+              const parsedGuests = [];
+              for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (!row || row.length === 0 || !row[nameIdx]) continue;
+
+                parsedGuests.push({
+                  name: String(row[nameIdx]).trim(),
+                  attendCount: parseInt(row[attendIdx]) || 1,
+                  relation: row[relationIdx] ? String(row[relationIdx]).trim() : 'Guest / 宾客',
+                  table: row[tableIdx] ? String(row[tableIdx]).trim() : '',
+                  checkedIn: false
+                });
+              }
+              resolve(parsedGuests);
+            } catch (err) {
+              reject(err);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        });
+      }
+    }
+
+
+    /**
+     * MODULE 6: UIManager
+     * Modal controls, render managers, visual animations.
+     */
+    class UIManager {
+      constructor(seatingManager, dbService, authController) {
+        this.seating = seatingManager;
+        this.db = dbService;
+        this.auth = authController;
+        this.activeConfirmAction = null;
+      }
+
+      init() {
+        this._setupModals();
+        this._setupFloatingAnimation();
+      }
+
+      _setupModals() {
+        // Modal backdrops dismissal listener
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+          backdrop.addEventListener('click', (e) => {
+            if (e.target === backdrop) this.closeModal(backdrop.id);
+          });
+        });
+      }
+
+      openModal(id) {
+        const m = document.getElementById(id);
+        if (m) {
+          m.classList.remove('hidden');
+          m.classList.add('flex');
           
-          html += `
-            <div class="bg-white border ${isCheckedIn ? 'border-green-300 bg-green-50/20' : 'border-[#edd185]/40'} p-4 rounded-2xl flex items-center justify-between transition-all hover:bg-[#fffdf9] shadow-sm">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h5 class="font-bold text-themeBrownDark text-md">${g.name}</h5>
-                  ${isCheckedIn ? '<span class="px-2 py-0.5 bg-green-100 text-green-800 text-[9px] font-bold rounded">Checked In / 已簽到</span>' : ''}
-                </div>
-                <span class="text-xs text-[#7a6655]">${g.relation || 'Guest / 賓客'}</span>
-              </div>
-              <div class="text-right">
-                <span class="text-[10px] text-[#7a6655]/50 block">Assigned Table / 指定桌號:</span>
-                <span class="font-serifTitle text-lg font-bold text-[#967b5f]">${g.table || 'Table TBD'}</span>
-                <span class="text-[10px] text-[#7a6655]/60 block">${g.attendCount || 1} Pax / 人</span>
-              </div>
+          // Reset the Management Modal to Page 1 (List View) whenever it is opened
+          if (id === 'management-modal') {
+            this.showMgmtListView();
+          }
+        }
+      }
+
+      closeModal(id) {
+        const m = document.getElementById(id);
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      // Transition to Management List View page
+      showMgmtListView() {
+        const listPage = document.getElementById('mgmt-list-page');
+        const addPage = document.getElementById('mgmt-add-page');
+        if (listPage && addPage) {
+          listPage.classList.remove('hidden');
+          addPage.classList.add('hidden');
+        }
+      }
+
+      // Transition to Management Add/Import View page
+      showMgmtAddView() {
+        const listPage = document.getElementById('mgmt-list-page');
+        const addPage = document.getElementById('mgmt-add-page');
+        if (listPage && addPage) {
+          listPage.classList.add('hidden');
+          addPage.classList.remove('hidden');
+        }
+      }
+
+      showConfirmation(title, description, onConfirmCallback) {
+        document.getElementById('confirm-title').innerText = title;
+        document.getElementById('confirm-desc').innerHTML = description;
+        
+        const actBtn = document.getElementById('confirm-act-btn');
+        actBtn.onclick = () => {
+          onConfirmCallback();
+          this.closeModal('confirm-modal');
+        };
+        this.openModal('confirm-modal');
+      }
+
+      renderPublicSeatLookup(query) {
+        const resultsContainer = document.getElementById('search-results');
+        if (!query) {
+          resultsContainer.innerHTML = `
+            <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
+              <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
+              Enter your name to lookup table / 输入姓名开始查询...
             </div>
           `;
-        });
-        resultsContainer.innerHTML = html;
-      } else {
-        resultsContainer.innerHTML = `
-          <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
-            <p class="text-sm font-semibold text-themeBrownDark">Welcome / 歡迎 ${document.getElementById('seat-search').value}!</p>
-            <p class="text-xs text-[#7a6655] leading-relaxed">
-              We couldn't locate your pre-assigned name instantly. Please check in directly with our reception counter, or proceed to our friendly <strong>Free Seating Tables (Table 12)</strong>!
-              <span class="block mt-1 font-medium text-[10px] text-themeBrown">我們未能立即找到您的預設座位。請直接到接待處查詢，或前往自由座席（第12桌）！</span>
-            </p>
-            <span class="inline-block mt-2 font-serifTitle text-xs md:text-sm font-bold text-themeBrown">Proceed to Table 12 or Usher / 前往12桌或聯繫接待員</span>
-          </div>
-        `;
-      }
-    }
-
-    // 6. GUEST PANEL: TABLE RENDERING & STATS
-    function renderAdminTable() {
-      const tbody = document.getElementById('admin-guest-table-body');
-      if (!tbody) return;
-
-      const filterVal = document.getElementById('admin-guest-filter').value.toLowerCase().trim();
-      
-      const filtered = state.guests.filter(g => {
-        return (
-          (g.name && g.name.toLowerCase().includes(filterVal)) ||
-          (g.table && g.table.toLowerCase().includes(filterVal)) ||
-          (g.relation && g.relation.toLowerCase().includes(filterVal))
-        );
-      });
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center py-8 text-themeBrownMuted/50 italic">
-              No matching guests found in database / 無任何符合的賓客資料
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      // Sort alphabetically by name
-      filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-
-      tbody.innerHTML = filtered.map(g => {
-        const isChecked = g.checkedIn === true;
-        return `
-          <tr class="hover:bg-themeGoldLight/30 transition">
-            <td class="p-3 font-semibold text-themeBrownDark">${g.name || ''}</td>
-            <td class="p-3 font-medium text-[#7a6655]">${g.attendCount || 1} Pax</td>
-            <td class="p-3 text-[#7a6655]">${g.relation || '-'}</td>
-            <td class="p-3 text-themeBrown font-bold">${g.table || '-'}</td>
-            <td class="p-3 text-center">
-              <button onclick="toggleCheckIn('${g.id}', ${isChecked})" class="px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-xs transition duration-200 ${
-                isChecked 
-                  ? 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300' 
-                  : 'bg-themeGoldLight text-themeBrown hover:bg-white border border-[#edd185]'
-              }">
-                ${isChecked ? '<i class="fa-solid fa-square-check mr-1 text-green-700"></i> Checked / 已到' : 'Check-In / 未到'}
-              </button>
-            </td>
-            <td class="p-3 text-center">
-              <button onclick="promptDeleteGuest('${g.id}', '${g.name || 'Guest'}')" class="text-red-500 hover:text-red-700 p-1 text-sm transition" title="Delete Guest">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function updateMainStats() {
-      const totalSpan = document.getElementById('stat-total-guests');
-      const arrivedSpan = document.getElementById('stat-arrived');
-      if (!totalSpan || !arrivedSpan) return;
-
-      const total = state.guests.reduce((sum, g) => sum + parseInt(g.attendCount || 1), 0);
-      const arrived = state.guests.reduce((sum, g) => sum + (g.checkedIn ? parseInt(g.attendCount || 1) : 0), 0);
-
-      totalSpan.innerText = total;
-      arrivedSpan.innerText = arrived;
-    }
-
-
-    // 7. DATABASE ACTIONS (ADD / UPDATE / DELETE)
-    function addSingleGuest() {
-      const name = document.getElementById('form-name').value.trim();
-      const attend = parseInt(document.getElementById('form-attend').value);
-      const relation = document.getElementById('form-relation').value.trim();
-      const table = document.getElementById('form-table').value.trim();
-
-      if (!name || isNaN(attend) || attend < 1) {
-        showAlert("Please fill in Name and Attend Count! ⚠️");
-        return;
-      }
-
-      const newGuest = {
-        name: name,
-        attendCount: attend,
-        relation: relation,
-        table: table,
-        checkedIn: false
-      };
-
-      if (state.isOfflineMode) {
-        // Offline action
-        newGuest.id = "local_" + Date.now();
-        state.guests.push(newGuest);
-        saveLocalDatabase(state.guests);
-        renderAdminTable();
-        updateMainStats();
-        searchGuests();
-        resetSingleAddForm();
-        showAlert("Guest added successfully (Local Mode)! 🎉");
-      } else {
-        // Online action
-        dbGuestsRef.push(newGuest, function(error) {
-          if (error) {
-            showAlert("Database error / 寫入失敗 ❌");
-          } else {
-            resetSingleAddForm();
-            showAlert("Guest added successfully! / 已新增成功 🎉");
-          }
-        });
-      }
-    }
-
-    function resetSingleAddForm() {
-      document.getElementById('form-name').value = '';
-      document.getElementById('form-attend').value = '';
-      document.getElementById('form-relation').value = '';
-      document.getElementById('form-table').value = '';
-    }
-
-    function toggleCheckIn(guestId, currentStatus) {
-      if (state.isOfflineMode) {
-        const index = state.guests.findIndex(g => g.id === guestId);
-        if (index !== -1) {
-          state.guests[index].checkedIn = !currentStatus;
-          saveLocalDatabase(state.guests);
-          renderAdminTable();
-          updateMainStats();
-          searchGuests();
-          showAlert(currentStatus ? "Check-in Undone! ↩️" : "Guest Checked-In! 🥂");
+          return;
         }
-      } else {
-        dbGuestsRef.child(guestId).update({
-          checkedIn: !currentStatus
-        }, function(error) {
-          if (error) {
-            showAlert("Failed to update status / 更新失敗 ❌");
-          } else {
-            showAlert(currentStatus ? "Check-in Undone / 已取消簽到 ↩️" : "Guest Checked-In! / 賓客簽到成功 🥂");
-          }
-        });
+
+        const matched = this.seating.queryGuests(query);
+        if (matched.length > 0) {
+          let html = '<h4 class="text-xs font-bold text-[#967b5f] uppercase tracking-widest mt-2 mb-1">Guests Found / 查询结果:</h4>';
+          matched.forEach(g => {
+            const isCheckedIn = g.checkedIn === true;
+            html += `
+              <div class="bg-white border ${isCheckedIn ? 'border-green-300 bg-green-50/20' : 'border-[#edd185]/40'} p-4 rounded-2xl flex items-center justify-between transition-all hover:bg-[#fffdf9] shadow-sm">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h5 class="font-bold text-themeBrownDark text-md">${g.name}</h5>
+                    ${isCheckedIn ? '<span class="px-2 py-0.5 bg-green-100 text-green-800 text-[9px] font-bold rounded">Checked In / 已签到</span>' : ''}
+                  </div>
+                  <span class="text-xs text-[#7a6655]">${g.relation || 'Guest / 宾客'}</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-[#7a6655]/50 block">Assigned Table / 指定桌号:</span>
+                  <span class="font-serifTitle text-lg font-bold text-[#967b5f]">${g.table || 'Table TBD'}</span>
+                  <span class="text-[10px] text-[#7a6655]/60 block">${g.attendCount || 1} Pax / 人</span>
+                </div>
+              </div>
+            `;
+          });
+          resultsContainer.innerHTML = html;
+        } else {
+          resultsContainer.innerHTML = `
+            <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
+              <p class="text-sm font-semibold text-themeBrownDark">Welcome / 欢迎 ${query}!</p>
+              <p class="text-xs text-[#7a6655] leading-relaxed">
+                We couldn't locate your pre-assigned name instantly. Please check in directly with our reception counter, or proceed to our friendly <strong>Free Seating Tables (Table 12)</strong>!
+                <span class="block mt-1 font-medium text-[10px] text-themeBrown">我们未能立即找到您的预设座位。请直接到接待处查询，或前往自由座席（第12桌）！</span>
+              </p>
+              <span class="inline-block mt-2 font-serifTitle text-xs md:text-sm font-bold text-themeBrown">Proceed to Table 12 or Usher / 前往12桌或联系接待员</span>
+            </div>
+          `;
+        }
       }
-    }
 
-    function deleteGuest(guestId) {
-      if (state.isOfflineMode) {
-        state.guests = state.guests.filter(g => g.id !== guestId);
-        saveLocalDatabase(state.guests);
-        renderAdminTable();
-        updateMainStats();
-        searchGuests();
-        showAlert("Guest deleted! 🗑️");
-      } else {
-        dbGuestsRef.child(guestId).remove(function(error) {
-          if (error) {
-            showAlert("Deletion failed / 刪除失敗 ❌");
-          } else {
-            showAlert("Guest deleted / 賓客資料已刪除 🗑️");
-          }
-        });
+      renderAdminPanel(filterVal = '') {
+        const tbody = document.getElementById('admin-guest-table-body');
+        if (!tbody) return;
+
+        const filtered = this.seating.filterGuestList(filterVal);
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-8 text-themeBrownMuted/50 italic">
+                No matching guests found in database / 无任何符合的宾客资料
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+        tbody.innerHTML = filtered.map(g => {
+          const isChecked = g.checkedIn === true;
+          return `
+            <tr class="hover:bg-themeGoldLight/30 transition border-b border-themeBrown/5">
+              <td class="p-3 font-semibold text-themeBrownDark">${g.name || ''}</td>
+              <td class="p-3 font-medium text-[#7a6655]">${g.attendCount || 1} Pax</td>
+              <td class="p-3 text-[#7a6655]">${g.relation || '-'}</td>
+              <td class="p-3 text-themeBrown font-bold">${g.table || '-'}</td>
+              <td class="p-3 text-center">
+                <button onclick="window.app.handleToggleCheckIn('${g.id}', ${isChecked})" class="px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-xs transition duration-200 ${
+                  isChecked 
+                    ? 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300' 
+                    : 'bg-themeGoldLight text-themeBrown hover:bg-white border border-[#edd185]'
+                }">
+                  ${isChecked ? '<i class="fa-solid fa-square-check mr-1 text-green-700"></i> Checked / 已到' : 'Check-In / 未到'}
+                </button>
+              </td>
+              <td class="p-3 text-center">
+                <button onclick="window.app.handleDeletePrompt('${g.id}', '${g.name || 'Guest'}')" class="text-red-500 hover:text-red-700 p-1 text-sm transition" title="Delete Guest">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
       }
-      closeConfirmation();
-    }
 
-    function deleteAllGuests() {
-      if (state.isOfflineMode) {
-        state.guests = [];
-        saveLocalDatabase(state.guests);
-        renderAdminTable();
-        updateMainStats();
-        searchGuests();
-        showAlert("Database cleared entirely (Local Mode)! 🗑️");
-      } else {
-        dbGuestsRef.remove(function(error) {
-          if (error) {
-            showAlert("Clear failed / 清空失敗 ❌");
-          } else {
-            showAlert("Database cleared entirely / 全數賓客已刪除 🗑️");
-          }
-        });
+      updateStatsUI() {
+        const totalSpan = document.getElementById('stat-total-guests');
+        const arrivedSpan = document.getElementById('stat-arrived');
+        if (!totalSpan || !arrivedSpan) return;
+
+        const { total, arrived } = this.seating.getStats();
+        totalSpan.innerText = total;
+        arrivedSpan.innerText = arrived;
       }
-      closeConfirmation();
-    }
 
+      updateStatusPill(isOffline) {
+        const pill = document.getElementById('db-status-pill');
+        if (!pill) return;
 
-    // 8. BATCH EXCEL PARSING (USING SHEETJS)
-    function handleExcelUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+        if (isOffline) {
+          pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-800";
+          pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> Local Sandbox / 离线模拟数据库`;
+        } else {
+          pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800";
+          pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span> Live Cloud Sync / 实时云端连通`;
+        }
+      }
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-          if (rows.length < 2) {
-            showAlert("The excel file is empty or missing headers! ⚠️");
-            return;
-          }
-
-          // Scan headers
-          const headers = rows[0].map(h => String(h).toLowerCase().trim());
+      _setupFloatingAnimation() {
+        const container = document.getElementById('heart-container');
+        if (!container) return;
+        const symbols = ['❤️', '✨', '🌸', '💕', '✦'];
+        
+        setInterval(() => {
+          const heart = document.createElement('div');
+          heart.className = 'floating-heart';
+          heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
           
-          let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('姓名') || h.includes('名字'));
-          let attendIdx = headers.findIndex(h => h.includes('attend') || h.includes('人數') || h.includes('出席'));
-          let relationIdx = headers.findIndex(h => h.includes('relation') || h.includes('關係') || h.includes('关系'));
-          let tableIdx = headers.findIndex(h => h.includes('table') || h.includes('桌') || h.includes('座'));
+          heart.style.color = '#967b5f';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.fontSize = (Math.random() * 12 + 12) + 'px';
+          heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+          
+          container.appendChild(heart);
+          setTimeout(() => heart.remove(), 10000);
+        }, 2000);
+      }
+    }
 
-          // Fallbacks
-          if (nameIdx === -1) nameIdx = 0;
-          if (attendIdx === -1) attendIdx = 1;
-          if (relationIdx === -1) relationIdx = 2;
-          if (tableIdx === -1) tableIdx = 3;
 
-          let countImported = 0;
-          const batchUpdates = {};
-          const localBatch = [];
+    /**
+     * MODULE 7: WeddingApp (Orchestrator Pattern)
+     * Main application controller connecting managers, observers and view components.
+     */
+    class WeddingApp {
+      constructor() {
+        this.db = new DatabaseService();
+        this.auth = new AuthController();
+        this.seating = new SeatingManager(this.db);
+        this.ui = new UIManager(this.seating, this.db, this.auth);
+      }
 
-          for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            if (!row || row.length === 0 || !row[nameIdx]) continue;
+      run() {
+        // Init state machines
+        this.db.init();
+        this.auth.init();
+        this.ui.init();
 
-            const gName = String(row[nameIdx]).trim();
-            const gAttend = parseInt(row[attendIdx]) || 1;
-            const gRelation = row[relationIdx] ? String(row[relationIdx]).trim() : 'Guest / 賓客';
-            const gTable = row[tableIdx] ? String(row[tableIdx]).trim() : '';
+        // Register controller hooks
+        this.db.registerCallback((guests, isOffline) => this._onDatabaseUpdate(guests, isOffline));
+        this.auth.registerCallback((isAuthenticated) => this._onAuthStateChange(isAuthenticated));
 
-            if (state.isOfflineMode) {
-              localBatch.push({
-                id: "local_" + Date.now() + "_" + i,
-                name: gName,
-                attendCount: gAttend,
-                relation: gRelation,
-                table: gTable,
-                checkedIn: false
-              });
-            } else {
-              const newKey = dbGuestsRef.push().key;
-              batchUpdates[newKey] = {
-                name: gName,
-                attendCount: gAttend,
-                relation: gRelation,
-                table: gTable,
-                checkedIn: false
-              };
-            }
-            countImported++;
-          }
+        // Bind DOM UI actions
+        this._bindDOMEvents();
+      }
 
-          if (countImported > 0) {
-            if (state.isOfflineMode) {
-              state.guests = [...state.guests, ...localBatch];
-              saveLocalDatabase(state.guests);
-              renderAdminTable();
-              updateMainStats();
-              searchGuests();
-              showAlert(`Imported ${countImported} guests locally! 📊`);
-            } else {
-              dbGuestsRef.update(batchUpdates, function(error) {
-                if (error) {
-                  showAlert("Batch upload failed / 匯入失敗 ❌");
-                } else {
-                  showAlert(`Successfully imported ${countImported} guests! 📊`);
-                }
-              });
-            }
+      _onDatabaseUpdate(guests, isOffline) {
+        this.ui.updateStatusPill(isOffline);
+        this.ui.updateStatsUI();
+        
+        const filterVal = document.getElementById('admin-guest-filter').value;
+        this.ui.renderAdminPanel(filterVal);
+
+        const seatQuery = document.getElementById('seat-search').value;
+        this.ui.renderPublicSeatLookup(seatQuery);
+      }
+
+      _onAuthStateChange(isAuthenticated) {
+        const wrapper = document.getElementById('checkin-management-wrapper');
+        if (wrapper) {
+          if (isAuthenticated) {
+            wrapper.classList.remove('hidden');
           } else {
-            showAlert("No valid rows matched / 未偵測到符合的數據");
+            wrapper.classList.add('hidden');
           }
-
-        } catch (err) {
-          console.error(err);
-          showAlert("Error parsing spreadsheet file! ❌");
         }
-      };
-      reader.readAsArrayBuffer(file);
-      event.target.value = '';
+      }
+
+      _bindDOMEvents() {
+        // Modal toggling listeners
+        document.getElementById('admin-lock-btn').addEventListener('click', () => this.ui.openModal('auth-modal'));
+        document.getElementById('btn-open-management').addEventListener('click', () => this.ui.openModal('management-modal'));
+        document.getElementById('btn-open-seat').addEventListener('click', () => this.ui.openModal('seat-modal'));
+        document.getElementById('btn-open-floor').addEventListener('click', () => this.ui.openModal('floor-modal'));
+        document.getElementById('btn-open-menu').addEventListener('click', () => this.ui.openModal('menu-modal'));
+
+        document.getElementById('btn-close-seat').addEventListener('click', () => this.ui.closeModal('seat-modal'));
+        document.getElementById('btn-close-floor').addEventListener('click', () => this.ui.closeModal('floor-modal'));
+        document.getElementById('btn-close-menu').addEventListener('click', () => this.ui.closeModal('menu-modal'));
+        document.getElementById('btn-close-management').addEventListener('click', () => this.ui.closeModal('management-modal'));
+        document.getElementById('btn-cancel-auth').addEventListener('click', () => this.ui.closeModal('auth-modal'));
+        document.getElementById('btn-cancel-confirm').addEventListener('click', () => this.ui.closeModal('confirm-modal'));
+
+        // New Page Navigation toggling inside Management panel
+        document.getElementById('btn-switch-to-add-page').addEventListener('click', () => this.ui.showMgmtAddView());
+        document.getElementById('btn-back-to-list').addEventListener('click', () => this.ui.showMgmtListView());
+
+        // Action Buttons
+        document.getElementById('btn-submit-auth').addEventListener('click', () => this.handleAuthSubmit());
+        document.getElementById('btn-add-guest').addEventListener('click', () => this.handleAddSingleGuest());
+        document.getElementById('btn-clear-db').addEventListener('click', () => this.handleClearDbPrompt());
+
+        // Live filtration and search
+        document.getElementById('seat-search').addEventListener('input', (e) => {
+          this.ui.renderPublicSeatLookup(e.target.value.trim());
+        });
+        document.getElementById('admin-guest-filter').addEventListener('input', (e) => {
+          this.ui.renderAdminPanel(e.target.value.trim());
+        });
+
+        // Batch Excel file uploads
+        document.getElementById('excel-upload-input').addEventListener('change', (e) => this.handleExcelParsing(e));
+      }
+
+      // Controller Event Methods
+      handleAuthSubmit() {
+        const passcode = document.getElementById('admin-passcode-input').value.trim();
+        if (this.auth.verify(passcode)) {
+          this.ui.closeModal('auth-modal');
+          document.getElementById('admin-passcode-input').value = '';
+          NotificationSystem.show("Admin Panel Unlocked! 🔓 后台解锁成功！");
+        } else {
+          NotificationSystem.show("Invalid Passcode! / 密码错误！❌");
+        }
+      }
+
+      handleAddSingleGuest() {
+        const name = document.getElementById('form-name').value.trim();
+        const attend = parseInt(document.getElementById('form-attend').value);
+        const relation = document.getElementById('form-relation').value.trim();
+        const table = document.getElementById('form-table').value.trim();
+
+        if (!name || isNaN(attend) || attend < 1) {
+          NotificationSystem.show("Please fill in Name and Attend Count! ⚠️");
+          return;
+        }
+
+        const payload = { name, attendCount: attend, relation, table, checkedIn: false };
+        this.db.addGuest(payload)
+          .then(() => {
+            document.getElementById('form-name').value = '';
+            document.getElementById('form-attend').value = '';
+            document.getElementById('form-relation').value = '';
+            document.getElementById('form-table').value = '';
+            NotificationSystem.show("Guest added successfully! / 新增成功 🎉");
+            
+            // Auto route back to the list view after adding to view the newly added row
+            this.ui.showMgmtListView();
+          })
+          .catch(err => NotificationSystem.show(`Write operation failed: ${err.message}`));
+      }
+
+      handleToggleCheckIn(id, currentStatus) {
+        this.db.updateCheckIn(id, !currentStatus)
+          .then(() => NotificationSystem.show(currentStatus ? "Check-in Undone / 已取消签到 ↩️" : "Guest Checked-In! / 宾客签到成功 🥂"))
+          .catch(err => NotificationSystem.show(`Sync failed: ${err.message}`));
+      }
+
+      handleDeletePrompt(id, name) {
+        this.ui.showConfirmation(
+          "Delete Guest?",
+          `Are you sure you want to delete <strong>${name}</strong>? This action is permanent.`,
+          () => {
+            this.db.deleteGuest(id)
+              .then(() => NotificationSystem.show("Guest deleted / 宾客资料已删除 🗑️"))
+              .catch(err => NotificationSystem.show(`Delete failed: ${err.message}`));
+          }
+        );
+      }
+
+      handleClearDbPrompt() {
+        this.ui.showConfirmation(
+          "Clear Entire Database?",
+          "This will <strong>PERMANENTLY DELETE ALL GUESTS</strong> from the list. This cannot be undone!",
+          () => {
+            this.db.clearAll()
+              .then(() => {
+                NotificationSystem.show("Database cleared entirely / 全数宾客已删除 🗑️");
+                this.ui.showMgmtListView();
+              })
+              .catch(err => NotificationSystem.show(`Clear failed: ${err.message}`));
+          }
+        );
+      }
+
+      handleExcelParsing(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        this.seating.parseExcel(file)
+          .then(guests => {
+            if (guests.length === 0) {
+              NotificationSystem.show("No valid rows matched / 未侦测到符合的数据");
+              return;
+            }
+            this.db.batchImport(guests)
+              .then(count => {
+                NotificationSystem.show(`Successfully imported ${count} guests! 📊`);
+                // Route back to view list
+                this.ui.showMgmtListView();
+              })
+              .catch(err => NotificationSystem.show(`Batch import failed: ${err.message}`));
+          })
+          .catch(err => NotificationSystem.show(`Error reading Excel: ${err}`));
+
+        // Flush file inputs
+        event.target.value = '';
+      }
     }
 
-    // 9. DIALOG CONFIRMATION BOX
-    function promptDeleteGuest(guestId, guestName) {
-      document.getElementById('confirm-title').innerText = "Delete Guest?";
-      document.getElementById('confirm-desc').innerHTML = `Are you sure you want to delete <strong>${guestName}</strong>? This action is permanent.`;
-      
-      const actBtn = document.getElementById('confirm-act-btn');
-      actBtn.onclick = function() { deleteGuest(guestId); };
-      actBtn.className = "w-1/2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md";
-      actBtn.innerText = "Delete / 確定刪除";
+    // Instantiation and startup
+    window.copyToClipboard = function(text) {
+      const tempInput = document.createElement("input");
+      document.body.appendChild(tempInput);
+      tempInput.value = text;
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      NotificationSystem.show("已复制账号: " + text + " 📋");
+    };
 
-      openModal('confirm-modal');
-    }
-
-    function promptDeleteAll() {
-      document.getElementById('confirm-title').innerText = "Clear Entire Database?";
-      document.getElementById('confirm-desc').innerHTML = "This will <strong>PERMANENTLY DELETE ALL GUESTS</strong> from the list. This cannot be undone!";
-      
-      const actBtn = document.getElementById('confirm-act-btn');
-      actBtn.onclick = function() { deleteAllGuests(); };
-      actBtn.className = "w-1/2 bg-red-700 hover:bg-red-800 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md ring-2 ring-red-300";
-      actBtn.innerText = "Clear All / 確定清空";
-
-      openModal('confirm-modal');
-    }
-
-    function closeConfirmation() {
-      closeModal('confirm-modal');
-    }
-
-    // 10. DECORATION UTILITIES
-    function generateFloatingHearts() {
-      const container = document.getElementById('heart-container');
-      const symbols = ['❤️', '✨', '🌸', '💕', '✦'];
-      
-      setInterval(() => {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        
-        heart.style.color = '#967b5f';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = (Math.random() * 12 + 12) + 'px';
-        heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => {
-          heart.remove();
-        }, 10000);
-      }, 2000);
-    }
+    window.app = new WeddingApp();
+    window.app.run();
   </script>
 </body>
 </html>
