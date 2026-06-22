@@ -135,6 +135,15 @@
       scrollbar-width: none;
     }
 
+    .header-photo {
+      object-position: top;
+    }
+    @media (min-width: 768px) {
+      .header-photo {
+        object-position: center 25%;
+      }
+    }
+
     /* Soft floating hearts/leaves animation */
     @keyframes floatUp {
       0% {
@@ -171,7 +180,7 @@
     <!-- HEADER: Seamless top wedding image banner with faded cream mask -->
     <div class="relative w-full h-[45vh] md:h-[60vh] overflow-hidden">
       <!-- High Quality Wedding Photo -->
-      <img src="AT7P8576.jpg" alt="Wai Lik and Cheng Yee" class="w-full h-full object-cover object-top" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600'">
+      <img src="AT7P8576.jpg" alt="Wai Lik and Cheng Yee" class="w-full h-full object-cover header-photo" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600'">
       
       <!-- Warm golden gradient fade to match image_5821eb.png colors -->
       <div class="absolute inset-0 bg-gradient-to-t from-[#f5df9e] via-transparent to-black/10"></div>
@@ -287,7 +296,7 @@
       <!-- Divider for Social Media Tags -->
       <div class="flex items-center justify-between py-4 opacity-70">
         <div class="h-[0.5px] bg-gradient-to-r from-transparent to-[#967b5f] w-1/4"></div>
-        <span class="text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us! / 记得标记我们！</span>
+        <span class="text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us! <br> 记得标记我们！</span>
         <div class="h-[0.5px] bg-gradient-to-l from-transparent to-[#967b5f] w-1/4"></div>
       </div>
 
@@ -362,6 +371,30 @@
           </button>
           <button id="btn-submit-auth" class="w-1/2 bg-[#967b5f] text-white hover:bg-[#bd9e7f] text-xs font-bold py-3 rounded-xl transition shadow-md">
             Verify / 验证
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGOUT CONFIRMATION MODAL -->
+  <div id="logout-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[380px] p-6 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
+      <div class="text-center space-y-4">
+        <div class="w-12 h-12 rounded-full bg-themeBrown/10 flex items-center justify-center mx-auto text-themeBrown">
+          <i class="fa-solid fa-lock text-xl"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg text-themeBrownDark">Logout</h3>
+          <p class="text-xs text-themeBrownMuted">Click Logout to hide the admin check-in button.</p>
+          <p class="text-[11px] text-themeBrownMuted/70">点击注销后，将隐藏签到管理按钮</p>
+        </div>
+        <div class="flex gap-2">
+          <button id="btn-cancel-logout" class="w-1/2 bg-white border border-themeBrown/30 hover:bg-white/80 text-themeBrownDark text-xs font-bold py-3 rounded-xl transition">
+            Cancel / 取消
+          </button>
+          <button id="btn-logout-auth" class="w-1/2 bg-red-600 text-white hover:bg-red-700 text-xs font-bold py-3 rounded-xl transition shadow-md">
+            Logout / 注销
           </button>
         </div>
       </div>
@@ -1034,6 +1067,12 @@
         }
         return false;
       }
+
+      logout() {
+        this.isAuthenticated = false;
+        sessionStorage.removeItem('weddingAdminVerified');
+        this._notifyListeners();
+      }
     }
 
 
@@ -1431,7 +1470,7 @@
 
       _bindDOMEvents() {
         // Modal toggling listeners
-        document.getElementById('admin-lock-btn').addEventListener('click', () => this.ui.openModal('auth-modal'));
+        document.getElementById('admin-lock-btn').addEventListener('click', () => this.handleAdminLockClick());
         document.getElementById('btn-open-management').addEventListener('click', () => this.ui.openModal('management-modal'));
         document.getElementById('btn-open-seat').addEventListener('click', () => this.ui.openModal('seat-modal'));
         document.getElementById('btn-open-floor').addEventListener('click', () => this.ui.openModal('floor-modal'));
@@ -1442,6 +1481,7 @@
         document.getElementById('btn-close-menu').addEventListener('click', () => this.ui.closeModal('menu-modal'));
         document.getElementById('btn-close-management').addEventListener('click', () => this.ui.closeModal('management-modal'));
         document.getElementById('btn-cancel-auth').addEventListener('click', () => this.ui.closeModal('auth-modal'));
+        document.getElementById('btn-cancel-logout').addEventListener('click', () => this.ui.closeModal('logout-modal'));
         document.getElementById('btn-cancel-confirm').addEventListener('click', () => this.ui.closeModal('confirm-modal'));
 
         // New Page Navigation toggling inside Management panel
@@ -1450,6 +1490,7 @@
 
         // Action Buttons
         document.getElementById('btn-submit-auth').addEventListener('click', () => this.handleAuthSubmit());
+        document.getElementById('btn-logout-auth').addEventListener('click', () => this.handleLogout());
         document.getElementById('btn-add-guest').addEventListener('click', () => this.handleAddSingleGuest());
         document.getElementById('btn-clear-db').addEventListener('click', () => this.handleClearDbPrompt());
 
@@ -1478,6 +1519,20 @@
         } else {
           NotificationSystem.show("Invalid Passcode! / 密码错误！❌");
         }
+      }
+
+      handleAdminLockClick() {
+        if (this.auth.isAuthenticated) {
+          this.ui.openModal('logout-modal');
+        } else {
+          this.ui.openModal('auth-modal');
+        }
+      }
+
+      handleLogout() {
+        this.auth.logout();
+        this.ui.closeModal('logout-modal');
+        NotificationSystem.show("Admin Panel Locked. / 后台已锁定 🔒");
       }
 
       handleAddSingleGuest() {
