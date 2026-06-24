@@ -430,7 +430,7 @@
 
         <!-- Search Input Bar -->
         <div class="relative">
-          <input id="seat-search" type="text" placeholder="Type your name (e.g. David, Uncle Lim, Chen...) / 请输入姓名..." 
+          <input id="seat-search" type="text" placeholder="请输入姓名(e.g. David, Chan) / Enter Name"
                  class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
             <i class="fa-solid fa-search"></i>
@@ -438,7 +438,7 @@
         </div>
 
         <div class="relative">
-          <input id="seat-table-search" type="text" placeholder="Search guests by table (e.g. Table 1 / 第1桌) / 搜索同桌宾客..." 
+          <input id="seat-table-search" type="text" placeholder="搜索同桌宾客(e.g. 1 / 2) / Enter Table Number"
                  class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm mt-3">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
             <i class="fa-solid fa-table-list"></i>
@@ -664,6 +664,7 @@
               </span>
               <span class="px-2.5 py-1.5 bg-green-50 text-green-800 rounded-lg border border-green-200 shadow-sm">
                 Arrived / 已签到: <strong class="text-green-700" id="stat-arrived">0</strong>
+                (<span id="stat-percentage" class="font-bold">0%</span>)
               </span>
             </div>
           </div>
@@ -750,7 +751,13 @@
               <div class="grid grid-cols-2 gap-3 text-xs pt-1">
                 <input id="form-name" type="text" placeholder="* Name / 姓名" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
                 <input id="form-attend" type="number" min="1" placeholder="* Guests Count / 出席人数" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
-                <input id="form-relation" type="text" placeholder="Relation / 关系" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2">
+
+                <select id="form-relation" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2 text-themeBrownDark">
+                  <option value="" disabled selected>Relation / 关系</option>
+                  <option value="男方亲戚朋友 Groom's Guest">男方亲戚朋友 Groom's Guest</option>
+                  <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
+                </select>
+
                 <input id="form-table" type="text" placeholder="Table No. / 桌号 (e.g. Table 5)" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2">
               </div>
 
@@ -1378,11 +1385,16 @@
       updateStatsUI() {
         const totalSpan = document.getElementById('stat-total-guests');
         const arrivedSpan = document.getElementById('stat-arrived');
-        if (!totalSpan || !arrivedSpan) return;
+        const percentSpan = document.getElementById('stat-percentage');
+        if (!totalSpan || !arrivedSpan || !percentSpan) return;
 
         const { total, arrived } = this.seating.getStats();
         totalSpan.innerText = total;
         arrivedSpan.innerText = arrived;
+
+        // Calculate and display percentage
+        const percentage = total > 0 ? Math.round((arrived / total) * 100) : 0;
+        percentSpan.innerText = percentage + "%";
       }
 
       updateStatusPill(isOffline) {
