@@ -430,19 +430,25 @@
 
         <!-- Search Input Bar -->
         <div class="relative">
-          <input id="seat-search" type="text" placeholder="请输入姓名(e.g. David, Chan) / Enter Name"
-                 class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm">
+          <input id="seat-search" type="text" placeholder="请输入姓名(e.g. David, Chan)/ Name"
+                 class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-10 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm" oninput="toggleClearBtn('seat-search')">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
             <i class="fa-solid fa-search"></i>
           </div>
+          <button type="button" id="clear-seat-search" class="absolute right-4 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden" onclick="clearField('seat-search')">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
         </div>
 
         <div class="relative">
-          <input id="seat-table-search" type="text" placeholder="搜索同桌宾客(e.g. 1 / 2) / Enter Table Number"
-                 class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm mt-3">
+          <input id="seat-table-search" type="text" placeholder="搜索同桌宾客(e.g. 1 / 2)/ Table No."
+                 class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm"  oninput="toggleClearBtn('seat-table-search')">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
             <i class="fa-solid fa-table-list"></i>
           </div>
+          <button type="button" id="clear-seat-table-search" class="absolute right-4 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden" onclick="clearField('seat-table-search')">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
         </div>
 
         <!-- Seating Result Section -->
@@ -517,7 +523,7 @@
             
             <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
               <span class="font-bold text-[#967b5f] block">Table 7-12 / 第7-12桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">College & Colleagues / 大学同学与同事</span>
+              <span class="text-[10px] text-themeBrownMuted leading-tight block">College / 大学同学</span>
             </div>
           </div>
         </div>
@@ -649,13 +655,16 @@
         <div id="mgmt-list-page" class="space-y-6">
           
           <!-- Filter/Search Bar & Stats -->
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
-            <div class="relative w-full md:max-w-sm">
-              <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table / Relation..." class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown">
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
-                <i class="fa-solid fa-filter"></i>
-              </div>
+         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
+          <div class="relative w-full md:max-w-sm">
+            <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table / Relation..." class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-10 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown" oninput="toggleClearBtn('admin-guest-filter')">
+            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
+              <i class="fa-solid fa-filter"></i>
             </div>
+            <button type="button" id="clear-admin-guest-filter" class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden" onclick="clearField('admin-guest-filter')">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
 
             <!-- Live Stats counter -->
             <div class="flex gap-4 text-xs font-medium text-themeBrownDark">
@@ -749,7 +758,12 @@
               </h4>
               
               <div class="grid grid-cols-2 gap-3 text-xs pt-1">
-                <input id="form-name" type="text" placeholder="* Name / 姓名" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
+                <div class="relative col-span-1">
+                <input id="form-name" type="text" placeholder="* Name / 姓名" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown text-themeBrownDark" oninput="toggleClearBtn('form-name')">
+                <button type="button" id="clear-form-name" class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden" onclick="clearField('form-name')">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+              </div>
                 <input id="form-attend" type="number" min="1" placeholder="* Guests Count / 出席人数" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown">
 
                 <select id="form-relation" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2 text-themeBrownDark">
@@ -758,8 +772,12 @@
                   <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
                 </select>
 
-                <input id="form-table" type="text" placeholder="Table No. / 桌号 (e.g. Table 5)" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2">
-              </div>
+                <div class="relative col-span-2">
+                  <input id="form-table" type="text" placeholder="Table No. / 桌号 (e.g. 5)" class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown text-themeBrownDark" oninput="toggleClearBtn('form-table')">
+                  <button type="button" id="clear-form-table" class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden" onclick="clearField('form-table')">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </button>
+                </div>
 
               <button id="btn-add-guest" class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-1 shadow-sm mt-2">
                 <i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入
@@ -806,6 +824,24 @@
   <!-- MODULE PATTERN & OBJECT ORIENTED CONTROLLER   -->
   <!-- ============================================= -->
   <script>
+    // Global Clear Helpers
+      window.toggleClearBtn = function(inputId) {
+        const input = document.getElementById(inputId);
+        const btn = document.getElementById('clear-' + inputId);
+        if (btn) {
+          btn.classList.toggle('hidden', !input.value);
+        }
+      };
+
+      window.clearField = function(inputId) {
+        const input = document.getElementById(inputId);
+        input.value = '';
+        input.dispatchEvent(new Event('input')); // Trigger logic update
+        const btn = document.getElementById('clear-' + inputId);
+        if (btn) btn.classList.add('hidden');
+        input.focus();
+      };
+
     /**
      * MODULE 1: WeddingConfig
      * Holds static resources, environment profiles, and static configurations.
@@ -1294,7 +1330,7 @@
           resultsContainer.innerHTML = `
             <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
               <p class="text-sm font-semibold text-themeBrownDark">No guests found on ${tableQuery}</p>
-              <p class="text-xs text-[#7a6655] leading-relaxed">请确认桌号是否正确，或尝试使用“Table 1 / 第1桌”格式查询。</p>
+              <p class="text-xs text-[#7a6655] leading-relaxed">请确认桌号是否正确，或尝试使用“1 / 2”查询。</p>
             </div>
           `;
           return;
