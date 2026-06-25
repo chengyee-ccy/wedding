@@ -1336,6 +1336,12 @@
           return this.db.guests.filter(g => g.name && g.name.toLowerCase().includes(nameQuery.toLowerCase()));
         }
 
+        queryGuestsByTable(tableQuery) {
+          if (!tableQuery) return [];
+          const target = tableQuery.toLowerCase().trim();
+          return this.db.guests.filter(g => g.table && g.table.toLowerCase().includes(target));
+        }
+
         filterGuestList(filterString, showCheckedIn = true, showPending = true) {
           const target = filterString.toLowerCase().trim();
 
