@@ -349,7 +349,7 @@
       </button>
 
       <!-- 4. Share Photos & Videos (Direct redirection to Google Drive) -->
-      <a href="https://drive.google.com/drive/folders/1VhhSEWSnlGv1jG7w6xtksxd-1UFb5DTK?usp=drive_link" target="_blank"
+      <!--a href="https://drive.google.com/drive/folders/1VhhSEWSnlGv1jG7w6xtksxd-1UFb5DTK?usp=drive_link" target="_blank"
         class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
         <div class="flex items-center gap-4">
           <div class="w-[48px] h-[48px] rounded-full overflow-hidden border-2 border-themeBrown shadow-md">
@@ -364,7 +364,24 @@
           class="w-8 h-8 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1">
           <i class="fa-solid fa-arrow-up-right-from-square text-xs text-themeBrownMuted"></i>
         </div>
-      </a>
+      </a-->
+
+      <button id="btn-open-share"
+        class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+        <div class="flex items-center gap-4">
+          <div class="w-[48px] h-[48px] rounded-full overflow-hidden border-2 border-themeBrown shadow-md">
+            <img src="share.PNG" alt="Wai Lik" class="w-full h-full object-cover object-top">
+          </div>
+          <div>
+            <h2 class="font-bold text-[15px] tracking-wide text-themeBrownDark">Share Your Photo & Video</h2>
+            <p class="text-xs text-themeBrownMuted font-medium">上传分享您与我们的合影</p>
+          </div>
+        </div>
+        <div
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1">
+          <i class="fa-solid fa-chevron-right text-xs text-themeBrownMuted"></i>
+        </div>
+      </button>
 
       <!-- Divider for Social Media Tags -->
       <div class="flex items-center justify-between py-4 opacity-70">
@@ -735,8 +752,43 @@
     </div>
   </div>
 
+  <!-- 4. SHARE PHOTO & VIDEO IFRAME MODAL -->
+  <div id="share-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[650px] h-[85vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
 
-  <!-- 4. CHECK-IN MANAGEMENT PANEL MODAL -->
+      <!-- Top Elegant Bar -->
+      <div class="px-6 pt-6 pb-3 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark">
+            <i class="fa-solid fa-camera text-xs"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-themeBrownDark">Share Your Photo & Video</h3>
+            <p class="text-[11px] text-themeBrownMuted -mt-0.5">上传分享您与我们的美好时刻</p>
+          </div>
+        </div>
+        <button id="btn-close-share"
+          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
+          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
+        </button>
+      </div>
+
+      <!-- Content Frame Container -->
+      <div class="flex-1 bg-white relative">
+        <!--div id="share-iframe-loader"
+          class="absolute inset-0 flex flex-col items-center justify-center bg-[#fbf6e9] z-10">
+          <i class="fa-solid fa-spinner fa-spin text-themeBrown text-3xl mb-2"></i>
+          <span class="text-xs text-themeBrownMuted font-bold">Loading Uploader...</span>
+          <span class="text-[10px] text-themeBrownMuted/70 mt-1">正在加载媒体上传页，请稍候...</span>
+        </div-->
+        <iframe id="share-iframe" src="https://script.google.com/macros/s/AKfycbxLmOTjtAo4sxwlAhu_fMeeWnYHikxciGelAq-RKvnZbt7bO-9cyu1D8Zm4kiWJq61ntQ/exec" class="w-full h-full border-none z-20 relative"
+          allow="camera; microphone"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CHECK-IN MANAGEMENT PANEL MODAL -->
   <div id="management-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
       class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[850px] h-[90vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -1761,10 +1813,12 @@
           document.getElementById('btn-open-seat').addEventListener('click', () => this.ui.openModal('seat-modal'));
           document.getElementById('btn-open-floor').addEventListener('click', () => this.ui.openModal('floor-modal'));
           document.getElementById('btn-open-menu').addEventListener('click', () => this.ui.openModal('menu-modal'));
+          document.getElementById('btn-open-share').addEventListener('click', () => this.ui.openModal('share-modal'));
 
           document.getElementById('btn-close-seat').addEventListener('click', () => this.ui.closeModal('seat-modal'));
           document.getElementById('btn-close-floor').addEventListener('click', () => this.ui.closeModal('floor-modal'));
           document.getElementById('btn-close-menu').addEventListener('click', () => this.ui.closeModal('menu-modal'));
+          document.getElementById('btn-close-share').addEventListener('click', () => this.ui.closeModal('share-modal'));
           document.getElementById('btn-close-management').addEventListener('click', () => this.ui.closeModal('management-modal'));
           document.getElementById('btn-cancel-auth').addEventListener('click', () => this.ui.closeModal('auth-modal'));
           document.getElementById('btn-cancel-logout').addEventListener('click', () => this.ui.closeModal('logout-modal'));
