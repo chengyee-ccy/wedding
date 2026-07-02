@@ -384,11 +384,12 @@
       </button>
 
       <!-- Divider for Social Media Tags -->
-      <div class="flex items-center justify-between py-4 opacity-70">
-        <div class="h-[0.5px] bg-gradient-to-r from-transparent to-[#967b5f] w-1/4"></div>
-        <span class="text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us! <br>
+      <div class="flex items-center justify-center py-4 opacity-70 gap-3">
+        <div class="h-[0.5px] bg-gradient-to-r from-transparent to-[#967b5f] flex-1"></div>
+        <span class="text-center text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us!
+          <br>
           记得标记我们！</span>
-        <div class="h-[0.5px] bg-gradient-to-l from-transparent to-[#967b5f] w-1/4"></div>
+        <div class="h-[0.5px] bg-gradient-to-l from-transparent to-[#967b5f] flex-1"></div>
       </div>
 
       <!-- 5. Tag Groom Instagram -->
@@ -773,7 +774,14 @@
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
-
+      <div class="px-6 pb-3 text-center">
+        <p class="text-[13px] text-themeBrownMuted mx-auto max-w-[30rem] leading-snug">
+          If the uploader does not display or your file is too large to upload here, please email us at
+          <a href="mailto:wailik.chengyee@gmail.com"
+            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>。
+          如果上传界面未显示或文件过大无法通过此处上传，请发送邮件至上述地址。
+        </p>
+      </div>
       <!-- Content Frame Container -->
       <div class="flex-1 bg-white relative">
         <!--div id="share-iframe-loader"
@@ -782,8 +790,14 @@
           <span class="text-xs text-themeBrownMuted font-bold">Loading Uploader...</span>
           <span class="text-[10px] text-themeBrownMuted/70 mt-1">正在加载媒体上传页，请稍候...</span>
         </div-->
-        <iframe id="share-iframe" src="https://chengyee-ccy.github.io/uploader/" class="w-full h-full border-none z-20 relative"
-          allow="camera; microphone"></iframe>
+        <iframe id="share-iframe" src="https://chengyee-ccy.github.io/uploader/"
+          class="w-full h-full border-none z-20 relative" allow="camera; microphone"></iframe>
+        <div
+          class="absolute left-0 right-0 bottom-0 p-4 bg-white/95 border-t border-themeBrown/10 text-xs text-themeBrownDark text-center">
+          If the uploader screen does not display or your file is too large to upload here, please email us at
+          <a href="mailto:wailik.chengyee@gmail.com"
+            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>.
+        </div>
       </div>
     </div>
   </div>
@@ -886,11 +900,21 @@
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="bg-[#edd185]/20 text-[#967b5f] font-bold border-b border-themeBrown/10">
-                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('name')">Guest Name / 姓名 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-name"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('count')">Guests / 出席 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-count"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('relation')">Relation / 关系 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-relation"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('table')">Table / 桌号 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-table"></span></th>
-                    <th class="p-3 text-center cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('status')">Status / 签到状态 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-status"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition"
+                      onclick="window.app.ui.sortGuestTable('name')">Guest Name / 姓名 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-name"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition"
+                      onclick="window.app.ui.sortGuestTable('count')">Guests / 出席 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-count"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition"
+                      onclick="window.app.ui.sortGuestTable('relation')">Relation / 关系 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-relation"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition"
+                      onclick="window.app.ui.sortGuestTable('table')">Table / 桌号 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-table"></span></th>
+                    <th class="p-3 text-center cursor-pointer hover:bg-[#edd185]/40 transition"
+                      onclick="window.app.ui.sortGuestTable('status')">Status / 签到状态 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-status"></span></th>
                     <th class="p-3 text-center">Action / 操作</th>
                   </tr>
                 </thead>
@@ -908,10 +932,18 @@
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="bg-themeGoldLight text-themeBrown font-bold border-b border-themeBrown/10">
-                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('table')">Table / 桌号 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-table"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('occupancy')">Occupancy / 已占位 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-occupancy"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('remaining')">Remaining / 剩余座位 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-remaining"></span></th>
-                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('status')">Status <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-status"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition"
+                      onclick="window.app.ui.sortCapacityTable('table')">Table / 桌号 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-table"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition"
+                      onclick="window.app.ui.sortCapacityTable('occupancy')">Occupancy / 已占位 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-occupancy"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition"
+                      onclick="window.app.ui.sortCapacityTable('remaining')">Remaining / 剩余座位 <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-remaining"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition"
+                      onclick="window.app.ui.sortCapacityTable('status')">Status <span
+                        class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-status"></span></th>
                   </tr>
                 </thead>
                 <tbody id="admin-capacity-table-body" class="divide-y divide-themeBrown/5"></tbody>
@@ -985,7 +1017,7 @@
                   <input id="form-name" type="text" placeholder="* Name / 姓名"
                     class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown text-themeBrownDark"
                     oninput="toggleClearBtn('form-name')">
-                    <input id="form-edit-id" type="hidden" value="">
+                  <input id="form-edit-id" type="hidden" value="">
                   <button type="button" id="clear-form-name"
                     class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden"
                     onclick="clearField('form-name')">
@@ -1019,6 +1051,8 @@
                     <i class="fa-solid fa-circle-xmark"></i>
                   </button>
                 </div>
+
+                <div id="form-table-status" class="col-span-2 text-xs text-themeBrownDark hidden"></div>
 
                 <!-- Edit-only checked-in toggle -->
                 <div id="form-checked-container" class="col-span-2 hidden items-center gap-2">
@@ -1059,9 +1093,30 @@
           </button>
           <button id="confirm-act-btn"
             class="w-1/2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
-            Delete / 确定删除
+            Confirm / 确认
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Check-In Welcome Modal -->
+    <div id="checkin-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+      <div
+        class="bg-white rounded-[28px] w-full max-w-[420px] p-6 shadow-2xl relative text-center space-y-5 animate-in fade-in zoom-in duration-200">
+        <div class="text-center">
+          <h4 class="text-xl font-bold text-themeBrownDark">Welcome, <span id="checkin-guest-name"></span>!</h4>
+          <p class="text-xl text-themeBrownMuted mt-2">Table No. <span id="checkin-table-no"
+              class="font-bold text-themeBrownDark"></span></p>
+        </div>
+        <div
+          class="mx-auto w-56 h-56 bg-[#f8f5ee] rounded-3xl overflow-hidden border border-themeBrown/10 shadow-sm flex items-center justify-center">
+          <img id="checkin-qr-img" src="qr.png" alt="QR Code" class="w-full h-full object-contain" />
+        </div>
+        <p class="text-xs text-themeBrownMuted">Scan this QR code to complete the check-in process.</p>
+        <button id="btn-close-checkin"
+          class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3 rounded-xl transition">
+          Close / 关闭
+        </button>
       </div>
     </div>
 
@@ -1407,6 +1462,16 @@
           return tableMap;
         }
 
+        getTableOccupancyFor(tableQuery, excludeId = null) {
+          if (!tableQuery) return 0;
+          const normalized = tableQuery.toString().trim().toLowerCase();
+          return this.db.guests.reduce((sum, g) => {
+            if (!g.table || !g.table.toString().trim()) return sum;
+            if (excludeId && g.id === excludeId) return sum;
+            return sum + ((g.table.toString().trim().toLowerCase() === normalized) ? parseInt(g.attendCount || 1) : 0);
+          }, 0);
+        }
+
         queryGuests(nameQuery) {
           if (!nameQuery) return [];
           return this.db.guests.filter(g => g.name && g.name.toLowerCase().includes(nameQuery.toLowerCase()));
@@ -1631,6 +1696,16 @@
           }
         }
 
+        showCheckInWelcome(guest) {
+          const guestNameElem = document.getElementById('checkin-guest-name');
+          const tableNoElem = document.getElementById('checkin-table-no');
+          const qrImgElem = document.getElementById('checkin-qr-img');
+          if (guestNameElem) guestNameElem.innerText = guest.name || 'Guest';
+          if (tableNoElem) tableNoElem.innerText = guest.table || '-';
+          if (qrImgElem) qrImgElem.src = qrImgElem.src || 'checkin-qr.svg';
+          this.openModal('checkin-modal');
+        }
+
         // Transition to Management List View page
         showMgmtListView() {
           const listPage = document.getElementById('mgmt-list-page');
@@ -1667,7 +1742,10 @@
           const editId = document.getElementById('form-edit-id');
           if (editId) editId.value = '';
           const btn = document.getElementById('btn-add-guest');
-          if (btn) btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入';
+          if (btn) {
+            btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入';
+            btn.disabled = false;
+          }
           const checkedContainer = document.getElementById('form-checked-container');
           const checkedBox = document.getElementById('form-checked');
           if (checkedContainer) checkedContainer.classList.add('hidden');
@@ -1677,18 +1755,65 @@
             nameInput.readOnly = false;
             nameInput.classList.remove('opacity-60', 'cursor-not-allowed');
           }
+          const statusElem = document.getElementById('form-table-status');
+          if (statusElem) {
+            statusElem.classList.add('hidden');
+            statusElem.innerText = '';
+          }
         }
 
-        showConfirmation(title, description, onConfirmCallback) {
+        showConfirmation(title, description, onConfirmCallback, confirmLabel = 'Confirm / 确认') {
           document.getElementById('confirm-title').innerText = title;
           document.getElementById('confirm-desc').innerHTML = description;
 
           const actBtn = document.getElementById('confirm-act-btn');
+          actBtn.innerText = confirmLabel;
           actBtn.onclick = () => {
             onConfirmCallback();
             this.closeModal('confirm-modal');
           };
           this.openModal('confirm-modal');
+        }
+
+        refreshFormTableCapacityStatus() {
+          const tableInput = document.getElementById('form-table');
+          const attendInput = document.getElementById('form-attend');
+          const statusElem = document.getElementById('form-table-status');
+          const btn = document.getElementById('btn-add-guest');
+          const editId = document.getElementById('form-edit-id')?.value.trim();
+
+          if (!statusElem || !btn || !tableInput) return;
+
+          const tableName = tableInput.value.trim();
+          const attendCount = parseInt(attendInput?.value) || 0;
+
+          if (!tableName) {
+            statusElem.classList.add('hidden');
+            statusElem.innerText = '';
+            btn.disabled = false;
+            return;
+          }
+
+          const currentOccupancy = this.seating.getTableOccupancyFor(tableName, editId || null);
+          const remaining = 10 - currentOccupancy;
+
+          if (remaining <= 0) {
+            statusElem.innerText = `Table ${tableName} 已满 10 人，请选择其他桌号。`;
+            statusElem.classList.remove('hidden');
+            btn.disabled = true;
+            return;
+          }
+
+          if (attendCount > remaining) {
+            statusElem.innerText = `Table ${tableName} 仅剩 ${remaining} 个名额，当前出席人数不能超过 ${remaining}。`;
+            statusElem.classList.remove('hidden');
+            btn.disabled = true;
+            return;
+          }
+
+          statusElem.innerText = `Table ${tableName} 还可容纳 ${remaining} 人。`;
+          statusElem.classList.remove('hidden');
+          btn.disabled = false;
         }
 
         renderPublicSeatLookup(query, tableQuery = '') {
@@ -1772,7 +1897,7 @@
           if (!tbody) return;
 
           let filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending);
-          
+
           // Apply sorting
           if (this.guestTableSort.column) {
             filtered = filtered.sort((a, b) => {
@@ -1805,7 +1930,7 @@
               return this.guestTableSort.direction === 'asc' ? cmp : -cmp;
             });
           }
-          
+
           this.updateSortIndicators();
 
           tbody.innerHTML = filtered.length === 0 ?
@@ -1847,14 +1972,14 @@
           const occupancy = this.seating.getTableOccupancy();
 
           let entries = Object.entries(occupancy);
-          
+
           // Apply sorting
           if (this.capacityTableSort.column) {
             entries = entries.sort(([tableA, countA], [tableB, countB]) => {
               let aVal, bVal;
               const remainingA = Math.max(0, 10 - countA);
               const remainingB = Math.max(0, 10 - countB);
-              
+
               switch (this.capacityTableSort.column) {
                 case 'table':
                   aVal = tableA.toLowerCase();
@@ -1879,7 +2004,7 @@
               return this.capacityTableSort.direction === 'asc' ? cmp : -cmp;
             });
           }
-          
+
           this.updateSortIndicators();
 
           tbody.innerHTML = entries.map(([tableName, count]) => {
@@ -2047,6 +2172,7 @@
           document.getElementById('btn-cancel-auth').addEventListener('click', () => this.ui.closeModal('auth-modal'));
           document.getElementById('btn-cancel-logout').addEventListener('click', () => this.ui.closeModal('logout-modal'));
           document.getElementById('btn-cancel-confirm').addEventListener('click', () => this.ui.closeModal('confirm-modal'));
+          document.getElementById('btn-close-checkin').addEventListener('click', () => this.ui.closeModal('checkin-modal'));
 
           // New Page Navigation toggling inside Management panel
           document.getElementById('btn-switch-to-add-page').addEventListener('click', () => this.ui.showMgmtAddView());
@@ -2069,40 +2195,42 @@
             this.ui.renderPublicSeatLookup(document.getElementById('seat-search').value.trim(), e.target.value.trim());
           });
           document.getElementById('admin-guest-filter').addEventListener('input', (e) => {
-          this.ui.refreshAdminView();
-        });
+            this.ui.refreshAdminView();
+          });
+          document.getElementById('form-table').addEventListener('input', () => this.ui.refreshFormTableCapacityStatus());
+          document.getElementById('form-attend').addEventListener('input', () => this.ui.refreshFormTableCapacityStatus());
 
-        // Admin panel checkbox filters
-        document.getElementById('filter-checked').addEventListener('change', () => {
-          this.ui.refreshAdminView();
-        });
-        document.getElementById('filter-pending').addEventListener('change', () => {
-          this.ui.refreshAdminView();
-        });
+          // Admin panel checkbox filters
+          document.getElementById('filter-checked').addEventListener('change', () => {
+            this.ui.refreshAdminView();
+          });
+          document.getElementById('filter-pending').addEventListener('change', () => {
+            this.ui.refreshAdminView();
+          });
 
-        // Toggle View button (List <-> Capacity)
-        document.getElementById('btn-toggle-view')?.addEventListener('click', () => {
-          this.ui.currentView = this.ui.currentView === 'list' ? 'capacity' : 'list';
-          const toggleBtn = document.getElementById('btn-toggle-view');
-          if (toggleBtn) {
-            toggleBtn.innerHTML = this.ui.currentView === 'list' ?
-              '<i class="fa-solid fa-table-cells mr-1"></i> View Capacity' :
-              '<i class="fa-solid fa-list mr-1"></i> View Guest List';
-          }
-
-          const guestContainer = document.getElementById('guest-table-container');
-          const capacityContainer = document.getElementById('capacity-table-container');
-          if (guestContainer && capacityContainer) {
-            if (this.ui.currentView === 'list') {
-              guestContainer.classList.remove('hidden');
-              capacityContainer.classList.add('hidden');
-            } else {
-              guestContainer.classList.add('hidden');
-              capacityContainer.classList.remove('hidden');
-              this.ui.renderTableCapacity();
+          // Toggle View button (List <-> Capacity)
+          document.getElementById('btn-toggle-view')?.addEventListener('click', () => {
+            this.ui.currentView = this.ui.currentView === 'list' ? 'capacity' : 'list';
+            const toggleBtn = document.getElementById('btn-toggle-view');
+            if (toggleBtn) {
+              toggleBtn.innerHTML = this.ui.currentView === 'list' ?
+                '<i class="fa-solid fa-table-cells mr-1"></i> View Capacity' :
+                '<i class="fa-solid fa-list mr-1"></i> View Guest List';
             }
-          }
-        });
+
+            const guestContainer = document.getElementById('guest-table-container');
+            const capacityContainer = document.getElementById('capacity-table-container');
+            if (guestContainer && capacityContainer) {
+              if (this.ui.currentView === 'list') {
+                guestContainer.classList.remove('hidden');
+                capacityContainer.classList.add('hidden');
+              } else {
+                guestContainer.classList.add('hidden');
+                capacityContainer.classList.remove('hidden');
+                this.ui.renderTableCapacity();
+              }
+            }
+          });
 
           // Batch Excel file uploads
           document.getElementById('excel-upload-input').addEventListener('change', (e) => this.handleExcelParsing(e));
@@ -2149,6 +2277,14 @@
           const checkedBox = document.getElementById('form-checked');
           const isChecked = !!(checkedBox && checkedBox.checked);
           const payload = { name, attendCount: attend, relation, table, checkedIn: false };
+          const tableName = table.trim();
+          if (tableName) {
+            const currentOccupancy = this.seating.getTableOccupancyFor(tableName, editId || null);
+            if (currentOccupancy + attend > 10) {
+              NotificationSystem.show(`Table ${tableName} 已超过容量 10 人，请减少人数或选择其他桌号。`);
+              return;
+            }
+          }
           if (editId) {
             // Update existing record
             payload.checkedIn = isChecked;
@@ -2205,8 +2341,19 @@
             NotificationSystem.show('To undo a checked-in guest, click Edit and uncheck the status there. / 若要取消已签到，请先点击编辑并在编辑界面取消勾选。');
             return;
           }
-          // Not checked -> allow checking in directly
-          this.handleToggleCheckIn(id, currentStatus);
+
+          const guest = this.db.guests.find(g => g.id === id);
+          if (!guest) {
+            NotificationSystem.show('Guest not found / 未找到宾客');
+            return;
+          }
+
+          this.ui.showConfirmation(
+            'Check In Guest',
+            `Confirm check-in for <strong>${guest.name}</strong>?`,
+            () => this.handlePerformCheckIn(id),
+            'Check-In / 签到'
+          );
         }
 
         handleDeletePrompt(id, name) {
@@ -2217,8 +2364,21 @@
               this.db.deleteGuest(id)
                 .then(() => NotificationSystem.show("Guest deleted / 宾客资料已删除 🗑️"))
                 .catch(err => NotificationSystem.show(`Delete failed: ${err.message}`));
-            }
+            },
+            'Delete / 确定删除'
           );
+        }
+
+        handlePerformCheckIn(id) {
+          this.db.updateCheckIn(id, true)
+            .then(() => {
+              const guest = this.db.guests.find(g => g.id === id);
+              if (guest) {
+                this.ui.showCheckInWelcome(guest);
+              }
+              NotificationSystem.show("Guest Checked-In! / 宾客签到成功 🥂");
+            })
+            .catch(err => NotificationSystem.show(`Sync failed: ${err.message}`));
         }
 
         handleEditGuest(id) {
