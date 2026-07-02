@@ -886,11 +886,11 @@
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="bg-[#edd185]/20 text-[#967b5f] font-bold border-b border-themeBrown/10">
-                    <th class="p-3">Guest Name / 姓名</th>
-                    <th class="p-3">Guests / 出席</th>
-                    <th class="p-3">Relation / 关系</th>
-                    <th class="p-3">Table / 桌号</th>
-                    <th class="p-3 text-center">Status / 签到状态</th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('name')">Guest Name / 姓名 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-name"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('count')">Guests / 出席 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-count"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('relation')">Relation / 关系 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-relation"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('table')">Table / 桌号 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-table"></span></th>
+                    <th class="p-3 text-center cursor-pointer hover:bg-[#edd185]/40 transition" onclick="window.app.ui.sortGuestTable('status')">Status / 签到状态 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-status"></span></th>
                     <th class="p-3 text-center">Action / 操作</th>
                   </tr>
                 </thead>
@@ -908,10 +908,10 @@
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr class="bg-themeGoldLight text-themeBrown font-bold border-b border-themeBrown/10">
-                    <th class="p-3">Table / 桌号</th>
-                    <th class="p-3">Occupancy / 已占位</th>
-                    <th class="p-3">Remaining / 剩余座位</th>
-                    <th class="p-3">Status</th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('table')">Table / 桌号 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-table"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('occupancy')">Occupancy / 已占位 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-occupancy"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('remaining')">Remaining / 剩余座位 <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-remaining"></span></th>
+                    <th class="p-3 cursor-pointer hover:bg-themeGold/30 transition" onclick="window.app.ui.sortCapacityTable('status')">Status <span class="ml-1 inline text-[10px] opacity-60" id="sort-indicator-cap-status"></span></th>
                   </tr>
                 </thead>
                 <tbody id="admin-capacity-table-body" class="divide-y divide-themeBrown/5"></tbody>
@@ -974,17 +974,18 @@
             </div>
 
             <!-- Box B: Single Guest Insert Form -->
-            <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
+            <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4 flex flex-col">
               <h4
                 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
                 <i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客
               </h4>
 
-              <div class="grid grid-cols-2 gap-3 text-xs pt-1">
+              <div class="grid grid-cols-2 gap-3 text-xs flex-1">
                 <div class="relative col-span-1">
                   <input id="form-name" type="text" placeholder="* Name / 姓名"
                     class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown text-themeBrownDark"
                     oninput="toggleClearBtn('form-name')">
+                    <input id="form-edit-id" type="hidden" value="">
                   <button type="button" id="clear-form-name"
                     class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden"
                     onclick="clearField('form-name')">
@@ -1019,12 +1020,19 @@
                   </button>
                 </div>
 
-                <button id="btn-add-guest"
-                  class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-1 shadow-sm mt-2">
-                  <i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入
-                </button>
+                <!-- Edit-only checked-in toggle -->
+                <div id="form-checked-container" class="col-span-2 hidden items-center gap-2">
+                  <label class="inline-flex items-center gap-2 text-sm text-themeBrownDark">
+                    <input id="form-checked" type="checkbox" class="accent-green-600" />
+                    <span>Checked In / 已签到 (toggle only in Edit)</span>
+                  </label>
+                </div>
               </div>
 
+              <button id="btn-add-guest"
+                class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-1 shadow-sm">
+                <i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入
+              </button>
             </div>
 
           </div>
@@ -1274,6 +1282,22 @@
           }
         }
 
+        updateGuest(id, data) {
+          if (this.isOffline) {
+            const idx = this.guests.findIndex(g => g.id === id);
+            if (idx !== -1) {
+              this.guests[idx] = Object.assign({}, this.guests[idx], data);
+              localStorage.setItem(WeddingConfig.mockDbKey, JSON.stringify(this.guests));
+              this._notifyListeners();
+            }
+            return Promise.resolve(true);
+          } else {
+            return new Promise((resolve, reject) => {
+              this.dbRef.child(id).update(data, (err) => err ? reject(err) : resolve(true));
+            });
+          }
+        }
+
         deleteGuest(id) {
           if (this.isOffline) {
             this.guests = this.guests.filter(g => g.id !== id);
@@ -1479,6 +1503,8 @@
           this.auth = authController;
           this.activeConfirmAction = null;
           this.currentView = 'list';
+          this.guestTableSort = { column: null, direction: 'asc' };
+          this.capacityTableSort = { column: null, direction: 'asc' };
         }
 
         init() {
@@ -1521,9 +1547,85 @@
           }
         }
 
+        resetModalState(id) {
+          if (id === 'seat-modal') {
+            ['seat-search', 'seat-table-search'].forEach((inputId) => {
+              const input = document.getElementById(inputId);
+              if (input) {
+                input.value = '';
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+              }
+            });
+
+            const resultsContainer = document.getElementById('search-results');
+            if (resultsContainer) {
+              resultsContainer.innerHTML = `
+                <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
+                  <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
+                  Enter your name or table to lookup guests / 输入姓名或桌号开始查询...
+                </div>
+              `;
+            }
+          }
+
+          if (id === 'management-modal') {
+            ['admin-guest-filter', 'form-name', 'form-attend', 'form-table'].forEach((inputId) => {
+              const input = document.getElementById(inputId);
+              if (input) {
+                input.value = '';
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+              }
+            });
+
+            const relation = document.getElementById('form-relation');
+            if (relation) {
+              relation.value = '';
+              relation.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            const checkedBox = document.getElementById('filter-checked');
+            const pendingBox = document.getElementById('filter-pending');
+            if (checkedBox) checkedBox.checked = true;
+            if (pendingBox) pendingBox.checked = true;
+
+            this.currentView = 'list';
+            const toggleBtn = document.getElementById('btn-toggle-view');
+            if (toggleBtn) {
+              toggleBtn.innerHTML = '<i class="fa-solid fa-table-cells mr-1"></i> View Capacity';
+            }
+
+            const guestContainer = document.getElementById('guest-table-container');
+            const capacityContainer = document.getElementById('capacity-table-container');
+            if (guestContainer && capacityContainer) {
+              guestContainer.classList.remove('hidden');
+              capacityContainer.classList.add('hidden');
+            }
+
+            this.showMgmtListView();
+            this.refreshAdminView();
+          }
+
+          if (id === 'auth-modal') {
+            const passcodeInput = document.getElementById('admin-passcode-input');
+            if (passcodeInput) {
+              passcodeInput.value = '';
+            }
+          }
+
+          if (id === 'share-modal') {
+            const iframe = document.getElementById('share-iframe');
+            if (iframe && iframe.src) {
+              const currentSrc = iframe.src;
+              iframe.src = 'about:blank';
+              setTimeout(() => { iframe.src = currentSrc; }, 50);
+            }
+          }
+        }
+
         closeModal(id) {
           const m = document.getElementById(id);
           if (m) {
+            this.resetModalState(id);
             m.classList.add('hidden');
             m.classList.remove('flex');
           }
@@ -1546,6 +1648,34 @@
           if (listPage && addPage) {
             listPage.classList.add('hidden');
             addPage.classList.remove('hidden');
+          }
+        }
+
+        clearSingleAddForm() {
+          ['form-name', 'form-attend', 'form-table'].forEach((inputId) => {
+            const input = document.getElementById(inputId);
+            if (input) {
+              input.value = '';
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+          });
+          const relation = document.getElementById('form-relation');
+          if (relation) {
+            relation.value = '';
+            relation.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          const editId = document.getElementById('form-edit-id');
+          if (editId) editId.value = '';
+          const btn = document.getElementById('btn-add-guest');
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入';
+          const checkedContainer = document.getElementById('form-checked-container');
+          const checkedBox = document.getElementById('form-checked');
+          if (checkedContainer) checkedContainer.classList.add('hidden');
+          if (checkedBox) checkedBox.checked = false;
+          const nameInput = document.getElementById('form-name');
+          if (nameInput) {
+            nameInput.readOnly = false;
+            nameInput.classList.remove('opacity-60', 'cursor-not-allowed');
           }
         }
 
@@ -1572,80 +1702,68 @@
           `;
             return;
           }
+          const q = (query || '').toString().trim();
+          const t = (tableQuery || '').toString().trim();
 
-          if (tableQuery) {
-            const matched = this.seating.queryGuestsByTable(tableQuery);
-            if (matched.length > 0) {
-              let html = '<h4 class="text-xs font-bold text-[#967b5f] uppercase tracking-widest mt-2 mb-1">Guests at this table / 同桌宾客:</h4>';
-              matched.forEach(g => {
-                const isCheckedIn = g.checkedIn === true;
-                html += `
-                <div class="bg-white border ${isCheckedIn ? 'border-green-300 bg-green-50/20' : 'border-[#edd185]/40'} p-4 rounded-2xl transition-all hover:bg-[#fffdf9] shadow-sm">
-                  <div class="flex justify-between items-start gap-4">
-                    <div>
-                      <h5 class="font-bold text-themeBrownDark text-md">${g.name}</h5>
-                      <span class="text-xs text-[#7a6655]">${g.relation || 'Guest / 宾客'}</span>
-                    </div>
-                    <div class="text-right">
-                      <span class="text-[10px] text-[#7a6655]/50 block">Assigned Table / 桌号:</span>
-                      <span class="font-serifTitle text-lg font-bold text-[#967b5f]">${g.table || 'Table TBD'}</span>
-                      <span class="text-[10px] text-[#7a6655]/60 block">${g.attendCount || 1} Pax</span>
-                    </div>
-                  </div>
-                  <div class="mt-3 text-right text-[11px] ${isCheckedIn ? 'text-green-700' : 'text-[#7a6655]'}">
-                    ${isCheckedIn ? 'Checked In / 已签到' : 'Not Checked In / 未签到'}
-                  </div>
-                </div>
-              `;
-              });
-              resultsContainer.innerHTML = html;
-              return;
-            }
-
-            resultsContainer.innerHTML = `
-            <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
-              <p class="text-sm font-semibold text-themeBrownDark">No guests found on ${tableQuery}</p>
-              <p class="text-xs text-[#7a6655] leading-relaxed">请确认桌号是否正确，或尝试使用“1 / 2”查询。</p>
-            </div>
-          `;
-            return;
+          // Both name and table provided -> require both to match
+          let matched = [];
+          if (q && t) {
+            matched = this.seating.queryGuests(q).filter(g => (g.table || '').toLowerCase().includes(t.toLowerCase()));
+          } else if (t) {
+            matched = this.seating.queryGuestsByTable(t);
+          } else if (q) {
+            matched = this.seating.queryGuests(q);
           }
 
-          const matched = this.seating.queryGuests(query);
           if (matched.length > 0) {
-            let html = '<h4 class="text-xs font-bold text-[#967b5f] uppercase tracking-widest mt-2 mb-1">Guests Found / 查询结果:</h4>';
+            // If this was a table-only search, show the "Guests at this table" heading,
+            // otherwise show generic results heading. Keep language consistent.
+            const heading = t && !q ? 'Guests at this table / 同桌宾客:' : 'Guests Found / 查询结果:';
+            let html = `<h4 class="text-xs font-bold text-[#967b5f] uppercase tracking-widest mt-2 mb-1">${heading}</h4>`;
             matched.forEach(g => {
               const isCheckedIn = g.checkedIn === true;
               html += `
-              <div class="bg-white border ${isCheckedIn ? 'border-green-300 bg-green-50/20' : 'border-[#edd185]/40'} p-4 rounded-2xl flex items-center justify-between transition-all hover:bg-[#fffdf9] shadow-sm">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <h5 class="font-bold text-themeBrownDark text-md">${g.name}</h5>
-                    ${isCheckedIn ? '<span class="px-2 py-0.5 bg-green-100 text-green-800 text-[9px] font-bold rounded">Checked In / 已签到</span>' : ''}
+                <div class="bg-white border ${isCheckedIn ? 'border-green-300 bg-green-50/20' : 'border-[#edd185]/40'} p-4 rounded-2xl ${t && !q ? '' : 'flex items-center justify-between'} transition-all hover:bg-[#fffdf9] shadow-sm">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h5 class="font-bold text-themeBrownDark text-md">${g.name}</h5>
+                      ${isCheckedIn ? '<span class="px-2 py-0.5 bg-green-100 text-green-800 text-[9px] font-bold rounded">Checked In / 已签到</span>' : ''}
+                    </div>
+                    <span class="text-xs text-[#7a6655]">${g.relation || 'Guest / 宾客'}</span>
                   </div>
-                  <span class="text-xs text-[#7a6655]">${g.relation || 'Guest / 宾客'}</span>
+                  <div class="text-right">
+                    <span class="text-[10px] text-[#7a6655]/50 block">Assigned Table / 指定桌号:</span>
+                    <span class="font-serifTitle text-lg font-bold text-[#967b5f]">${g.table || 'Table TBD'}</span>
+                    <span class="text-[10px] text-[#7a6655]/60 block">${g.attendCount || 1} Pax / 人</span>
+                  </div>
                 </div>
-                <div class="text-right">
-                  <span class="text-[10px] text-[#7a6655]/50 block">Assigned Table / 指定桌号:</span>
-                  <span class="font-serifTitle text-lg font-bold text-[#967b5f]">${g.table || 'Table TBD'}</span>
-                  <span class="text-[10px] text-[#7a6655]/60 block">${g.attendCount || 1} Pax / 人</span>
-                </div>
-              </div>
-            `;
+              `;
             });
             resultsContainer.innerHTML = html;
-          } else {
+            return;
+          }
+
+          // No matches found - show helpful message based on query type
+          if (t && !q) {
             resultsContainer.innerHTML = `
+              <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
+                <p class="text-sm font-semibold text-themeBrownDark">No guests found on ${t}</p>
+                <p class="text-xs text-[#7a6655] leading-relaxed">桌号 ${t} 未找到宾客</p>
+              </div>
+            `;
+            return;
+          }
+
+          resultsContainer.innerHTML = `
             <div class="bg-[#fcf3d9] border border-[#edd185]/60 p-4 rounded-2xl text-center space-y-2 shadow-sm">
-              <p class="text-sm font-semibold text-themeBrownDark">Welcome / 欢迎 ${query}!</p>
+              <p class="text-sm font-semibold text-themeBrownDark">Welcome / 欢迎 ${q || ''}!</p>
               <p class="text-xs text-[#7a6655] leading-relaxed">
-                We couldn't locate your pre-assigned name instantly. Please check in directly with our reception counter, or proceed to our friendly <strong>Free Seating Tables (Table 12)</strong>!
-                <span class="block mt-1 font-medium text-[10px] text-themeBrown">我们未能立即找到您的预设座位。请直接到接待处查询，或前往自由座席（第12桌）！</span>
+                We couldn't locate your pre-assigned name instantly. Please check in directly with our reception counter.
+                <span class="block mt-1 font-medium text-[10px] text-themeBrown">我们未能立即找到您的预设座位。请直接到接待处查询</span>
               </p>
-              <span class="inline-block mt-2 font-serifTitle text-xs md:text-sm font-bold text-themeBrown">Proceed to Table 12 or Usher / 前往12桌或联系接待员</span>
+              <span class="inline-block mt-2 font-serifTitle text-xs md:text-sm font-bold text-themeBrown">Proceed to our reception counter / 前往接待处</span>
             </div>
           `;
-          }
         }
 
 
@@ -1653,7 +1771,42 @@
           const tbody = document.getElementById('admin-guest-table-body');
           if (!tbody) return;
 
-          const filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending);
+          let filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending);
+          
+          // Apply sorting
+          if (this.guestTableSort.column) {
+            filtered = filtered.sort((a, b) => {
+              let aVal, bVal;
+              switch (this.guestTableSort.column) {
+                case 'name':
+                  aVal = (a.name || '').toLowerCase();
+                  bVal = (b.name || '').toLowerCase();
+                  break;
+                case 'count':
+                  aVal = parseInt(a.attendCount || 1);
+                  bVal = parseInt(b.attendCount || 1);
+                  break;
+                case 'relation':
+                  aVal = (a.relation || '').toLowerCase();
+                  bVal = (b.relation || '').toLowerCase();
+                  break;
+                case 'table':
+                  aVal = (a.table || '').toLowerCase();
+                  bVal = (b.table || '').toLowerCase();
+                  break;
+                case 'status':
+                  aVal = a.checkedIn ? 1 : 0;
+                  bVal = b.checkedIn ? 1 : 0;
+                  break;
+                default:
+                  return 0;
+              }
+              const cmp = aVal < bVal ? -1 : (aVal > bVal ? 1 : 0);
+              return this.guestTableSort.direction === 'asc' ? cmp : -cmp;
+            });
+          }
+          
+          this.updateSortIndicators();
 
           tbody.innerHTML = filtered.length === 0 ?
             `<tr><td colspan="6" class="text-center py-8 text-themeBrownMuted/50 italic">
@@ -1668,7 +1821,7 @@
               <td class="p-3 text-[#7a6655]">${g.relation || '-'}</td>
                 <td class="p-3 text-themeBrown font-bold">${g.table || '-'}</td>
                 <td class="p-3 text-center">
-                <button onclick="window.app.handleToggleCheckIn('${g.id}', ${isChecked})" class="px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-xs transition duration-200 ${isChecked
+                <button onclick="window.app.handleCheckInButtonClicked('${g.id}', ${isChecked})" class="px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-xs transition duration-200 ${isChecked
                   ? 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300'
                   : 'bg-themeGoldLight text-themeBrown hover:bg-white border border-[#edd185]'
                 }">
@@ -1676,6 +1829,9 @@
                 </button>
               </td>
                 <td class="p-3 text-center">
+                <button onclick="window.app.handleEditGuest('${g.id}')" class="text-themeBrownMuted hover:text-themeBrownDark p-1 mr-2 text-sm transition" title="Edit Guest">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
                 <button onclick="window.app.handleDeletePrompt('${g.id}', '${g.name || 'Guest'}')" class="text-red-500 hover:text-red-700 p-1 text-sm transition" title="Delete Guest">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
@@ -1690,7 +1846,43 @@
           if (!tbody) return;
           const occupancy = this.seating.getTableOccupancy();
 
-          tbody.innerHTML = Object.entries(occupancy).map(([tableName, count]) => {
+          let entries = Object.entries(occupancy);
+          
+          // Apply sorting
+          if (this.capacityTableSort.column) {
+            entries = entries.sort(([tableA, countA], [tableB, countB]) => {
+              let aVal, bVal;
+              const remainingA = Math.max(0, 10 - countA);
+              const remainingB = Math.max(0, 10 - countB);
+              
+              switch (this.capacityTableSort.column) {
+                case 'table':
+                  aVal = tableA.toLowerCase();
+                  bVal = tableB.toLowerCase();
+                  break;
+                case 'occupancy':
+                  aVal = countA;
+                  bVal = countB;
+                  break;
+                case 'remaining':
+                  aVal = remainingA;
+                  bVal = remainingB;
+                  break;
+                case 'status':
+                  aVal = remainingA === 0 ? 0 : (remainingA < 3 ? 1 : 2);
+                  bVal = remainingB === 0 ? 0 : (remainingB < 3 ? 1 : 2);
+                  break;
+                default:
+                  return 0;
+              }
+              const cmp = aVal < bVal ? -1 : (aVal > bVal ? 1 : 0);
+              return this.capacityTableSort.direction === 'asc' ? cmp : -cmp;
+            });
+          }
+          
+          this.updateSortIndicators();
+
+          tbody.innerHTML = entries.map(([tableName, count]) => {
             const remaining = Math.max(0, 10 - count);
             const color = remaining === 0 ? 'text-red-600 font-bold' : (remaining < 3 ? 'text-orange-500' : 'text-green-600');
             return `
@@ -1717,6 +1909,38 @@
           // Calculate and display percentage
           const percentage = total > 0 ? Math.round((arrived / total) * 100) : 0;
           percentSpan.innerText = percentage + "%";
+        }
+
+        sortGuestTable(column) {
+          if (this.guestTableSort.column === column) {
+            this.guestTableSort.direction = this.guestTableSort.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            this.guestTableSort.column = column;
+            this.guestTableSort.direction = 'asc';
+          }
+          this.refreshAdminView();
+        }
+
+        sortCapacityTable(column) {
+          if (this.capacityTableSort.column === column) {
+            this.capacityTableSort.direction = this.capacityTableSort.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            this.capacityTableSort.column = column;
+            this.capacityTableSort.direction = 'asc';
+          }
+          this.renderTableCapacity();
+        }
+
+        updateSortIndicators() {
+          document.querySelectorAll('[id^="sort-indicator-"]').forEach(el => el.innerText = '');
+          if (this.guestTableSort.column) {
+            const indicator = document.getElementById(`sort-indicator-${this.guestTableSort.column}`);
+            if (indicator) indicator.innerText = this.guestTableSort.direction === 'asc' ? '▲' : '▼';
+          }
+          if (this.capacityTableSort.column) {
+            const indicator = document.getElementById(`sort-indicator-cap-${this.capacityTableSort.column}`);
+            if (indicator) indicator.innerText = this.capacityTableSort.direction === 'asc' ? '▲' : '▼';
+          }
         }
 
         updateStatusPill(isOffline) {
@@ -1826,7 +2050,10 @@
 
           // New Page Navigation toggling inside Management panel
           document.getElementById('btn-switch-to-add-page').addEventListener('click', () => this.ui.showMgmtAddView());
-          document.getElementById('btn-back-to-list').addEventListener('click', () => this.ui.showMgmtListView());
+          document.getElementById('btn-back-to-list').addEventListener('click', () => {
+            this.ui.clearSingleAddForm();
+            this.ui.showMgmtListView();
+          });
 
           // Action Buttons
           document.getElementById('btn-submit-auth').addEventListener('click', () => this.handleAuthSubmit());
@@ -1842,26 +2069,40 @@
             this.ui.renderPublicSeatLookup(document.getElementById('seat-search').value.trim(), e.target.value.trim());
           });
           document.getElementById('admin-guest-filter').addEventListener('input', (e) => {
-            this.ui.renderAdminPanel(e.target.value.trim());
-          });
+          this.ui.refreshAdminView();
+        });
 
-          // View Toggles in Management
-          document.getElementById('btn-toggle-view')?.addEventListener('click', () => {
-            this.ui.currentView = this.ui.currentView === 'list' ? 'capacity' : 'list';
-            document.getElementById('guest-table-container').classList.toggle('hidden');
-            document.getElementById('capacity-table-container').classList.toggle('hidden');
+        // Admin panel checkbox filters
+        document.getElementById('filter-checked').addEventListener('change', () => {
+          this.ui.refreshAdminView();
+        });
+        document.getElementById('filter-pending').addEventListener('change', () => {
+          this.ui.refreshAdminView();
+        });
 
-            const toggleBtn = document.getElementById('btn-toggle-view');
-            if (toggleBtn) {
-              toggleBtn.innerHTML = this.ui.currentView === 'list' ?
-                '<i class="fa-solid fa-table-cells mr-1"></i> View Capacity' :
-                '<i class="fa-solid fa-list mr-1"></i> View Guest List';
-            }
+        // Toggle View button (List <-> Capacity)
+        document.getElementById('btn-toggle-view')?.addEventListener('click', () => {
+          this.ui.currentView = this.ui.currentView === 'list' ? 'capacity' : 'list';
+          const toggleBtn = document.getElementById('btn-toggle-view');
+          if (toggleBtn) {
+            toggleBtn.innerHTML = this.ui.currentView === 'list' ?
+              '<i class="fa-solid fa-table-cells mr-1"></i> View Capacity' :
+              '<i class="fa-solid fa-list mr-1"></i> View Guest List';
+          }
 
-            if (this.ui.currentView === 'capacity') {
+          const guestContainer = document.getElementById('guest-table-container');
+          const capacityContainer = document.getElementById('capacity-table-container');
+          if (guestContainer && capacityContainer) {
+            if (this.ui.currentView === 'list') {
+              guestContainer.classList.remove('hidden');
+              capacityContainer.classList.add('hidden');
+            } else {
+              guestContainer.classList.add('hidden');
+              capacityContainer.classList.remove('hidden');
               this.ui.renderTableCapacity();
             }
-          });
+          }
+        });
 
           // Batch Excel file uploads
           document.getElementById('excel-upload-input').addEventListener('change', (e) => this.handleExcelParsing(e));
@@ -1898,13 +2139,45 @@
           const attend = parseInt(document.getElementById('form-attend').value);
           const relation = document.getElementById('form-relation').value.trim();
           const table = document.getElementById('form-table').value.trim();
+          const editId = document.getElementById('form-edit-id')?.value.trim();
 
           if (!name || isNaN(attend) || attend < 1) {
             NotificationSystem.show("Please fill in Name and Attend Count! ⚠️");
             return;
           }
 
+          const checkedBox = document.getElementById('form-checked');
+          const isChecked = !!(checkedBox && checkedBox.checked);
           const payload = { name, attendCount: attend, relation, table, checkedIn: false };
+          if (editId) {
+            // Update existing record
+            payload.checkedIn = isChecked;
+            this.db.updateGuest(editId, payload)
+              .then(() => {
+                // clear edit state
+                document.getElementById('form-edit-id').value = '';
+                const btn = document.getElementById('btn-add-guest');
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入';
+                document.getElementById('form-name').value = '';
+                document.getElementById('form-attend').value = '';
+                document.getElementById('form-relation').value = '';
+                document.getElementById('form-table').value = '';
+                const checkedContainer = document.getElementById('form-checked-container');
+                const checkedBox2 = document.getElementById('form-checked');
+                if (checkedContainer) checkedContainer.classList.add('hidden');
+                if (checkedBox2) checkedBox2.checked = false;
+                const nameInput = document.getElementById('form-name');
+                if (nameInput) {
+                  nameInput.readOnly = false;
+                  nameInput.classList.remove('opacity-60', 'cursor-not-allowed');
+                }
+                NotificationSystem.show("Guest updated successfully! / 更新成功 🎉");
+                this.ui.showMgmtListView();
+              })
+              .catch(err => NotificationSystem.show(`Update failed: ${err.message}`));
+            return;
+          }
+
           this.db.addGuest(payload)
             .then(() => {
               document.getElementById('form-name').value = '';
@@ -1925,6 +2198,17 @@
             .catch(err => NotificationSystem.show(`Sync failed: ${err.message}`));
         }
 
+        // New entry point for check-in button clicks. Prevent direct uncheck: require edit flow to uncheck.
+        handleCheckInButtonClicked(id, currentStatus) {
+          if (currentStatus) {
+            // Already checked — prevent undo directly. Prompt user to edit to allow reset.
+            NotificationSystem.show('To undo a checked-in guest, click Edit and uncheck the status there. / 若要取消已签到，请先点击编辑并在编辑界面取消勾选。');
+            return;
+          }
+          // Not checked -> allow checking in directly
+          this.handleToggleCheckIn(id, currentStatus);
+        }
+
         handleDeletePrompt(id, name) {
           this.ui.showConfirmation(
             "Delete Guest?",
@@ -1935,6 +2219,39 @@
                 .catch(err => NotificationSystem.show(`Delete failed: ${err.message}`));
             }
           );
+        }
+
+        handleEditGuest(id) {
+          const guest = this.db.guests.find(g => g.id === id);
+          if (!guest) return NotificationSystem.show("Guest not found for edit / 未找到资料");
+
+          // Prefill form
+          document.getElementById('form-edit-id').value = id;
+          const nameInput = document.getElementById('form-name');
+          if (nameInput) {
+            nameInput.value = guest.name || '';
+            nameInput.readOnly = true;
+            nameInput.classList.add('opacity-60', 'cursor-not-allowed');
+          }
+          document.getElementById('form-attend').value = guest.attendCount || 1;
+          document.getElementById('form-relation').value = guest.relation || '';
+          document.getElementById('form-table').value = guest.table || '';
+
+          // Show checked-in checkbox in edit mode and set value
+          const checkedContainer = document.getElementById('form-checked-container');
+          const checkedBox = document.getElementById('form-checked');
+          if (checkedContainer && checkedBox) {
+            checkedContainer.classList.remove('hidden');
+            checkedBox.checked = !!guest.checkedIn;
+          }
+
+          // Switch to add/edit view inside management and open panel
+          this.ui.openModal('management-modal');
+          this.ui.showMgmtAddView();
+
+          // Update button label to indicate save
+          const btn = document.getElementById('btn-add-guest');
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-save text-xs"></i> Save Changes / 保存更改';
         }
 
         handleClearDbPrompt() {
