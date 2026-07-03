@@ -393,47 +393,51 @@
       </div>
 
       <!-- 5. Tag Groom Instagram -->
-      <div onclick="window.copyToClipboard('@wailikchan')"
+      <div onclick="window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer')"
+        role="link" tabindex="0" aria-label="Open Wai Lik Instagram"
+        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer'); }"
         class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
           <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
-          <a href="https://instagram.com/wailikchan" target="_blank" onclick="event.stopPropagation()"
+          <div
             class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0"
             title="打开新郎 Instagram / Open Instagram">
             <i class="fa-brands fa-instagram text-white text-xl"></i>
-          </a>
+          </div>
           <div>
             <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新郎 Wai Lik</h2>
             <p class="text-xs text-themeBrownMuted font-mono font-medium">@wailikchan • Instagram</p>
           </div>
         </div>
         <!-- Click to Copy Username Button -->
-        <button onclick="event.stopPropagation(); window.copyToClipboard('@wailikchan')"
-          class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 hover:bg-[#967b5f]/15 transition mr-1 shrink-0 text-themeBrown"
-          title="复制账号 / Copy Username">
+        <button type="button" onclick="event.stopPropagation(); window.copyToClipboard('@wailikchan')"
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1 shrink-0 text-themeBrown"
+          title="复制账号 / Copy Username" aria-label="Copy Wai Lik Instagram username">
           <i class="fa-regular fa-copy text-sm"></i>
         </button>
       </div>
 
       <!-- 6. Tag Bride Instagram -->
-      <div onclick="window.copyToClipboard('@chengyee.ccy')"
+      <div onclick="window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer')"
+        role="link" tabindex="0" aria-label="Open Cheng Yee Instagram"
+        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer'); }"
         class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
           <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
-          <a href="https://instagram.com/chengyee.ccy" target="_blank" onclick="event.stopPropagation()"
+          <div
             class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0"
             title="打开新娘 Instagram / Open Instagram">
             <i class="fa-brands fa-instagram text-white text-xl"></i>
-          </a>
+          </div>
           <div>
             <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新娘 Cheng Yee</h2>
             <p class="text-xs text-themeBrownMuted font-mono font-medium">@chengyee.ccy • Instagram</p>
           </div>
         </div>
         <!-- Click to Copy Username Button -->
-        <button onclick="event.stopPropagation(); window.copyToClipboard('@chengyee.ccy')"
-          class="w-8 h-8 flex items-center justify-center rounded-full bg-[#967b5f]/5 hover:bg-[#967b5f]/15 transition mr-1 shrink-0 text-themeBrown"
-          title="复制账号 / Copy Username">
+        <button type="button" onclick="event.stopPropagation(); window.copyToClipboard('@chengyee.ccy')"
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1 shrink-0 text-themeBrown"
+          title="复制账号 / Copy Username" aria-label="Copy Cheng Yee Instagram username">
           <i class="fa-regular fa-copy text-sm"></i>
         </button>
       </div>
