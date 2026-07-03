@@ -981,14 +981,14 @@
               class="flex items-center gap-2 text-xs font-bold text-themeBrown hover:text-[#bd9e7f] transition duration-200">
               <i class="fa-solid fa-arrow-left"></i> Back to Guest List / 返回宾客列表
             </button>
-            <span class="text-xs text-themeBrownMuted font-semibold">New Entry Hub / 新建入口中心</span>
+            <span id="mgmt-add-header-label" class="text-xs text-themeBrownMuted font-semibold">New Entry Hub / 新建入口中心</span>
           </div>
 
           <!-- Toolbar Grid with the two boxes from image_3b67c6.png -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
 
             <!-- Box A: Excel Upload & Global Controls -->
-            <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
+            <div id="batch-import-panel" class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
               <h4
                 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
                 <i class="fa-solid fa-file-excel text-sm"></i> BATCH IMPORT / 批量导入
@@ -1018,7 +1018,7 @@
 
             <!-- Box B: Single Guest Insert Form -->
             <div class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4 flex flex-col">
-              <h4
+              <h4 id="single-add-title"
                 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
                 <i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客
               </h4>
@@ -1762,6 +1762,13 @@
           if (listPage && addPage) {
             listPage.classList.add('hidden');
             addPage.classList.remove('hidden');
+            // Restore batch import panel and default labels
+            const batchPanel = document.getElementById('batch-import-panel');
+            if (batchPanel) batchPanel.classList.remove('hidden');
+            const headerLabel = document.getElementById('mgmt-add-header-label');
+            if (headerLabel) headerLabel.innerText = 'New Entry Hub / 新建入口中心';
+            const singleTitle = document.getElementById('single-add-title');
+            if (singleTitle) singleTitle.innerHTML = '<i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客';
           }
         }
 
@@ -1799,6 +1806,13 @@
             statusElem.classList.add('hidden');
             statusElem.innerText = '';
           }
+          // Restore batch import panel and default labels
+          const batchPanel = document.getElementById('batch-import-panel');
+          if (batchPanel) batchPanel.classList.remove('hidden');
+          const headerLabel = document.getElementById('mgmt-add-header-label');
+          if (headerLabel) headerLabel.innerText = 'New Entry Hub / 新建入口中心';
+          const singleTitle = document.getElementById('single-add-title');
+          if (singleTitle) singleTitle.innerHTML = '<i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客';
         }
 
         showConfirmation(title, description, onConfirmCallback, confirmLabel = 'Confirm / 确认') {
@@ -2447,6 +2461,14 @@
           // Switch to add/edit view inside management and open panel
           this.ui.openModal('management-modal');
           this.ui.showMgmtAddView();
+
+          // Hide Batch Import panel and change labels for edit mode
+          const batchPanel = document.getElementById('batch-import-panel');
+          if (batchPanel) batchPanel.classList.add('hidden');
+          const headerLabel = document.getElementById('mgmt-add-header-label');
+          if (headerLabel) headerLabel.innerText = 'Edit Guest / 编辑宾客';
+          const singleTitle = document.getElementById('single-add-title');
+          if (singleTitle) singleTitle.innerHTML = '<i class="fa-solid fa-pencil text-sm"></i> EDIT / 编辑';
 
           // Update button label to indicate save
           const btn = document.getElementById('btn-add-guest');
