@@ -581,7 +581,7 @@
 
 
   <!-- 2. FLOOR PLAN MODAL -->
-  <div id="floor-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+  <div id="floor-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden" style="z-index:99999">
     <div
       class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[440px] max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
 
@@ -622,32 +622,7 @@
           <span class="opacity-85 not-italic text-[10px]">可缩放以查看相对于中央舞台的桌子排列。</span>
         </p>
 
-        <!-- Detailed list of tables to scroll/view -->
-        <div class="bg-white/70 p-4 rounded-2xl space-y-3 border border-themeBrown/10 shadow-sm">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南与详情:</h4>
-
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
-              <span class="font-bold text-[#967b5f] block">Table 1-2 / 第1-2桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP 与新郎家属</span>
-            </div>
-
-            <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
-              <span class="font-bold text-[#967b5f] block">Table 3-4 / 第3-4桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">Bride Family / 新娘家属</span>
-            </div>
-
-            <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
-              <span class="font-bold text-[#967b5f] block">Table 5-6 / 第5-6桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">Highschool Friends / 中学挚友</span>
-            </div>
-
-            <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
-              <span class="font-bold text-[#967b5f] block">Table 7-12 / 第7-12桌</span>
-              <span class="text-[10px] text-themeBrownMuted leading-tight block">College / 大学同学</span>
-            </div>
-          </div>
-        </div>
+        <!-- Table guide moved to guest list view for easier reference -->
 
       </div>
     </div>
@@ -894,6 +869,42 @@
           </div>
 
           <!-- Live Table View / Capacity Report -->
+          <div class="bg-white/70 p-4 rounded-2xl space-y-3 border border-themeBrown/10 shadow-sm mb-4">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南与详情:</h4>
+              <div class="flex items-center gap-2">
+                <button onclick="window.app.ui.openModal('floor-modal')" class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
+                  <i class="fa-solid fa-map text-[10px] mr-2"></i> Floor Plan
+                </button>
+                <button onclick="window.app.ui.openCheckinForFloor()" class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
+                  <i class="fa-solid fa-qrcode text-[10px] mr-2"></i> Scan QR
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
+                <span class="font-bold text-[#967b5f] block">Table 1-2 / 第1-2桌</span>
+                <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP 与新郎家属</span>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
+                <span class="font-bold text-[#967b5f] block">Table 3-4 / 第3-4桌</span>
+                <span class="text-[10px] text-themeBrownMuted leading-tight block">Bride Family / 新娘家属</span>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
+                <span class="font-bold text-[#967b5f] block">Table 5-6 / 第5-6桌</span>
+                <span class="text-[10px] text-themeBrownMuted leading-tight block">Highschool Friends / 中学挚友</span>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
+                <span class="font-bold text-[#967b5f] block">Table 7-12 / 第7-12桌</span>
+                <span class="text-[10px] text-themeBrownMuted leading-tight block">College / 大学同学</span>
+              </div>
+            </div>
+          </div>
+
           <div id="admin-display-area"
             class="bg-white rounded-2xl border border-themeBrown/15 shadow-sm overflow-hidden">
             <div id="guest-table-container" class="overflow-x-auto">
@@ -1103,7 +1114,7 @@
     <div id="checkin-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
       <div
         class="bg-white rounded-[28px] w-full max-w-[420px] p-6 shadow-2xl relative text-center space-y-5 animate-in fade-in zoom-in duration-200">
-        <div class="text-center">
+        <div id="checkin-welcome-header" class="text-center">
           <h4 class="text-xl font-bold text-themeBrownDark">Welcome, <span id="checkin-guest-name"></span>!</h4>
           <p class="text-xl text-themeBrownMuted mt-2">Table No. <span id="checkin-table-no"
               class="font-bold text-themeBrownDark"></span></p>
@@ -1112,7 +1123,7 @@
           class="mx-auto w-56 h-56 bg-[#f8f5ee] rounded-3xl overflow-hidden border border-themeBrown/10 shadow-sm flex items-center justify-center">
           <img id="checkin-qr-img" src="qr.png" alt="QR Code" class="w-full h-full object-contain" />
         </div>
-        <p class="text-xs text-themeBrownMuted">Scan this QR code to complete the check-in process.</p>
+        <p id="checkin-qr-note" class="text-xs text-themeBrownMuted">Scan this QR code to complete the check-in process.</p>
         <button id="btn-close-checkin"
           class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3 rounded-xl transition">
           Close / 关闭
@@ -1680,11 +1691,24 @@
           if (id === 'share-modal') {
             const iframe = document.getElementById('share-iframe');
             if (iframe && iframe.src) {
-              const currentSrc = iframe.src;
-              iframe.src = 'about:blank';
-              setTimeout(() => { iframe.src = currentSrc; }, 50);
+                const currentSrc = iframe.src;
+                iframe.src = 'about:blank';
+                setTimeout(() => { iframe.src = currentSrc; }, 50);
+              }
             }
-          }
+
+            if (id === 'checkin-modal') {
+              const header = document.getElementById('checkin-welcome-header');
+              const note = document.getElementById('checkin-qr-note');
+              const guestNameElem = document.getElementById('checkin-guest-name');
+              const tableNoElem = document.getElementById('checkin-table-no');
+              const qrImgElem = document.getElementById('checkin-qr-img');
+              if (header) header.style.display = '';
+              if (note) note.innerText = 'Scan this QR code to complete the check-in process.';
+              if (guestNameElem) guestNameElem.innerText = '';
+              if (tableNoElem) tableNoElem.innerText = '';
+              if (qrImgElem) qrImgElem.src = 'qr.png';
+            }
         }
 
         closeModal(id) {
@@ -1700,9 +1724,24 @@
           const guestNameElem = document.getElementById('checkin-guest-name');
           const tableNoElem = document.getElementById('checkin-table-no');
           const qrImgElem = document.getElementById('checkin-qr-img');
+          const header = document.getElementById('checkin-welcome-header');
+          const note = document.getElementById('checkin-qr-note');
+          if (header) header.style.display = '';
+          if (note) note.innerText = 'Scan this QR code to complete the check-in process.';
           if (guestNameElem) guestNameElem.innerText = guest.name || 'Guest';
           if (tableNoElem) tableNoElem.innerText = guest.table || '-';
-          if (qrImgElem) qrImgElem.src = qrImgElem.src || 'checkin-qr.svg';
+          if (qrImgElem) qrImgElem.src = 'qr.png';
+          this.openModal('checkin-modal');
+        }
+
+        openCheckinForFloor() {
+          // Hide the welcome header and change the note for floor-plan usage
+          const header = document.getElementById('checkin-welcome-header');
+          const note = document.getElementById('checkin-qr-note');
+          const qrImgElem = document.getElementById('checkin-qr-img');
+          if (header) header.style.display = 'none';
+          if (note) note.innerText = 'Scan the QR code to view the floor plan layout / \n扫描二维码查看婚宴桌子分布位置';
+          if (qrImgElem) qrImgElem.src = 'qr.png';
           this.openModal('checkin-modal');
         }
 
@@ -2338,7 +2377,7 @@
         handleCheckInButtonClicked(id, currentStatus) {
           if (currentStatus) {
             // Already checked — prevent undo directly. Prompt user to edit to allow reset.
-            NotificationSystem.show('To undo a checked-in guest, click Edit and uncheck the status there. / 若要取消已签到，请先点击编辑并在编辑界面取消勾选。');
+            NotificationSystem.show('To undo a checked-in guest, click Edit and uncheck the status there.\n若要取消已签到，请先点击编辑并在编辑界面取消勾选。');
             return;
           }
 
