@@ -393,8 +393,8 @@
       </div>
 
       <!-- 5. Tag Groom Instagram -->
-      <div onclick="window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer')"
-        role="link" tabindex="0" aria-label="Open Wai Lik Instagram"
+      <div onclick="window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer')" role="link"
+        tabindex="0" aria-label="Open Wai Lik Instagram"
         onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer'); }"
         class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
@@ -418,8 +418,8 @@
       </div>
 
       <!-- 6. Tag Bride Instagram -->
-      <div onclick="window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer')"
-        role="link" tabindex="0" aria-label="Open Cheng Yee Instagram"
+      <div onclick="window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer')" role="link"
+        tabindex="0" aria-label="Open Cheng Yee Instagram"
         onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer'); }"
         class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
         <div class="flex items-center gap-4">
@@ -585,7 +585,8 @@
 
 
   <!-- 2. FLOOR PLAN MODAL -->
-  <div id="floor-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden" style="z-index:99999">
+  <div id="floor-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden"
+    style="z-index:99999">
     <div
       class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[440px] max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
 
@@ -819,7 +820,7 @@
           <div
             class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
             <div class="relative w-full md:max-w-sm">
-              <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table / Relation..."
+              <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table..."
                 class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-10 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown"
                 oninput="window.toggleClearBtn('admin-guest-filter'); window.app.ui.refreshAdminView()">
               <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
@@ -830,6 +831,22 @@
                 onclick="window.clearField('admin-guest-filter')">
                 <i class="fa-solid fa-circle-xmark"></i>
               </button>
+            </div>
+
+            <div class="relative w-full md:w-[230px]">
+              <select id="admin-relation-filter"
+                class="w-full appearance-none bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-8 text-xs text-themeBrownDark focus:outline-none focus:ring-1 focus:ring-themeBrown cursor-pointer"
+                onchange="window.app.ui.refreshAdminView()">
+                <option value="">All / 全部</option>
+                <option value="男方亲戚朋友 Groom's Guest">男方亲戚朋友 Groom's Guest</option>
+                <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
+              </select>
+              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
             </div>
 
             <!-- Filter Checkboxes -->
@@ -875,12 +892,15 @@
           <!-- Live Table View / Capacity Report -->
           <div class="bg-white/70 p-4 rounded-2xl space-y-3 border border-themeBrown/10 shadow-sm mb-4">
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南与详情:</h4>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-themeBrown">Table Guide & Details / 桌位指南与详情:
+              </h4>
               <div class="flex items-center gap-2">
-                <button onclick="window.app.ui.openModal('floor-modal')" class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
+                <button onclick="window.app.ui.openModal('floor-modal')"
+                  class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
                   <i class="fa-solid fa-map text-[10px] mr-2"></i> Floor Plan
                 </button>
-                <button onclick="window.app.ui.openCheckinForFloor()" class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
+                <button onclick="window.app.ui.openCheckinForFloor()"
+                  class="px-3 py-1 rounded-full bg-themeGoldLight border border-themeGold text-themeBrownDark text-xs font-semibold hover:bg-themeGold">
                   <i class="fa-solid fa-qrcode text-[10px] mr-2"></i> Scan QR
                 </button>
               </div>
@@ -889,7 +909,8 @@
             <div class="grid grid-cols-2 gap-2 text-xs">
               <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
                 <span class="font-bold text-[#967b5f] block">Table 1-2 / 第1-2桌</span>
-                <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP 与新郎家属</span>
+                <span class="text-[10px] text-themeBrownMuted leading-tight block">VVIP & Groom Family / VVIP
+                  与新郎家属</span>
               </div>
 
               <div class="p-2.5 rounded-xl bg-[#fffcf0] border border-[#edd185]/40 text-themeBrownDark">
@@ -940,6 +961,7 @@
                     </td>
                   </tr>
                 </tbody>
+                <tfoot id="admin-guest-table-footer"></tfoot>
               </table>
             </div>
             <!-- Capacity Report (Hidden initially) -->
@@ -985,14 +1007,16 @@
               class="flex items-center gap-2 text-xs font-bold text-themeBrown hover:text-[#bd9e7f] transition duration-200">
               <i class="fa-solid fa-arrow-left"></i> Back to Guest List / 返回宾客列表
             </button>
-            <span id="mgmt-add-header-label" class="text-xs text-themeBrownMuted font-semibold">New Entry Hub / 新建入口中心</span>
+            <span id="mgmt-add-header-label" class="text-xs text-themeBrownMuted font-semibold">New Entry Hub /
+              新建入口中心</span>
           </div>
 
           <!-- Toolbar Grid with the two boxes from image_3b67c6.png -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
 
             <!-- Box A: Excel Upload & Global Controls -->
-            <div id="batch-import-panel" class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
+            <div id="batch-import-panel"
+              class="bg-white p-6 rounded-2xl border border-themeBrown/15 shadow-sm space-y-4">
               <h4
                 class="text-xs font-bold uppercase tracking-widest text-[#967b5f] flex items-center gap-2 border-b border-themeBrown/10 pb-2">
                 <i class="fa-solid fa-file-excel text-sm"></i> BATCH IMPORT / 批量导入
@@ -1049,15 +1073,15 @@
                     <i class="fa-solid fa-circle-xmark"></i>
                   </button>
                 </div>
-                <select id="form-relation"
+                <select id="form-relation" required
                   class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown col-span-2 text-themeBrownDark">
-                  <option value="" disabled selected>Relation / 关系</option>
+                  <option value="" disabled selected>* Relation / 关系</option>
                   <option value="男方亲戚朋友 Groom's Guest">男方亲戚朋友 Groom's Guest</option>
                   <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
                 </select>
 
                 <div class="relative col-span-2">
-                  <input id="form-table" type="text" placeholder="Table No. / 桌号 (e.g. 5)"
+                  <input id="form-table" type="text" placeholder="* Table No. / 桌号 (e.g. 5)" required
                     class="w-full bg-themeGoldLight/30 border border-themeBrown/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-themeBrown text-themeBrownDark"
                     oninput="toggleClearBtn('form-table')">
                   <button type="button" id="clear-form-table"
@@ -1127,7 +1151,8 @@
           class="mx-auto w-56 h-56 bg-[#f8f5ee] rounded-3xl overflow-hidden border border-themeBrown/10 shadow-sm flex items-center justify-center">
           <img id="checkin-qr-img" src="qr.png" alt="QR Code" class="w-full h-full object-contain" />
         </div>
-        <p id="checkin-qr-note" class="text-xs text-themeBrownMuted">Scan this QR code to complete the check-in process.</p>
+        <p id="checkin-qr-note" class="text-xs text-themeBrownMuted">Scan this QR code to complete the check-in process.
+        </p>
         <button id="btn-close-checkin"
           class="w-full bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-3 rounded-xl transition">
           Close / 关闭
@@ -1498,8 +1523,9 @@
           return this.db.guests.filter(g => g.table && g.table.toLowerCase().includes(target));
         }
 
-        filterGuestList(filterString, showCheckedIn = true, showPending = true) {
+        filterGuestList(filterString, showCheckedIn = true, showPending = true, relationFilter = '') {
           const target = filterString.toLowerCase().trim();
+          const relationTarget = relationFilter.trim();
 
           return this.db.guests.filter(g => {
             const nameMatch = !target ||
@@ -1509,9 +1535,72 @@
 
             const isChecked = g.checkedIn === true;
             const statusMatch = (isChecked && showCheckedIn) || (!isChecked && showPending);
+            const relationMatch = !relationTarget || (g.relation || '').trim() === relationTarget;
 
-            return nameMatch && statusMatch;
+            return nameMatch && statusMatch && relationMatch;
           });
+        }
+
+        normalizeGuestName(name) {
+          return (name || '').toString().trim().replace(/\s+/g, ' ').toLowerCase();
+        }
+
+        findGuestByName(name, excludeId = null) {
+          const normalized = this.normalizeGuestName(name);
+          if (!normalized) return null;
+          return this.db.guests.find(g => {
+            if (excludeId && g.id === excludeId) return false;
+            return this.normalizeGuestName(g.name) === normalized;
+          }) || null;
+        }
+
+        getImportValidationErrors(guests) {
+          const errors = [];
+          const seenNames = new Map();
+          const duplicateInFile = new Set();
+          const duplicateExisting = new Set();
+          const missingRequiredRows = [];
+
+          guests.forEach((guest, index) => {
+            const rowLabel = guest._rowNumber || index + 2;
+            const normalizedName = this.normalizeGuestName(guest.name);
+            const missing = [];
+
+            if (!normalizedName) missing.push('Name');
+            if (!String(guest.relation || '').trim()) missing.push('Relation');
+            if (!String(guest.table || '').trim()) missing.push('Table No.');
+
+            if (missing.length > 0) {
+              missingRequiredRows.push(`Row ${rowLabel}: ${missing.join(', ')}`);
+            }
+
+            if (!normalizedName) return;
+
+            if (seenNames.has(normalizedName)) {
+              duplicateInFile.add(guest.name);
+              duplicateInFile.add(seenNames.get(normalizedName));
+            } else {
+              seenNames.set(normalizedName, guest.name);
+            }
+
+            if (this.findGuestByName(guest.name)) {
+              duplicateExisting.add(guest.name);
+            }
+          });
+
+          if (missingRequiredRows.length > 0) {
+            errors.push(`Missing required fields: ${missingRequiredRows.slice(0, 5).join('; ')}${missingRequiredRows.length > 5 ? '...' : ''}`);
+          }
+
+          if (duplicateInFile.size > 0) {
+            errors.push(`Duplicate names in Excel: ${Array.from(duplicateInFile).slice(0, 5).join(', ')}${duplicateInFile.size > 5 ? '...' : ''}`);
+          }
+
+          if (duplicateExisting.size > 0) {
+            errors.push(`Names already exist: ${Array.from(duplicateExisting).slice(0, 5).join(', ')}${duplicateExisting.size > 5 ? '...' : ''}`);
+          }
+
+          return errors;
         }
 
         getStats() {
@@ -1554,9 +1643,10 @@
                   if (!row || row.length === 0 || !row[nameIdx]) continue;
 
                   parsedGuests.push({
+                    _rowNumber: i + 1,
                     name: String(row[nameIdx]).trim(),
                     attendCount: parseInt(row[attendIdx]) || 1,
-                    relation: row[relationIdx] ? String(row[relationIdx]).trim() : 'Guest / 宾客',
+                    relation: row[relationIdx] ? String(row[relationIdx]).trim() : '',
                     table: row[tableIdx] ? String(row[tableIdx]).trim() : '',
                     checkedIn: false
                   });
@@ -1602,7 +1692,10 @@
           const chkPending = document.getElementById('filter-pending');
           const showPending = chkPending ? chkPending.checked : true;
 
-          this.renderAdminPanel(search, showChecked, showPending);
+          const relationSelect = document.getElementById('admin-relation-filter');
+          const relationFilter = relationSelect ? relationSelect.value : '';
+
+          this.renderAdminPanel(search, showChecked, showPending, relationFilter);
         }
 
         _setupModals() {
@@ -1663,6 +1756,12 @@
               relation.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
+            const relationFilter = document.getElementById('admin-relation-filter');
+            if (relationFilter) {
+              relationFilter.value = '';
+              relationFilter.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
             const checkedBox = document.getElementById('filter-checked');
             const pendingBox = document.getElementById('filter-pending');
             if (checkedBox) checkedBox.checked = true;
@@ -1695,24 +1794,24 @@
           if (id === 'share-modal') {
             const iframe = document.getElementById('share-iframe');
             if (iframe && iframe.src) {
-                const currentSrc = iframe.src;
-                iframe.src = 'about:blank';
-                setTimeout(() => { iframe.src = currentSrc; }, 50);
-              }
+              const currentSrc = iframe.src;
+              iframe.src = 'about:blank';
+              setTimeout(() => { iframe.src = currentSrc; }, 50);
             }
+          }
 
-            if (id === 'checkin-modal') {
-              const header = document.getElementById('checkin-welcome-header');
-              const note = document.getElementById('checkin-qr-note');
-              const guestNameElem = document.getElementById('checkin-guest-name');
-              const tableNoElem = document.getElementById('checkin-table-no');
-              const qrImgElem = document.getElementById('checkin-qr-img');
-              if (header) header.style.display = '';
-              if (note) note.innerText = 'Scan this QR code to complete the check-in process.';
-              if (guestNameElem) guestNameElem.innerText = '';
-              if (tableNoElem) tableNoElem.innerText = '';
-              if (qrImgElem) qrImgElem.src = 'qr.png';
-            }
+          if (id === 'checkin-modal') {
+            const header = document.getElementById('checkin-welcome-header');
+            const note = document.getElementById('checkin-qr-note');
+            const guestNameElem = document.getElementById('checkin-guest-name');
+            const tableNoElem = document.getElementById('checkin-table-no');
+            const qrImgElem = document.getElementById('checkin-qr-img');
+            if (header) header.style.display = '';
+            if (note) note.innerText = 'Scan this QR code to complete the check-in process.';
+            if (guestNameElem) guestNameElem.innerText = '';
+            if (tableNoElem) tableNoElem.innerText = '';
+            if (qrImgElem) qrImgElem.src = 'qr.png';
+          }
         }
 
         closeModal(id) {
@@ -1949,11 +2048,12 @@
         }
 
 
-        renderAdminPanel(filterVal = '', showCheckedIn = true, showPending = true) {
+        renderAdminPanel(filterVal = '', showCheckedIn = true, showPending = true, relationFilter = '') {
           const tbody = document.getElementById('admin-guest-table-body');
           if (!tbody) return;
+          const tfoot = document.getElementById('admin-guest-table-footer');
 
-          let filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending);
+          let filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending, relationFilter);
 
           // Apply sorting
           if (this.guestTableSort.column) {
@@ -1989,6 +2089,27 @@
           }
 
           this.updateSortIndicators();
+
+          const totalGuests = filtered.reduce((sum, g) => sum + (parseInt(g.attendCount) || 1), 0);
+          const arrivedGuests = filtered.reduce((sum, g) => {
+            return sum + (g.checkedIn ? (parseInt(g.attendCount) || 1) : 0);
+          }, 0);
+          const arrivedPercent = totalGuests > 0 ? Math.round((arrivedGuests / totalGuests) * 100) : 0;
+
+          if (tfoot) {
+            tfoot.innerHTML = `
+              <tr class="bg-[#edd185]/15 border-t border-themeBrown/15 text-themeBrownDark font-bold">
+                <td class="p-3">Total / 总计</td>
+                <td class="p-3 text-[#7a6655]">${totalGuests} Pax</td>
+                <td class="p-3"></td>
+                <td class="p-3"></td>
+                <td class="p-3 text-[#7a6655]">
+                    Arrived ${arrivedGuests}/${totalGuests} (${arrivedPercent}%)
+                </td>
+                <td class="p-3"></td>
+              </tr>
+            `;
+          }
 
           tbody.innerHTML = filtered.length === 0 ?
             `<tr><td colspan="6" class="text-center py-8 text-themeBrownMuted/50 italic">
@@ -2190,8 +2311,7 @@
           this.ui.updateStatusPill(isOffline);
           this.ui.updateStatsUI();
 
-          const filterVal = document.getElementById('admin-guest-filter').value;
-          this.ui.renderAdminPanel(filterVal);
+          this.ui.refreshAdminView();
 
           if (this.ui.currentView === 'capacity') {
             this.ui.renderTableCapacity();
@@ -2252,6 +2372,9 @@
             this.ui.renderPublicSeatLookup(document.getElementById('seat-search').value.trim(), e.target.value.trim());
           });
           document.getElementById('admin-guest-filter').addEventListener('input', (e) => {
+            this.ui.refreshAdminView();
+          });
+          document.getElementById('admin-relation-filter').addEventListener('change', () => {
             this.ui.refreshAdminView();
           });
           document.getElementById('form-table').addEventListener('input', () => this.ui.refreshFormTableCapacityStatus());
@@ -2331,6 +2454,17 @@
             return;
           }
 
+          if (!relation || !table) {
+            NotificationSystem.show("Please select Relation and fill in Table No.! / 请选择关系并填写桌号！⚠️");
+            return;
+          }
+
+          const duplicateGuest = this.seating.findGuestByName(name, editId || null);
+          if (duplicateGuest) {
+            NotificationSystem.show(`Guest name already exists: ${duplicateGuest.name} / 宾客姓名已存在`);
+            return;
+          }
+
           const checkedBox = document.getElementById('form-checked');
           const isChecked = !!(checkedBox && checkedBox.checked);
           const payload = { name, attendCount: attend, relation, table, checkedIn: false };
@@ -2347,23 +2481,7 @@
             payload.checkedIn = isChecked;
             this.db.updateGuest(editId, payload)
               .then(() => {
-                // clear edit state
-                document.getElementById('form-edit-id').value = '';
-                const btn = document.getElementById('btn-add-guest');
-                if (btn) btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Add to List / 手动加入';
-                document.getElementById('form-name').value = '';
-                document.getElementById('form-attend').value = '';
-                document.getElementById('form-relation').value = '';
-                document.getElementById('form-table').value = '';
-                const checkedContainer = document.getElementById('form-checked-container');
-                const checkedBox2 = document.getElementById('form-checked');
-                if (checkedContainer) checkedContainer.classList.add('hidden');
-                if (checkedBox2) checkedBox2.checked = false;
-                const nameInput = document.getElementById('form-name');
-                if (nameInput) {
-                  nameInput.readOnly = false;
-                  nameInput.classList.remove('opacity-60', 'cursor-not-allowed');
-                }
+                this.ui.clearSingleAddForm();
                 NotificationSystem.show("Guest updated successfully! / 更新成功 🎉");
                 this.ui.showMgmtListView();
               })
@@ -2373,10 +2491,7 @@
 
           this.db.addGuest(payload)
             .then(() => {
-              document.getElementById('form-name').value = '';
-              document.getElementById('form-attend').value = '';
-              document.getElementById('form-relation').value = '';
-              document.getElementById('form-table').value = '';
+              this.ui.clearSingleAddForm();
               NotificationSystem.show("Guest added successfully! / 新增成功 🎉");
 
               // Auto route back to the list view after adding to view the newly added row
@@ -2504,7 +2619,14 @@
                 NotificationSystem.show("No valid rows matched / 未侦测到符合的数据");
                 return;
               }
-              this.db.batchImport(guests)
+              const validationErrors = this.seating.getImportValidationErrors(guests);
+              if (validationErrors.length > 0) {
+                NotificationSystem.show(validationErrors.join('\n'));
+                return;
+              }
+
+              const guestsToImport = guests.map(({ _rowNumber, ...guest }) => guest);
+              this.db.batchImport(guestsToImport)
                 .then(count => {
                   NotificationSystem.show(`Successfully imported ${count} guests! 📊`);
                   // Route back to view list
