@@ -142,9 +142,9 @@
       animation: heartbeat 2s infinite ease-in-out;
     }
 
-    /* Sprite cropping for Gemini_Generated_Image_8924kt8924kt8924.png with soft gold accents */
+    /* Sprite cropping for AT7P8576.jpg with soft gold accents */
     .sprite-thumbnail {
-      background-image: url('Gemini_Generated_Image_8924kt8924kt8924.png');
+      background-image: url('AT7P8576.jpg');
       background-size: 245% 245%;
       width: 48px;
       height: 48px;
@@ -470,7 +470,7 @@
           <p class="text-[11px] text-themeBrownMuted/70">请输入管理员密码解锁后台管理</p>
         </div>
         <div>
-          <input id="admin-passcode-input" type="password" placeholder="Passcode (Default: 8888)"
+          <input id="admin-passcode-input" type="password" placeholder="Passcode"
             class="w-full text-center bg-white border border-themeBrown/35 rounded-xl py-3 px-4 font-mono font-bold tracking-widest text-themeBrownDark placeholder-themeBrownMuted/40 focus:outline-none focus:ring-2 focus:ring-themeBrown/30">
         </div>
         <div class="flex gap-2">
@@ -610,12 +610,12 @@
       <!-- Content -->
       <div class="p-6 overflow-y-auto no-scrollbar flex-1 flex flex-col space-y-4">
 
-        <!-- Floor Plan Image Viewer Container referencing Gemini_Generated_Image_8924kt8924kt8924.png -->
+        <!-- Floor Plan Image Viewer Container referencing floor.PNG -->
         <div
           class="relative rounded-2xl overflow-hidden border border-themeBrown/20 bg-white aspect-square flex items-center justify-center shadow-md">
           <div class="w-[92%] h-[92%] overflow-hidden relative rounded-xl">
             <!-- Utilizing the second quadrant containing floor layout -->
-            <img src="Gemini_Generated_Image_8924kt8924kt8924.png" id="zoom-map" alt="Wedding Floor Plan Layout"
+            <img src="floor.PNG" id="zoom-map" alt="Wedding Floor Plan Layout"
               class="absolute w-[200%] h-[200%] max-w-none transition-transform duration-300"
               style="left: -100%; top: 0%; transform-origin: center;">
           </div>
@@ -754,11 +754,11 @@
           <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
         </button>
       </div>
-      <div class="px-6 pb-3 text-center">
+      <div class="px-6 pb-3 text-center"><br>
         <p class="text-[13px] text-themeBrownMuted mx-auto max-w-[30rem] leading-snug">
           If the uploader does not display or your file is too large to upload here, please email us at
           <a href="mailto:wailik.chengyee@gmail.com"
-            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>。
+            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>。<br>
           如果上传界面未显示或文件过大无法通过此处上传，请发送邮件至上述地址。
         </p>
       </div>
@@ -819,33 +819,35 @@
           <!-- Filter/Search Bar & Stats -->
           <div
             class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/50 p-4 rounded-2xl border border-themeBrown/10">
-            <div class="relative w-full md:max-w-sm">
-              <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table..."
-                class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-10 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown"
-                oninput="window.toggleClearBtn('admin-guest-filter'); window.app.ui.refreshAdminView()">
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
-                <i class="fa-solid fa-filter"></i>
+            <div class="w-full md:max-w-sm space-y-2">
+              <div class="relative">
+                <input id="admin-guest-filter" type="text" placeholder="Quick filter by Name / Table..."
+                  class="w-full bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-10 text-xs focus:outline-none focus:ring-1 focus:ring-themeBrown"
+                  oninput="window.toggleClearBtn('admin-guest-filter'); window.app.ui.refreshAdminView()">
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs">
+                  <i class="fa-solid fa-filter"></i>
+                </div>
+                <button type="button" id="clear-admin-guest-filter"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden"
+                  onclick="window.clearField('admin-guest-filter')">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                </button>
               </div>
-              <button type="button" id="clear-admin-guest-filter"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-themeBrownMuted/40 hover:text-themeBrownDark hidden"
-                onclick="window.clearField('admin-guest-filter')">
-                <i class="fa-solid fa-circle-xmark"></i>
-              </button>
-            </div>
 
-            <div class="relative w-full md:w-[230px]">
-              <select id="admin-relation-filter"
-                class="w-full appearance-none bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-8 text-xs text-themeBrownDark focus:outline-none focus:ring-1 focus:ring-themeBrown cursor-pointer"
-                onchange="window.app.ui.refreshAdminView()">
-                <option value="">All / 全部</option>
-                <option value="男方亲戚朋友 Groom's Guest">男方亲戚朋友 Groom's Guest</option>
-                <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
-              </select>
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
-                <i class="fa-solid fa-users"></i>
-              </div>
-              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
-                <i class="fa-solid fa-chevron-down"></i>
+              <div class="relative">
+                <select id="admin-relation-filter"
+                  class="w-full appearance-none bg-white border border-themeBrown/20 rounded-xl py-2 pl-9 pr-8 text-xs text-themeBrownDark focus:outline-none focus:ring-1 focus:ring-themeBrown cursor-pointer"
+                  onchange="window.app.ui.refreshAdminView()">
+                  <option value="">All / 全部</option>
+                  <option value="男方亲戚朋友 Groom's Guest">男方亲戚朋友 Groom's Guest</option>
+                  <option value="女方亲戚朋友 Bride's Guest">女方亲戚朋友 Bride's Guest</option>
+                </select>
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a6655]/60 text-xs pointer-events-none">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
               </div>
             </div>
 
@@ -863,7 +865,6 @@
               </label>
             </div>
 
-            <!-- Toggle View -->
             <button id="btn-toggle-view"
               class="px-4 py-2 bg-themeBrown/10 hover:bg-themeBrown/20 text-themeBrown text-xs font-bold rounded-xl whitespace-nowrap transition">
               <i class="fa-solid fa-table-cells mr-1"></i> View Capacity
@@ -986,6 +987,17 @@
                 <tbody id="admin-capacity-table-body" class="divide-y divide-themeBrown/5"></tbody>
               </table>
             </div>
+          </div>
+
+          <div id="download-guest-list-wrapper" class="flex justify-end gap-2">
+            <button id="btn-print-guest-list"
+              class="px-4 py-2 bg-white/80 hover:bg-white border border-themeBrown/15 text-themeBrown text-xs font-bold rounded-xl whitespace-nowrap shadow-sm transition">
+              <i class="fa-solid fa-print mr-1"></i> Print
+            </button>
+            <button id="btn-download-guest-list"
+              class="px-4 py-2 bg-white/80 hover:bg-white border border-themeBrown/15 text-themeBrown text-xs font-bold rounded-xl whitespace-nowrap shadow-sm transition">
+              <i class="fa-solid fa-file-excel mr-1"></i> Download
+            </button>
           </div>
 
           <!-- NEW ADD BUTTON below the guest list table as requested -->
@@ -1775,10 +1787,12 @@
 
             const guestContainer = document.getElementById('guest-table-container');
             const capacityContainer = document.getElementById('capacity-table-container');
+            const downloadWrapper = document.getElementById('download-guest-list-wrapper');
             if (guestContainer && capacityContainer) {
               guestContainer.classList.remove('hidden');
               capacityContainer.classList.add('hidden');
             }
+            if (downloadWrapper) downloadWrapper.classList.remove('hidden');
 
             this.showMgmtListView();
             this.refreshAdminView();
@@ -2048,14 +2062,9 @@
         }
 
 
-        renderAdminPanel(filterVal = '', showCheckedIn = true, showPending = true, relationFilter = '') {
-          const tbody = document.getElementById('admin-guest-table-body');
-          if (!tbody) return;
-          const tfoot = document.getElementById('admin-guest-table-footer');
-
+        getFilteredAdminGuests(filterVal = '', showCheckedIn = true, showPending = true, relationFilter = '') {
           let filtered = this.seating.filterGuestList(filterVal, showCheckedIn, showPending, relationFilter);
 
-          // Apply sorting
           if (this.guestTableSort.column) {
             filtered = filtered.sort((a, b) => {
               let aVal, bVal;
@@ -2088,6 +2097,17 @@
             });
           }
 
+          return filtered;
+        }
+
+        renderAdminPanel(filterVal = '', showCheckedIn = true, showPending = true, relationFilter = '') {
+          const tbody = document.getElementById('admin-guest-table-body');
+          if (!tbody) return;
+          const tfoot = document.getElementById('admin-guest-table-footer');
+          const downloadWrapper = document.getElementById('download-guest-list-wrapper');
+
+          const filtered = this.getFilteredAdminGuests(filterVal, showCheckedIn, showPending, relationFilter);
+
           this.updateSortIndicators();
 
           const totalGuests = filtered.reduce((sum, g) => sum + (parseInt(g.attendCount) || 1), 0);
@@ -2109,6 +2129,9 @@
                 <td class="p-3"></td>
               </tr>
             `;
+          }
+          if (downloadWrapper) {
+            downloadWrapper.classList.toggle('hidden', filtered.length === 0);
           }
 
           tbody.innerHTML = filtered.length === 0 ?
@@ -2142,6 +2165,176 @@
               </tr>
             `;
             }).join('');
+        }
+
+        downloadGuestListExcel() {
+          if (typeof XLSX === 'undefined') {
+            NotificationSystem.show('Excel export is unavailable. / 无法导出 Excel');
+            return;
+          }
+
+          const search = document.getElementById('admin-guest-filter')?.value || '';
+          const showChecked = document.getElementById('filter-checked')?.checked ?? true;
+          const showPending = document.getElementById('filter-pending')?.checked ?? true;
+          const relationFilter = document.getElementById('admin-relation-filter')?.value || '';
+          const guests = this.getFilteredAdminGuests(search, showChecked, showPending, relationFilter);
+
+          if (guests.length === 0) {
+            NotificationSystem.show('No guest rows to download. / 没有可下载的宾客资料');
+            return;
+          }
+
+          const totalGuests = guests.reduce((sum, g) => sum + (parseInt(g.attendCount) || 1), 0);
+          const arrivedGuests = guests.reduce((sum, g) => {
+            return sum + (g.checkedIn ? (parseInt(g.attendCount) || 1) : 0);
+          }, 0);
+          const arrivedPercent = totalGuests > 0 ? Math.round((arrivedGuests / totalGuests) * 100) : 0;
+
+          const rows = [
+            ['Guest Name / 姓名', 'Guests / 出席', 'Relation / 关系', 'Table / 桌号', 'Status / 签到状态'],
+            ...guests.map(g => [
+              g.name || '',
+              parseInt(g.attendCount) || 1,
+              g.relation || '-',
+              g.table || '-',
+              g.checkedIn ? 'Checked / 已到' : 'Check-In / 未到'
+            ]),
+            ['Total / 总计', totalGuests, '', '', `Arrived ${arrivedGuests}/${totalGuests} (${arrivedPercent}%)`]
+          ];
+
+          const worksheet = XLSX.utils.aoa_to_sheet(rows);
+          worksheet['!cols'] = [
+            { wch: 24 },
+            { wch: 14 },
+            { wch: 34 },
+            { wch: 14 },
+            { wch: 26 }
+          ];
+
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'Guest List');
+
+          const dateStamp = new Date().toISOString().slice(0, 10);
+          XLSX.writeFile(workbook, `wedding-guest-list-${dateStamp}.xlsx`);
+          NotificationSystem.show('Guest list downloaded. / 宾客名单已下载');
+        }
+
+        escapeHtml(value) {
+          return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        }
+
+        printGuestList() {
+          const search = document.getElementById('admin-guest-filter')?.value || '';
+          const showChecked = document.getElementById('filter-checked')?.checked ?? true;
+          const showPending = document.getElementById('filter-pending')?.checked ?? true;
+          const relationFilter = document.getElementById('admin-relation-filter')?.value || '';
+          const guests = this.getFilteredAdminGuests(search, showChecked, showPending, relationFilter);
+
+          if (guests.length === 0) {
+            NotificationSystem.show('No guest rows to print. / 没有可打印的宾客资料');
+            return;
+          }
+
+          const totalGuests = guests.reduce((sum, g) => sum + (parseInt(g.attendCount) || 1), 0);
+          const arrivedGuests = guests.reduce((sum, g) => {
+            return sum + (g.checkedIn ? (parseInt(g.attendCount) || 1) : 0);
+          }, 0);
+          const arrivedPercent = totalGuests > 0 ? Math.round((arrivedGuests / totalGuests) * 100) : 0;
+          const generatedAt = new Date().toLocaleString();
+
+          const rowsHtml = guests.map(g => `
+            <tr>
+              <td>${this.escapeHtml(g.name || '')}</td>
+              <td>${parseInt(g.attendCount) || 1} Pax</td>
+              <td>${this.escapeHtml(g.relation || '-')}</td>
+              <td>${this.escapeHtml(g.table || '-')}</td>
+              <td>${g.checkedIn ? 'Checked / 已到' : 'Check-In / 未到'}</td>
+            </tr>
+          `).join('');
+
+          const existingFrame = document.getElementById('guest-list-print-frame');
+          if (existingFrame) existingFrame.remove();
+
+          const printFrame = document.createElement('iframe');
+          printFrame.id = 'guest-list-print-frame';
+          printFrame.style.position = 'fixed';
+          printFrame.style.right = '0';
+          printFrame.style.bottom = '0';
+          printFrame.style.width = '0';
+          printFrame.style.height = '0';
+          printFrame.style.border = '0';
+          printFrame.style.opacity = '0';
+          document.body.appendChild(printFrame);
+
+          const printDocument = printFrame.contentWindow?.document;
+          if (!printDocument) {
+            printFrame.remove();
+            NotificationSystem.show('Print preview is unavailable. / 无法打开打印预览');
+            return;
+          }
+
+          printDocument.open();
+          printDocument.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <title>Wedding Guest List</title>
+                <meta charset="UTF-8">
+                <style>
+                  body { font-family: Arial, "Noto Sans TC", sans-serif; color: #3d3128; margin: 24px; }
+                  h1 { font-size: 20px; margin: 0 0 4px; }
+                  .meta { color: #7a6655; font-size: 11px; margin-bottom: 16px; }
+                  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+                  th, td { border: 1px solid #d8c6aa; padding: 8px; text-align: left; }
+                  th { background: #f5df9e; color: #3d3128; }
+                  tfoot td { font-weight: 700; background: #fcf3d9; }
+                  @media print { body { margin: 12mm; } }
+                </style>
+              </head>
+              <body>
+                <h1>Wedding Guest List / 婚宴宾客名单</h1>
+                <div class="meta">Generated / 生成时间: ${this.escapeHtml(generatedAt)}</div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Guest Name / 姓名</th>
+                      <th>Guests / 出席</th>
+                      <th>Relation / 关系</th>
+                      <th>Table / 桌号</th>
+                      <th>Status / 签到状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>${rowsHtml}</tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Total / 总计</td>
+                      <td>${totalGuests} Pax</td>
+                      <td></td>
+                      <td></td>
+                      <td>Arrived ${arrivedGuests}/${totalGuests} (${arrivedPercent}%)</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </body>
+            </html>
+          `);
+          printDocument.close();
+
+          setTimeout(() => {
+            const printWindow = printFrame.contentWindow;
+            if (!printWindow) {
+              printFrame.remove();
+              return;
+            }
+            printWindow.focus();
+            printWindow.print();
+            setTimeout(() => printFrame.remove(), 1000);
+          }, 100);
         }
 
         renderTableCapacity() {
@@ -2363,6 +2556,8 @@
           document.getElementById('btn-logout-auth').addEventListener('click', () => this.handleLogout());
           document.getElementById('btn-add-guest').addEventListener('click', () => this.handleAddSingleGuest());
           document.getElementById('btn-clear-db').addEventListener('click', () => this.handleClearDbPrompt());
+          document.getElementById('btn-print-guest-list').addEventListener('click', () => this.ui.printGuestList());
+          document.getElementById('btn-download-guest-list').addEventListener('click', () => this.ui.downloadGuestListExcel());
 
           // Live filtration and search
           document.getElementById('seat-search').addEventListener('input', (e) => {
@@ -2400,13 +2595,16 @@
 
             const guestContainer = document.getElementById('guest-table-container');
             const capacityContainer = document.getElementById('capacity-table-container');
+            const downloadWrapper = document.getElementById('download-guest-list-wrapper');
             if (guestContainer && capacityContainer) {
               if (this.ui.currentView === 'list') {
                 guestContainer.classList.remove('hidden');
                 capacityContainer.classList.add('hidden');
+                if (downloadWrapper) downloadWrapper.classList.remove('hidden');
               } else {
                 guestContainer.classList.add('hidden');
                 capacityContainer.classList.remove('hidden');
+                if (downloadWrapper) downloadWrapper.classList.add('hidden');
                 this.ui.renderTableCapacity();
               }
             }
@@ -2521,8 +2719,8 @@
           }
 
           this.ui.showConfirmation(
-            'Check In Guest',
-            `Confirm check-in for <strong>${guest.name}</strong>?`,
+            `Confirm check-in ${guest.name}?`,
+            `确认签到 ${guest.name}?`,
             () => this.handlePerformCheckIn(id),
             'Check-In / 签到'
           );
