@@ -56,6 +56,22 @@
       background-attachment: fixed;
     }
 
+    html.modal-open,
+    html.modal-open body {
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    html.modal-open body {
+      position: fixed;
+      left: 0;
+      width: 100%;
+    }
+
+    .modal-backdrop .overflow-y-auto {
+      overscroll-behavior: contain;
+    }
+
     /* Premium soft champagne/gold theme glassmorphism buttons */
     .glass-btn {
       background: #fbf6e9;
@@ -96,6 +112,13 @@
       background: rgba(61, 49, 40, 0.65);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .modal-backdrop > div {
+      margin-block: auto;
+      flex-shrink: 0;
     }
 
     #share-modal,
@@ -206,6 +229,7 @@
     .tab-visibility-toggle {
       overflow: hidden;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     .tab-visibility-toggle .toggle-knob {
@@ -286,7 +310,7 @@
     </div>
 
     <!-- MAIN BRANDING DETAILS with Elegant Font Layout -->
-    <div class="px-6 text-center -mt-6 relative z-20">
+    <div class="px-6 text-center -mt-12 relative z-20">
       <div class="flex items-end justify-center gap-2 md:gap-3 whitespace-nowrap">
         <div class="flex flex-col items-center">
           <div class="mb-2 flex h-7 md:h-9 items-center justify-center overflow-hidden">
@@ -309,10 +333,10 @@
         </div>
       </div>
 
-      <p class="mt-3 text-sm md:text-md font-semibold text-themeBrownDark/90 uppercase tracking-widest font-sans">
+      <p class="mt-5 text-sm md:text-md font-semibold text-themeBrownDark/90 uppercase tracking-widest font-sans">
         Welcome to Our Wedding
       </p>
-      <p class="text-xs text-themeBrownMuted mt-0.5 tracking-wide">
+      <p class="text-sm md:text-base text-themeBrownMuted mt-1 tracking-wide">
         欢迎来到我们的婚礼
       </p>
 
@@ -324,39 +348,37 @@
         </div>
       </div>
 
-      <div class="mt-4 mb-7 flex justify-center px-2 md:px-8">
-        <div class="flex items-center justify-center gap-4 max-w-[420px]">
-          <p class="text-left text-[11px] md:text-[13px] font-semibold text-themeBrownDark leading-relaxed tracking-wide">
+      <div id="address-card-wrapper" class="mt-4 mb-7 flex justify-center px-2 md:px-8">
+        <div class="flex w-full max-w-[420px] items-center justify-between gap-4 rounded-[24px] border border-themeBrown/40 bg-white/15 px-4 py-3 shadow-sm backdrop-blur-[1px]">
+          <p class="text-left text-[11px] md:text-[18px] font-semibold text-themeBrownDark leading-relaxed tracking-wide">
             宴宾楼 Restoran Yin Phun Low<br>
             No 116-119,<br>
             Jalan Terminal Kampar 1/F,<br>
-            31900 Kampar, Perak, <br>Malaysia.
+            31900 Kampar, Perak, Malaysia.
           </p>
 
-          <div class="flex flex-col items-center justify-center gap-3 pt-1">
+          <div class="flex flex-col items-center justify-center gap-3 pt-1 shrink-0">
             <a href="https://maps.app.goo.gl/D28GeFUhhg9ZXqcb6?g_st=aw" target="_blank" rel="noopener noreferrer"
               aria-label="Open map"
               class="w-11 h-11 rounded-full flex items-center justify-center shadow-sm hover:scale-105 transition-transform overflow-hidden bg-white/20">
-              <img src="map.PNG" alt="Map" class="w-full h-full object-cover">
+              <img src="map.png" alt="Map" class="w-full h-full object-cover">
             </a>
 
             <a href="https://waze.com/ul/hw0zbtdju2" target="_blank" rel="noopener noreferrer"
               aria-label="Open Waze"
               class="w-11 h-11 rounded-full flex items-center justify-center shadow-sm hover:scale-105 transition-transform overflow-hidden bg-white/20">
-              <img src="waze.PNG" alt="Waze" class="w-full h-full object-cover">
+              <img src="waze.png" alt="Waze" class="w-full h-full object-cover">
             </a>
           </div>
         </div>
       </div>
 
-      <div class="w-16 h-[1.5px] bg-gradient-to-r from-transparent via-themeBrown to-transparent mx-auto mt-4 mb-6">
-      </div>
     </div>
 
     <div class="px-6 space-y-4 relative z-20 max-w-4xl mx-auto w-full">
 
       <!-- Conditional Check-In Management Button (shown to authenticated admin users) -->
-      <div id="checkin-management-wrapper" class="hidden animate-in fade-in slide-in-from-top-4 duration-300">
+      <div id="checkin-management-wrapper" class="hidden mt-4 animate-in fade-in slide-in-from-top-4 duration-300">
         <button id="btn-open-management"
           class="w-full primary-gold-btn p-4 rounded-[24px] flex items-center justify-between text-left group">
           <div class="flex items-center gap-4">
@@ -1243,7 +1265,10 @@
         class="bg-[#fbf6e9] border-2 border-themeGold/80 rounded-[28px] w-full max-w-[480px] p-6 shadow-2xl relative text-center space-y-5 animate-in fade-in zoom-in duration-200">
         <div class="flex items-center justify-between gap-3 border-b border-themeBrown/10 pb-3">
           <div>
-            <h4 class="font-bold text-lg text-themeBrownDark">Button Control</h4>
+            <h4 class="flex items-center gap-2 font-bold text-lg text-themeBrownDark">
+              <i class="fa-solid fa-sliders text-themeBrown" aria-hidden="true"></i>
+              <span>Button Control</span>
+            </h4>
             <p class="text-[11px] text-themeBrownMuted">Show or hide wedding feature tabs</p>
           </div>
           <button id="btn-close-tab-control"
@@ -1255,9 +1280,18 @@
         <div class="space-y-4 text-left">
           <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
             <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Venue Address</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="address" data-enabled="true" aria-label="Toggle Venue Address" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
               <span class="font-semibold text-themeBrownDark text-sm">Wedding E-Card</span>
               <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="ecard" data-enabled="true" aria-label="Toggle Wedding E-Card" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
-                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
               </button>
             </div>
           </div>
@@ -1266,7 +1300,7 @@
             <div class="flex items-center justify-between gap-3">
               <span class="font-semibold text-themeBrownDark text-sm">Find Your Seat</span>
               <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="seat" data-enabled="true" aria-label="Toggle Find Your Seat" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
-                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
               </button>
             </div>
           </div>
@@ -1275,7 +1309,7 @@
             <div class="flex items-center justify-between gap-3">
               <span class="font-semibold text-themeBrownDark text-sm">Floor Plan</span>
               <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="floor" data-enabled="true" aria-label="Toggle Floor Plan" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
-                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
               </button>
             </div>
           </div>
@@ -1284,7 +1318,7 @@
             <div class="flex items-center justify-between gap-3">
               <span class="font-semibold text-themeBrownDark text-sm">Wedding Menu</span>
               <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="menu" data-enabled="true" aria-label="Toggle Wedding Menu" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
-                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
               </button>
             </div>
           </div>
@@ -1293,7 +1327,7 @@
             <div class="flex items-center justify-between gap-3">
               <span class="font-semibold text-themeBrownDark text-sm">Share Your Photo &amp; Video</span>
               <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="share" data-enabled="true" aria-label="Toggle Share Your Photo &amp; Video" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
-                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"></span>
               </button>
             </div>
           </div>
@@ -1390,6 +1424,7 @@
 
       const TAB_VISIBILITY_KEY = 'wedding-tab-visibility';
       const DEFAULT_TAB_VISIBILITY = {
+        address: true,
         ecard: true,
         seat: true,
         floor: true,
@@ -1413,6 +1448,7 @@
       function applyTabVisibilityState() {
         const state = readTabVisibilityState();
         const mapping = {
+          address: document.getElementById('address-card-wrapper'),
           ecard: document.getElementById('btn-open-invitation-card'),
           seat: document.getElementById('btn-open-seat'),
           floor: document.getElementById('btn-open-floor'),
@@ -1439,10 +1475,6 @@
           button.style.borderColor = enabled ? green : red;
           button.style.justifyContent = enabled ? 'flex-end' : 'flex-start';
           button.style.overflow = 'hidden';
-          const knob = button.querySelector('.toggle-knob');
-          if (knob) {
-            knob.style.transform = enabled ? 'translateX(20px)' : 'translateX(0px)';
-          }
         });
       }
 
@@ -2007,6 +2039,10 @@
           this.db = dbService;
           this.auth = authController;
           this.activeConfirmAction = null;
+          this.scrollLockState = null;
+          this.navigationStack = [];
+          this.pendingNavigationDepth = null;
+          this.isRestoringNavigation = false;
           this.currentView = 'list';
           this.guestTableSort = { column: null, direction: 'asc' };
           this.capacityTableSort = { column: null, direction: 'asc' };
@@ -2017,6 +2053,7 @@
           applyTabVisibilityState();
           populateTabControlForm();
           this._setupFloatingAnimation();
+          this._setupNavigationHistory();
         }
 
         refreshAdminView() {
@@ -2044,16 +2081,109 @@
           });
         }
 
+        _readNavigationStack(state) {
+          const stack = state?.weddingNavigation;
+          return Array.isArray(stack) ? stack.filter(id => id === 'mgmt-add-page' ||
+            document.getElementById(id)?.classList.contains('modal-backdrop')) : [];
+        }
+
+        _setupNavigationHistory() {
+          const initialStack = this._readNavigationStack(history.state);
+          history.replaceState({ ...history.state, weddingNavigation: initialStack }, '');
+          window.addEventListener('popstate', (event) => {
+            const pendingDepth = this.pendingNavigationDepth;
+            this.pendingNavigationDepth = null;
+            this._restoreNavigationStack(this._readNavigationStack(event.state));
+            if (pendingDepth !== null && this.navigationStack.length > pendingDepth) {
+              this._navigateBackToDepth(pendingDepth);
+            }
+          });
+          this._restoreNavigationStack(initialStack);
+        }
+
+        _pushNavigationEntry(id) {
+          if (this.isRestoringNavigation) return;
+          this.navigationStack.push(id);
+          history.pushState({ ...history.state, weddingNavigation: [...this.navigationStack] }, '');
+        }
+
+        _navigateBackToDepth(depth) {
+          if (depth >= this.navigationStack.length) return;
+          if (this.pendingNavigationDepth !== null) {
+            this.pendingNavigationDepth = Math.min(this.pendingNavigationDepth, depth);
+            return;
+          }
+          this.pendingNavigationDepth = depth;
+          history.go(depth - this.navigationStack.length);
+        }
+
+        _restoreNavigationStack(nextStack) {
+          let sharedDepth = 0;
+          while (sharedDepth < this.navigationStack.length &&
+            this.navigationStack[sharedDepth] === nextStack[sharedDepth]) {
+            sharedDepth++;
+          }
+
+          this.isRestoringNavigation = true;
+          try {
+            for (const id of this.navigationStack.slice(sharedDepth).reverse()) {
+              if (id === 'mgmt-add-page') {
+                this.clearSingleAddForm();
+                this.showMgmtListView();
+              } else {
+                this.closeModal(id);
+              }
+            }
+            for (const id of nextStack.slice(sharedDepth)) {
+              if (id === 'mgmt-add-page') this.showMgmtAddView();
+              else this.openModal(id);
+            }
+            this.navigationStack = [...nextStack];
+          } finally {
+            this.isRestoringNavigation = false;
+          }
+        }
+
+        _syncModalScrollLock() {
+          const hasOpenModal = Array.from(document.querySelectorAll('.modal-backdrop:not(.hidden)'))
+            .some(modal => modal.getClientRects().length > 0);
+
+          if (hasOpenModal && !this.scrollLockState) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            const bodyPadding = parseFloat(getComputedStyle(document.body).paddingRight) || 0;
+            this.scrollLockState = {
+              scrollX: window.scrollX,
+              scrollY: window.scrollY,
+              bodyTop: document.body.style.top,
+              bodyPaddingRight: document.body.style.paddingRight
+            };
+            document.body.style.top = `-${this.scrollLockState.scrollY}px`;
+            document.body.style.paddingRight = `${bodyPadding + scrollbarWidth}px`;
+            document.documentElement.classList.add('modal-open');
+          } else if (!hasOpenModal && this.scrollLockState) {
+            const { scrollX, scrollY, bodyTop, bodyPaddingRight } = this.scrollLockState;
+            document.documentElement.classList.remove('modal-open');
+            document.body.style.top = bodyTop;
+            document.body.style.paddingRight = bodyPaddingRight;
+            this.scrollLockState = null;
+            window.scrollTo(scrollX, scrollY);
+          }
+        }
+
         openModal(id) {
+          if (this.pendingNavigationDepth !== null && !this.isRestoringNavigation) return;
           const m = document.getElementById(id);
           if (m) {
+            const wasHidden = m.classList.contains('hidden');
             m.classList.remove('hidden');
             m.classList.add('flex');
 
             // Reset the Management Modal to Page 1 (List View) whenever it is opened
-            if (id === 'management-modal') {
+            if (id === 'management-modal' && wasHidden) {
               this.showMgmtListView();
             }
+            this._syncModalScrollLock();
+            if (wasHidden) this._pushNavigationEntry(id);
           }
         }
 
@@ -2132,10 +2262,10 @@
 
           if (id === 'share-modal') {
             const iframe = document.getElementById('share-iframe');
-            if (iframe && iframe.src) {
+            if (iframe && iframe.contentWindow && iframe.src) {
               const currentSrc = iframe.src;
-              iframe.src = 'about:blank';
-              setTimeout(() => { iframe.src = currentSrc; }, 50);
+              iframe.contentWindow.location.replace('about:blank');
+              setTimeout(() => { iframe.contentWindow.location.replace(currentSrc); }, 50);
             }
           }
 
@@ -2154,11 +2284,17 @@
         }
 
         closeModal(id) {
+          const navigationIndex = this.navigationStack.indexOf(id);
+          if (!this.isRestoringNavigation && navigationIndex !== -1) {
+            this._navigateBackToDepth(navigationIndex);
+            return;
+          }
           const m = document.getElementById(id);
           if (m) {
             this.resetModalState(id);
             m.classList.add('hidden');
             m.classList.remove('flex');
+            this._syncModalScrollLock();
           }
         }
 
@@ -2189,6 +2325,11 @@
 
         // Transition to Management List View page
         showMgmtListView() {
+          const navigationIndex = this.navigationStack.indexOf('mgmt-add-page');
+          if (!this.isRestoringNavigation && navigationIndex !== -1) {
+            this._navigateBackToDepth(navigationIndex);
+            return;
+          }
           const listPage = document.getElementById('mgmt-list-page');
           const addPage = document.getElementById('mgmt-add-page');
           if (listPage && addPage) {
@@ -2199,9 +2340,11 @@
 
         // Transition to Management Add/Import View page
         showMgmtAddView() {
+          if (this.pendingNavigationDepth !== null && !this.isRestoringNavigation) return;
           const listPage = document.getElementById('mgmt-list-page');
           const addPage = document.getElementById('mgmt-add-page');
           if (listPage && addPage) {
+            const wasHidden = addPage.classList.contains('hidden');
             listPage.classList.add('hidden');
             addPage.classList.remove('hidden');
             // Restore batch import panel and default labels
@@ -2211,6 +2354,7 @@
             if (headerLabel) headerLabel.innerText = 'New Entry Hub / 新建入口中心';
             const singleTitle = document.getElementById('single-add-title');
             if (singleTitle) singleTitle.innerHTML = '<i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客';
+            if (wasHidden) this._pushNavigationEntry('mgmt-add-page');
           }
         }
 
@@ -2872,10 +3016,6 @@
               button.style.borderColor = enabled ? green : red;
               button.style.justifyContent = enabled ? 'flex-end' : 'flex-start';
               button.style.overflow = 'hidden';
-              const knob = button.querySelector('.toggle-knob');
-              if (knob) {
-                knob.style.transform = enabled ? 'translateX(20px)' : 'translateX(0px)';
-              }
             });
           });
           document.getElementById('btn-close-tab-control').addEventListener('click', () => this.ui.closeModal('tab-control-modal'));
