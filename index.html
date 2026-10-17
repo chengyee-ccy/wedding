@@ -98,6 +98,31 @@
       -webkit-backdrop-filter: blur(8px);
     }
 
+    #share-modal,
+    #seat-modal,
+    #floor-modal,
+    #menu-modal,
+    #management-modal {
+      padding: 0 !important;
+    }
+
+    #share-modal .share-panel,
+    #seat-modal > div,
+    #floor-modal > div,
+    #menu-modal > div,
+    #management-modal > div {
+      width: 100vw !important;
+      max-width: none !important;
+      height: 100vh !important;
+      min-height: 100vh;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border-left: 0;
+      border-right: 0;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
     /* Slow ambient animations for golden sparkles */
     @keyframes pulse-slow {
 
@@ -178,6 +203,15 @@
       scrollbar-width: none;
     }
 
+    .tab-visibility-toggle {
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .tab-visibility-toggle .toggle-knob {
+      flex-shrink: 0;
+    }
+
     .header-photo {
       object-position: top;
     }
@@ -253,12 +287,27 @@
 
     <!-- MAIN BRANDING DETAILS with Elegant Font Layout -->
     <div class="px-6 text-center -mt-6 relative z-20">
-      <h1
-        class="font-serifTitle text-3xl md:text-4xl text-themeBrownDark tracking-wide drop-shadow-sm flex items-center justify-center gap-2">
-        <span>Wai Lik</span>
-        <span class="heart-beat text-red-700 text-2xl">❤️</span>
-        <span>Cheng Yee</span>
-      </h1>
+      <div class="flex items-end justify-center gap-2 md:gap-3 whitespace-nowrap">
+        <div class="flex flex-col items-center">
+          <div class="mb-2 flex h-7 md:h-9 items-center justify-center overflow-hidden">
+            <img src="name1.png" alt="Wai Lik Chinese name" class="h-full w-auto object-contain max-w-[80px]">
+          </div>
+          <h1 class="font-serifTitle text-[1.2rem] md:text-[2rem] text-themeBrownDark tracking-wide drop-shadow-sm leading-none whitespace-nowrap">
+            Chan Wai Lik
+          </h1>
+        </div>
+
+        <span class="heart-beat text-red-700 text-xl md:text-2xl leading-none -translate-y-2">❤️</span>
+
+        <div class="flex flex-col items-center">
+          <div class="mb-2 flex h-7 md:h-9 items-center justify-center overflow-hidden">
+            <img src="name2.png" alt="Cheng Yee Chinese name" class="h-full w-auto object-contain max-w-[80px]">
+          </div>
+          <h1 class="font-serifTitle text-[1.2rem] md:text-[2rem] text-themeBrownDark tracking-wide drop-shadow-sm leading-none whitespace-nowrap">
+            Cheong Cheng Yee
+          </h1>
+        </div>
+      </div>
 
       <p class="mt-3 text-sm md:text-md font-semibold text-themeBrownDark/90 uppercase tracking-widest font-sans">
         Welcome to Our Wedding
@@ -266,6 +315,39 @@
       <p class="text-xs text-themeBrownMuted mt-0.5 tracking-wide">
         欢迎来到我们的婚礼
       </p>
+
+      <div class="mt-2 flex justify-center">
+        <div class="inline-flex items-center justify-center rounded-full border border-themeBrown/50 bg-white/40 px-3 py-1 shadow-sm backdrop-blur-[1px]">
+          <span class="text-[10px] md:text-[11px] font-semibold tracking-[0.12em] text-themeBrownDark uppercase">
+            2027.01.02 | 星期六 Sat | 6:00pm
+          </span>
+        </div>
+      </div>
+
+      <div class="mt-4 mb-7 flex justify-center px-2 md:px-8">
+        <div class="flex items-center justify-center gap-4 max-w-[420px]">
+          <p class="text-left text-[11px] md:text-[13px] font-semibold text-themeBrownDark leading-relaxed tracking-wide">
+            宴宾楼 Restoran Yin Phun Low<br>
+            No 116-119,<br>
+            Jalan Terminal Kampar 1/F,<br>
+            31900 Kampar, Perak, <br>Malaysia.
+          </p>
+
+          <div class="flex flex-col items-center justify-center gap-3 pt-1">
+            <a href="https://maps.app.goo.gl/D28GeFUhhg9ZXqcb6?g_st=aw" target="_blank" rel="noopener noreferrer"
+              aria-label="Open map"
+              class="w-11 h-11 rounded-full flex items-center justify-center shadow-sm hover:scale-105 transition-transform overflow-hidden bg-white/20">
+              <img src="map.PNG" alt="Map" class="w-full h-full object-cover">
+            </a>
+
+            <a href="https://waze.com/ul/hw0zbtdju2" target="_blank" rel="noopener noreferrer"
+              aria-label="Open Waze"
+              class="w-11 h-11 rounded-full flex items-center justify-center shadow-sm hover:scale-105 transition-transform overflow-hidden bg-white/20">
+              <img src="waze.PNG" alt="Waze" class="w-full h-full object-cover">
+            </a>
+          </div>
+        </div>
+      </div>
 
       <div class="w-16 h-[1.5px] bg-gradient-to-r from-transparent via-themeBrown to-transparent mx-auto mt-4 mb-6">
       </div>
@@ -293,6 +375,24 @@
           </div>
         </button>
       </div>
+
+      <!-- 0. Wedding E-Card -->
+      <a href="https://h5.hunbei.com/app/A1706032cfca8" target="_blank" rel="noopener noreferrer" id="btn-open-invitation-card"
+        class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group">
+        <div class="flex items-center gap-4">
+          <div class="w-[48px] h-[48px] rounded-full overflow-hidden border-2 border-themeBrown shadow-md">
+            <img src="AT7P8576.jpg" alt="Wedding E-Card" class="w-full h-full object-cover object-top">
+          </div>
+          <div>
+            <h2 class="font-bold text-[15px] tracking-wide text-themeBrownDark">Wedding E-Card</h2>
+            <p class="text-xs text-themeBrownMuted font-medium">婚礼电子请柬</p>
+          </div>
+        </div>
+        <div
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1">
+          <i class="fa-solid fa-chevron-right text-xs text-themeBrownMuted"></i>
+        </div>
+      </a>
 
       <!-- 1. Find Your Seat -->
       <button id="btn-open-seat"
@@ -522,7 +622,12 @@
       <!-- Top Elegant Bar with Bilingual Labels -->
       <div class="px-6 pt-6 pb-2 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark">
+          <button id="btn-back-seat"
+            class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
+            aria-label="Back">
+            <i class="fa-solid fa-arrow-left text-sm text-themeBrownDark"></i>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark shrink-0">
             <i class="fa-solid fa-magnifying-glass text-xs"></i>
           </div>
           <div>
@@ -530,10 +635,6 @@
             <p class="text-[11px] text-themeBrownMuted -mt-0.5">查询您的宴席座位</p>
           </div>
         </div>
-        <button id="btn-close-seat"
-          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
-          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
-        </button>
       </div>
 
       <!-- Search Content Section with Bilingual Instructions -->
@@ -545,7 +646,7 @@
 
         <!-- Search Input Bar -->
         <div class="relative">
-          <input id="seat-search" type="text" placeholder="请输入姓名(e.g. David, Chan)/ Name"
+          <input id="seat-search" type="text" placeholder="请输入姓名(e.g. Chan)/ Name"
             class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-10 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm"
             oninput="toggleClearBtn('seat-search')">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
@@ -559,7 +660,7 @@
         </div>
 
         <div class="relative">
-          <input id="seat-table-search" type="text" placeholder="搜索同桌宾客(e.g. 1 / 2)/ Table No."
+          <input id="seat-table-search" type="text" placeholder="搜索同桌宾客(e.g. 12)/ Table No."
             class="w-full bg-white border border-themeBrown/25 rounded-2xl py-3.5 pl-12 pr-4 text-themeBrownDark placeholder-themeBrownMuted/50 focus:outline-none focus:ring-2 focus:ring-themeBrown/30 transition shadow-sm"
             oninput="toggleClearBtn('seat-table-search')">
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-themeBrownMuted">
@@ -593,7 +694,12 @@
       <!-- Top Elegant Bar with Bilingual Labels -->
       <div class="px-6 pt-6 pb-3 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark">
+          <button id="btn-back-floor"
+            class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
+            aria-label="Back">
+            <i class="fa-solid fa-arrow-left text-sm text-themeBrownDark"></i>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark shrink-0">
             <i class="fa-solid fa-map-location-dot text-xs"></i>
           </div>
           <div>
@@ -601,10 +707,6 @@
             <p class="text-[11px] text-themeBrownMuted -mt-0.5">婚宴桌子分布位置</p>
           </div>
         </div>
-        <button id="btn-close-floor"
-          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
-          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
-        </button>
       </div>
 
       <!-- Content -->
@@ -642,7 +744,12 @@
       <!-- Top Elegant Bar -->
       <div class="px-6 pt-6 pb-3 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark">
+          <button id="btn-back-menu"
+            class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
+            aria-label="Back">
+            <i class="fa-solid fa-arrow-left text-sm text-themeBrownDark"></i>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark shrink-0">
             <i class="fa-solid fa-utensils text-xs"></i>
           </div>
           <div>
@@ -650,10 +757,6 @@
             <p class="text-[11px] text-themeBrownMuted -mt-0.5">精心定制婚宴菜单</p>
           </div>
         </div>
-        <button id="btn-close-menu"
-          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
-          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
-        </button>
       </div>
 
       <!-- Menu Course Cards List with Bilingual Labels -->
@@ -734,14 +837,19 @@
   </div>
 
   <!-- 4. SHARE PHOTO & VIDEO IFRAME MODAL -->
-  <div id="share-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+  <div id="share-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-0 hidden">
     <div
-      class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[650px] h-[85vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
+      class="share-panel bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[650px] h-[85vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
 
       <!-- Top Elegant Bar -->
       <div class="px-6 pt-6 pb-3 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark">
+          <button id="btn-back-share"
+            class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
+            aria-label="Back">
+            <i class="fa-solid fa-arrow-left text-sm text-themeBrownDark"></i>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-[#edd185]/60 flex items-center justify-center text-themeBrownDark shrink-0">
             <i class="fa-solid fa-camera text-xs"></i>
           </div>
           <div>
@@ -749,10 +857,6 @@
             <p class="text-[11px] text-themeBrownMuted -mt-0.5">上传分享您与我们的美好时刻</p>
           </div>
         </div>
-        <button id="btn-close-share"
-          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
-          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
-        </button>
       </div>
       <div class="px-6 pb-3 text-center"><br>
         <p class="text-[13px] text-themeBrownMuted mx-auto max-w-[30rem] leading-snug">
@@ -790,7 +894,12 @@
       <!-- Top Header -->
       <div class="px-6 pt-5 pb-3 flex items-center justify-between bg-[#edd185]/30 border-b border-themeBrown/10">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-themeBrown/20 flex items-center justify-center text-themeBrownDark">
+          <button id="btn-back-management"
+            class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
+            aria-label="Back">
+            <i class="fa-solid fa-arrow-left text-sm text-themeBrownDark"></i>
+          </button>
+          <div class="w-10 h-10 rounded-full bg-themeBrown/20 flex items-center justify-center text-themeBrownDark shrink-0">
             <i class="fa-solid fa-users-gear text-lg"></i>
           </div>
           <div>
@@ -804,10 +913,6 @@
             </div>
           </div>
         </div>
-        <button id="btn-close-management"
-          class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition">
-          <i class="fa-solid fa-xmark text-sm text-themeBrownDark"></i>
-        </button>
       </div>
 
       <!-- Split Layout inside Panel Content Area -->
@@ -1002,10 +1107,16 @@
 
           <!-- NEW ADD BUTTON below the guest list table as requested -->
           <div class="flex justify-center pt-2">
-            <button id="btn-switch-to-add-page"
-              class="primary-gold-btn px-8 py-3.5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wider shadow-md">
-              <i class="fa-solid fa-user-plus text-sm"></i> Add & Import Guests / 新增与导入宾客
-            </button>
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <button id="btn-switch-to-add-page"
+                class="primary-gold-btn h-11 w-[300px] rounded-xl flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider shadow-md">
+                <i class="fa-solid fa-user-plus text-sm"></i> Add & Import Guests / 新增与导入宾客
+              </button>
+              <button id="btn-open-tab-control"
+                class="h-11 w-[300px] bg-white/80 hover:bg-white border border-themeBrown/15 text-themeBrown text-xs font-bold rounded-xl px-6 whitespace-nowrap shadow-sm transition flex items-center justify-center">
+                <i class="fa-solid fa-sliders text-sm mr-1"></i> Button Control / 按钮控制
+              </button>
+            </div>
           </div>
 
         </div>
@@ -1126,6 +1237,81 @@
       </div>
     </div>
 
+    <!-- TAB VISIBILITY CONTROL MODAL -->
+    <div id="tab-control-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+      <div
+        class="bg-[#fbf6e9] border-2 border-themeGold/80 rounded-[28px] w-full max-w-[480px] p-6 shadow-2xl relative text-center space-y-5 animate-in fade-in zoom-in duration-200">
+        <div class="flex items-center justify-between gap-3 border-b border-themeBrown/10 pb-3">
+          <div>
+            <h4 class="font-bold text-lg text-themeBrownDark">Button Control</h4>
+            <p class="text-[11px] text-themeBrownMuted">Show or hide wedding feature tabs</p>
+          </div>
+          <button id="btn-close-tab-control"
+            class="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 text-themeBrownDark transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4 text-left">
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Wedding E-Card</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="ecard" data-enabled="true" aria-label="Toggle Wedding E-Card" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Find Your Seat</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="seat" data-enabled="true" aria-label="Toggle Find Your Seat" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Floor Plan</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="floor" data-enabled="true" aria-label="Toggle Floor Plan" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Wedding Menu</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="menu" data-enabled="true" aria-label="Toggle Wedding Menu" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-themeBrown/15 bg-white/60 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="font-semibold text-themeBrownDark text-sm">Share Your Photo &amp; Video</span>
+              <button type="button" class="tab-visibility-toggle inline-flex h-8 w-14 items-center rounded-full border p-1 transition-all duration-200" data-target="share" data-enabled="true" aria-label="Toggle Share Your Photo &amp; Video" style="background-color: rgb(109, 223, 115); border-color: rgb(109, 223, 115); justify-content: flex-end; overflow: hidden;">
+                <span class="toggle-knob h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200" style="transform: translateX(20px);"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button id="btn-cancel-tab-control"
+            class="w-1/2 bg-white border border-themeBrown/20 text-themeBrownDark text-xs font-bold py-2.5 rounded-xl hover:bg-white/50 transition">
+            Cancel / 取消
+          </button>
+          <button id="btn-save-tab-control"
+            class="w-1/2 bg-[#967b5f] hover:bg-[#bd9e7f] text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
+            Save / 保存
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- CUSTOM CONFIRMATION DIALOG MODAL -->
     <div id="confirm-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
       <div
@@ -1174,9 +1360,9 @@
 
     <!-- Custom Alert Toast notification -->
     <div id="custom-alert"
-      class="fixed top-8 left-1/2 -translate-x-1/2 z-[200] bg-themeBrownDark text-white font-bold px-6 py-3 rounded-full shadow-2xl flex items-center gap-2 transform -translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-      <i class="fa-solid fa-bell text-themeGold"></i>
-      <span id="alert-msg">Notification</span>
+      class="fixed top-5 left-1/2 -translate-x-1/2 z-[200] max-w-[min(520px,calc(100vw-20px))] w-fit bg-themeBrownDark text-white font-medium text-[13px] px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-1.5 transform -translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+      <i class="fa-solid fa-bell text-themeGold text-[11px]"></i>
+      <span id="alert-msg" class="leading-[1.2] break-words whitespace-normal">Notification</span>
     </div>
 
 
@@ -1201,6 +1387,84 @@
         if (btn) btn.classList.add('hidden');
         input.focus();
       };
+
+      const TAB_VISIBILITY_KEY = 'wedding-tab-visibility';
+      const DEFAULT_TAB_VISIBILITY = {
+        ecard: true,
+        seat: true,
+        floor: true,
+        menu: true,
+        share: true
+      };
+
+      function readTabVisibilityState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(TAB_VISIBILITY_KEY) || '{}');
+          return { ...DEFAULT_TAB_VISIBILITY, ...saved };
+        } catch (error) {
+          return { ...DEFAULT_TAB_VISIBILITY };
+        }
+      }
+
+      function writeTabVisibilityState(state) {
+        localStorage.setItem(TAB_VISIBILITY_KEY, JSON.stringify(state));
+      }
+
+      function applyTabVisibilityState() {
+        const state = readTabVisibilityState();
+        const mapping = {
+          ecard: document.getElementById('btn-open-invitation-card'),
+          seat: document.getElementById('btn-open-seat'),
+          floor: document.getElementById('btn-open-floor'),
+          menu: document.getElementById('btn-open-menu'),
+          share: document.getElementById('btn-open-share')
+        };
+
+        Object.entries(mapping).forEach(([key, el]) => {
+          if (!el) return;
+          const shouldShow = !!state[key];
+          el.classList.toggle('hidden', !shouldShow);
+        });
+      }
+
+      function syncTabToggleButtons() {
+        const state = readTabVisibilityState();
+        document.querySelectorAll('.tab-visibility-toggle').forEach((button) => {
+          const target = button.dataset.target;
+          const enabled = !!state[target];
+          button.dataset.enabled = String(enabled);
+          const green = '#6dcf73';
+          const red = '#f15d5d';
+          button.style.backgroundColor = enabled ? green : red;
+          button.style.borderColor = enabled ? green : red;
+          button.style.justifyContent = enabled ? 'flex-end' : 'flex-start';
+          button.style.overflow = 'hidden';
+          const knob = button.querySelector('.toggle-knob');
+          if (knob) {
+            knob.style.transform = enabled ? 'translateX(20px)' : 'translateX(0px)';
+          }
+        });
+      }
+
+      function populateTabControlForm() {
+        syncTabToggleButtons();
+      }
+
+      function saveTabControlForm() {
+        const nextState = { ...DEFAULT_TAB_VISIBILITY };
+        document.querySelectorAll('.tab-visibility-toggle').forEach((button) => {
+          const target = button.dataset.target;
+          nextState[target] = button.dataset.enabled === 'true';
+        });
+
+        writeTabVisibilityState(nextState);
+        if (window.app && window.app.db && typeof window.app.db.setTabVisibilityState === 'function') {
+          window.app.db.setTabVisibilityState(nextState).catch((error) => {
+            console.warn('Failed to sync tab visibility to Firebase. Local state retained.', error);
+          });
+        }
+        applyTabVisibilityState();
+      }
 
       /**
        * MODULE 1: WeddingConfig
@@ -1251,7 +1515,29 @@
           const alertMsg = document.getElementById('alert-msg');
           if (!alertBox || !alertMsg) return;
 
-          alertMsg.innerText = message;
+          const cleanMessage = String(message || '').replace(/\r?\n+/g, ' ').replace(/\s+/g, ' ').trim();
+          alertMsg.innerText = cleanMessage;
+          alertMsg.style.setProperty('display', 'inline', 'important');
+          alertMsg.style.setProperty('height', 'auto', 'important');
+          alertMsg.style.setProperty('line-height', '1.2', 'important');
+          alertMsg.style.setProperty('white-space', 'normal', 'important');
+          alertMsg.style.setProperty('overflow-wrap', 'anywhere', 'important');
+
+          alertBox.style.setProperty('max-width', 'min(520px, calc(100vw - 20px))', 'important');
+          alertBox.style.setProperty('width', 'fit-content', 'important');
+          alertBox.style.setProperty('height', 'auto', 'important');
+          alertBox.style.setProperty('min-height', '0', 'important');
+          alertBox.style.setProperty('display', 'inline-flex', 'important');
+          alertBox.style.setProperty('white-space', 'normal', 'important');
+          alertBox.style.setProperty('word-break', 'break-word', 'important');
+          alertBox.style.setProperty('line-height', '1.2', 'important');
+          alertBox.style.setProperty('align-items', 'center', 'important');
+          alertBox.style.setProperty('padding', '4px 8px', 'important');
+          alertBox.style.setProperty('gap', '5px', 'important');
+          alertBox.style.setProperty('left', '50%', 'important');
+          alertBox.style.setProperty('transform', 'translateX(-50%)', 'important');
+          alertBox.style.setProperty('border-radius', '10px', 'important');
+          alertBox.style.setProperty('box-shadow', '0 10px 24px rgba(0,0,0,0.16)', 'important');
           alertBox.classList.remove('opacity-0', '-translate-y-24');
           alertBox.classList.add('opacity-100', 'translate-y-0');
 
@@ -1275,6 +1561,7 @@
           this.guests = [];
           this.onUpdateCallbacks = [];
           this.dbRef = null;
+          this.tabVisibilityRef = null;
           this.auth = null;
         }
 
@@ -1283,12 +1570,14 @@
             try {
               firebase.initializeApp(WeddingConfig.firebase);
               this.dbRef = firebase.database().ref('guests');
+              this.tabVisibilityRef = firebase.database().ref('settings/tabVisibility');
               this.auth = firebase.auth();
 
               this._authenticateAnonymously()
                 .then(() => {
                   this.isOffline = false;
                   this._setupCloudListeners();
+                  this._setupTabVisibilityListeners();
                 })
                 .catch((err) => {
                   console.warn("Firebase anonymous auth failed. Falling back to local storage.", err);
@@ -1356,6 +1645,40 @@
           }
           // Artificial delay for local load dispatch to simulate network latency gracefully
           setTimeout(() => this._notifyListeners(), 100);
+        }
+
+        _setupTabVisibilityListeners() {
+          if (!this.tabVisibilityRef) return;
+          this.tabVisibilityRef.on('value', (snapshot) => {
+            const remoteState = snapshot.val() || {};
+            const mergedState = { ...DEFAULT_TAB_VISIBILITY, ...remoteState };
+            localStorage.setItem(TAB_VISIBILITY_KEY, JSON.stringify(mergedState));
+            if (typeof applyTabVisibilityState === 'function') {
+              applyTabVisibilityState();
+            }
+            if (typeof syncTabToggleButtons === 'function') {
+              syncTabToggleButtons();
+            }
+          }, (err) => {
+            console.warn('Tab visibility remote listener failed, falling back to local state.', err);
+          });
+        }
+
+        setTabVisibilityState(state) {
+          const safeState = { ...DEFAULT_TAB_VISIBILITY, ...(state || {}) };
+          localStorage.setItem(TAB_VISIBILITY_KEY, JSON.stringify(safeState));
+
+          if (this.isOffline || !this.tabVisibilityRef) {
+            return Promise.resolve(safeState);
+          }
+
+          return new Promise((resolve, reject) => {
+            this.tabVisibilityRef.set(safeState, (err) => err ? reject(err) : resolve(safeState));
+          }).then((savedState) => {
+            applyTabVisibilityState();
+            syncTabToggleButtons();
+            return savedState;
+          });
         }
 
         // CRUD: Write actions
@@ -1691,6 +2014,8 @@
 
         init() {
           this._setupModals();
+          applyTabVisibilityState();
+          populateTabControlForm();
           this._setupFloatingAnimation();
         }
 
@@ -2533,12 +2858,38 @@
           document.getElementById('btn-open-floor').addEventListener('click', () => this.ui.openModal('floor-modal'));
           document.getElementById('btn-open-menu').addEventListener('click', () => this.ui.openModal('menu-modal'));
           document.getElementById('btn-open-share').addEventListener('click', () => this.ui.openModal('share-modal'));
+          document.getElementById('btn-open-tab-control').addEventListener('click', () => {
+            populateTabControlForm();
+            this.ui.openModal('tab-control-modal');
+          });
+          document.querySelectorAll('.tab-visibility-toggle').forEach((button) => {
+            button.addEventListener('click', () => {
+              const enabled = button.dataset.enabled !== 'true';
+              button.dataset.enabled = String(enabled);
+              const green = '#6dcf73';
+              const red = '#f15d5d';
+              button.style.backgroundColor = enabled ? green : red;
+              button.style.borderColor = enabled ? green : red;
+              button.style.justifyContent = enabled ? 'flex-end' : 'flex-start';
+              button.style.overflow = 'hidden';
+              const knob = button.querySelector('.toggle-knob');
+              if (knob) {
+                knob.style.transform = enabled ? 'translateX(20px)' : 'translateX(0px)';
+              }
+            });
+          });
+          document.getElementById('btn-close-tab-control').addEventListener('click', () => this.ui.closeModal('tab-control-modal'));
+          document.getElementById('btn-cancel-tab-control').addEventListener('click', () => this.ui.closeModal('tab-control-modal'));
+          document.getElementById('btn-save-tab-control').addEventListener('click', () => {
+            saveTabControlForm();
+            this.ui.closeModal('tab-control-modal');
+          });
 
-          document.getElementById('btn-close-seat').addEventListener('click', () => this.ui.closeModal('seat-modal'));
-          document.getElementById('btn-close-floor').addEventListener('click', () => this.ui.closeModal('floor-modal'));
-          document.getElementById('btn-close-menu').addEventListener('click', () => this.ui.closeModal('menu-modal'));
-          document.getElementById('btn-close-share').addEventListener('click', () => this.ui.closeModal('share-modal'));
-          document.getElementById('btn-close-management').addEventListener('click', () => this.ui.closeModal('management-modal'));
+          document.getElementById('btn-back-seat').addEventListener('click', () => this.ui.closeModal('seat-modal'));
+          document.getElementById('btn-back-floor').addEventListener('click', () => this.ui.closeModal('floor-modal'));
+          document.getElementById('btn-back-menu').addEventListener('click', () => this.ui.closeModal('menu-modal'));
+          document.getElementById('btn-back-share').addEventListener('click', () => this.ui.closeModal('share-modal'));
+          document.getElementById('btn-back-management').addEventListener('click', () => this.ui.closeModal('management-modal'));
           document.getElementById('btn-cancel-auth').addEventListener('click', () => this.ui.closeModal('auth-modal'));
           document.getElementById('btn-cancel-logout').addEventListener('click', () => this.ui.closeModal('logout-modal'));
           document.getElementById('btn-cancel-confirm').addEventListener('click', () => this.ui.closeModal('confirm-modal'));
