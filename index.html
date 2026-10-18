@@ -121,6 +121,10 @@
       flex-shrink: 0;
     }
 
+    .schedule-panel {
+      width: min(382px, calc(100vw - 2rem), calc((100dvh - 4rem) * 382 / 250));
+    }
+
     #share-modal,
     #seat-modal,
     #floor-modal,
@@ -343,7 +347,11 @@
       <div class="mt-2 flex justify-center">
         <div class="inline-flex items-center justify-center rounded-full border border-themeBrown/50 bg-white/40 px-3 py-1 shadow-sm backdrop-blur-[1px]">
           <span class="text-[13px] md:text-[11px] font-semibold tracking-[0.12em] text-themeBrownDark uppercase">
-            2027.01.02 | 星期六 Sat | 6:00pm
+            2027.01.02 | 星期六 Sat |
+            <button id="btn-open-schedule" type="button" aria-haspopup="dialog" aria-controls="schedule-modal"
+              aria-expanded="false" aria-label="6:00pm — View wedding schedule / 查看婚礼流程"
+              title="View wedding schedule / 查看婚礼流程"
+              class="rounded-sm underline decoration-dotted decoration-themeBrown/60 underline-offset-4 hover:text-themeBrown focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-themeBrown">6:00pm</button>
           </span>
         </div>
       </div>
@@ -577,6 +585,18 @@
   <!-- ============================================= -->
   <!-- MODALS SYSTEM (EACH FEATURE OPENS ELEGANTLY) -->
   <!-- ============================================= -->
+
+  <!-- WEDDING SCHEDULE MODAL -->
+  <div id="schedule-modal" role="dialog" aria-modal="true" aria-labelledby="schedule-modal-title"
+    class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="schedule-panel relative shadow-2xl">
+      <h2 id="schedule-modal-title" class="sr-only">Wedding Schedule / 婚礼流程</h2>
+      <button id="btn-close-schedule" type="button" aria-label="Close wedding schedule / 关闭婚礼流程"
+        class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-[#fbf6e9] border border-themeBrown/30 shadow-md flex items-center justify-center text-xl leading-none hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-themeBrown">&times;</button>
+      <img src="timeline.png" width="382" height="250" class="block w-full h-auto rounded-2xl"
+        alt="Wedding schedule: 6:00pm 签到 &amp; 合影 — Registration &amp; Photobooth; 6:30pm 宾客就座 — Guest Seating; 7:00pm 宴会开始 — Ceremony Begin.">
+    </div>
+  </div>
 
   <!-- ADMIN AUTH MODAL -->
   <div id="auth-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
@@ -2184,6 +2204,10 @@
             }
             this._syncModalScrollLock();
             if (wasHidden) this._pushNavigationEntry(id);
+            if (id === 'schedule-modal') {
+              document.getElementById('btn-open-schedule').setAttribute('aria-expanded', 'true');
+              document.getElementById('btn-close-schedule').focus({ preventScroll: true });
+            }
           }
         }
 
@@ -2295,6 +2319,11 @@
             m.classList.add('hidden');
             m.classList.remove('flex');
             this._syncModalScrollLock();
+            if (id === 'schedule-modal') {
+              const trigger = document.getElementById('btn-open-schedule');
+              trigger.setAttribute('aria-expanded', 'false');
+              trigger.focus({ preventScroll: true });
+            }
           }
         }
 
@@ -2996,6 +3025,18 @@
 
         _bindDOMEvents() {
           // Modal toggling listeners
+          document.getElementById('btn-open-schedule').addEventListener('click', () => this.ui.openModal('schedule-modal'));
+          document.getElementById('btn-close-schedule').addEventListener('click', () => this.ui.closeModal('schedule-modal'));
+          document.getElementById('schedule-modal').addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault();
+              this.ui.closeModal('schedule-modal');
+            } else if (event.key === 'Tab') {
+              // The close button is the schedule dialog's only focusable control.
+              event.preventDefault();
+              document.getElementById('btn-close-schedule').focus();
+            }
+          });
           document.getElementById('admin-lock-btn').addEventListener('click', () => this.handleAdminLockClick());
           document.getElementById('btn-open-management').addEventListener('click', () => this.ui.openModal('management-modal'));
           document.getElementById('btn-open-seat').addEventListener('click', () => this.ui.openModal('seat-modal'));
