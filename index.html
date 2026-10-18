@@ -15,6 +15,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght=700&family=Great+Vibes&family=Noto+Sans+TC:wght=300;400;500;700&family=Playfair+Display:ital,wght=0,400;0,600;0,700;1,400&family=Work+Sans:wght=300;400;500;600&display=swap"
     rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Noto+Serif+TC:wght@400&display=swap"
+    rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -123,6 +125,88 @@
 
     .schedule-panel {
       width: min(382px, calc(100vw - 2rem), calc((100dvh - 4rem) * 382 / 250));
+      aspect-ratio: 382 / 250;
+      container-type: inline-size;
+      border-radius: 16px;
+      background: #f7db9e;
+      color: #171710;
+    }
+
+    .schedule-timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 0;
+      padding: 6cqw 0 0;
+      list-style: none;
+      text-align: center;
+    }
+
+    .schedule-timeline::before {
+      content: '';
+      position: absolute;
+      top: 25.5cqw;
+      left: 2.6cqw;
+      right: 2.6cqw;
+      height: 0.52cqw;
+      background: currentColor;
+    }
+
+    .schedule-event {
+      display: grid;
+      grid-template-rows: 7.5cqw 6.5cqw 11cqw 11.5cqw 19cqw;
+      min-width: 0;
+    }
+
+    .schedule-time {
+      align-self: center;
+      font-family: Arial, sans-serif;
+      font-size: 6.28cqw;
+      font-weight: 400;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .schedule-chinese {
+      align-self: center;
+      margin: 0;
+      font-family: 'Noto Serif TC', 'SimSun', serif;
+      font-size: 4.6cqw;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .schedule-tick {
+      justify-self: center;
+      width: 0.78cqw;
+      height: 100%;
+      background: currentColor;
+    }
+
+    .schedule-label {
+      align-self: center;
+      margin: 0;
+      font-family: 'Coming Soon', 'Segoe Print', cursive;
+      font-size: 4.05cqw;
+      line-height: 1.25;
+      letter-spacing: -0.035em;
+      white-space: nowrap;
+    }
+
+    .schedule-illustration {
+      position: relative;
+      align-self: end;
+      justify-self: center;
+      width: 24cqw;
+      aspect-ratio: 100 / 76;
+      overflow: hidden;
+    }
+
+    .schedule-icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     #share-modal,
@@ -593,8 +677,35 @@
       <h2 id="schedule-modal-title" class="sr-only">Wedding Schedule / 婚礼流程</h2>
       <button id="btn-close-schedule" type="button" aria-label="Close wedding schedule / 关闭婚礼流程"
         class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-[#fbf6e9] border border-themeBrown/30 shadow-md flex items-center justify-center text-xl leading-none hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-themeBrown">&times;</button>
-      <img src="timeline.png" width="382" height="250" class="block w-full h-auto rounded-2xl"
-        alt="Wedding schedule: 6:00pm 签到 &amp; 合影 — Registration &amp; Photobooth; 6:30pm 宾客就座 — Guest Seating; 7:00pm 宴会开始 — Ceremony Begin.">
+      <ol class="schedule-timeline">
+        <li class="schedule-event">
+          <time class="schedule-time" datetime="2027-01-02T18:00:00+08:00">6:00pm</time>
+          <p class="schedule-chinese" lang="zh-Hans">签到 &amp; 合影</p>
+          <span class="schedule-tick" aria-hidden="true"></span>
+          <p class="schedule-label">Registration &amp;<br>Photobooth</p>
+          <div class="schedule-illustration" aria-hidden="true">
+            <img src="timeline1.png" alt="" class="schedule-icon">
+          </div>
+        </li>
+        <li class="schedule-event">
+          <time class="schedule-time" datetime="2027-01-02T18:30:00+08:00">6:30pm</time>
+          <p class="schedule-chinese" lang="zh-Hans">宾客就座</p>
+          <span class="schedule-tick" aria-hidden="true"></span>
+          <p class="schedule-label">Guest Seating</p>
+          <div class="schedule-illustration" aria-hidden="true">
+            <img src="timeline2.png" alt="" class="schedule-icon">
+          </div>
+        </li>
+        <li class="schedule-event">
+          <time class="schedule-time" datetime="2027-01-02T19:00:00+08:00">7:00pm</time>
+          <p class="schedule-chinese" lang="zh-Hans">宴会开始</p>
+          <span class="schedule-tick" aria-hidden="true"></span>
+          <p class="schedule-label">Ceremony Begin</p>
+          <div class="schedule-illustration" aria-hidden="true">
+            <img src="timeline3.png" alt="" class="schedule-icon">
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 
