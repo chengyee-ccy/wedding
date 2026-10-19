@@ -234,6 +234,84 @@
       border-bottom: 0;
     }
 
+    #floor-modal {
+      overflow: hidden;
+    }
+
+    #floor-modal > div {
+      height: 100dvh !important;
+      min-height: 100dvh;
+      max-height: 100dvh;
+    }
+
+    #management-modal {
+      top: var(--management-viewport-top, 0px);
+      bottom: auto;
+      height: var(--management-viewport-height, 100dvh);
+      overflow: hidden;
+    }
+
+    #management-modal > .management-panel {
+      height: 100% !important;
+      min-height: 0;
+      max-height: 100%;
+      margin: 0;
+    }
+
+    #management-scroll {
+      flex: 1 1 0%;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      scroll-padding-block: 16px;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .floor-plan-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+      padding: clamp(12px, 2vw, 24px);
+      overflow: hidden;
+    }
+
+    .floor-plan-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      touch-action: none;
+      overscroll-behavior: none;
+      cursor: grab;
+    }
+
+    .floor-plan-viewport.is-dragging {
+      cursor: grabbing;
+    }
+
+    .floor-plan-viewport:focus-visible {
+      outline: 2px solid #967b5f;
+      outline-offset: 2px;
+    }
+
+    #zoom-map {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      max-width: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(61, 49, 40, 0.15);
+      transform-origin: center;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
     /* Slow ambient animations for golden sparkles */
     @keyframes pulse-slow {
 
@@ -845,7 +923,7 @@
       class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[440px] max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
 
       <!-- Top Elegant Bar with Bilingual Labels -->
-      <div class="px-6 pt-6 pb-3 flex items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
+      <div class="px-6 pt-6 pb-3 flex shrink-0 items-center justify-between bg-themeGold/15 border-b border-themeBrown/5">
         <div class="flex items-center gap-3">
           <button id="btn-back-floor"
             class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
@@ -863,27 +941,27 @@
       </div>
 
       <!-- Content -->
-      <div class="p-6 overflow-y-auto no-scrollbar flex-1 flex flex-col space-y-4">
-
-        <!-- Floor Plan Image Viewer Container referencing floor.PNG -->
-        <div
-          class="relative rounded-2xl overflow-hidden border border-themeBrown/20 bg-white aspect-square flex items-center justify-center shadow-md">
-          <div class="w-[92%] h-[92%] overflow-hidden relative rounded-xl">
-            <!-- Utilizing the second quadrant containing floor layout -->
-            <img src="floor.PNG" id="zoom-map" alt="Wedding Floor Plan Layout"
-              class="absolute w-[200%] h-[200%] max-w-none transition-transform duration-300"
-              style="left: -100%; top: 0%; transform-origin: center;">
-          </div>
+      <div class="floor-plan-content">
+        <div id="floor-plan-viewport" class="floor-plan-viewport" tabindex="0" role="region"
+          aria-label="Zoomable floor plan" aria-describedby="floor-plan-help">
+          <img src="floor1.png" id="zoom-map" alt="Wedding Floor Plan Layout" width="748" height="698" draggable="false">
         </div>
 
-        <p class="text-xs text-themeBrownMuted text-center leading-relaxed italic">
-          <i class="fa-solid fa-circle-info mr-1"></i> Use zoom to explore table alignments relative to the central
-          stage.<br>
-          <span class="opacity-85 not-italic text-[10px]">可缩放以查看相对于中央舞台的桌子排列。</span>
+        <div class="shrink-0 flex items-center justify-center gap-3" role="group" aria-label="Floor plan zoom controls">
+          <button id="btn-floor-zoom-out" type="button" aria-label="Zoom out"
+            class="w-10 h-10 rounded-full bg-white/70 border border-themeBrown/30 text-xl hover:bg-white disabled:opacity-40">&minus;</button>
+          <span id="floor-plan-zoom" class="w-12 text-center text-xs tabular-nums" aria-label="Zoom level">100%</span>
+          <button id="btn-floor-zoom-in" type="button" aria-label="Zoom in"
+            class="w-10 h-10 rounded-full bg-white/70 border border-themeBrown/30 text-xl hover:bg-white disabled:opacity-40">+</button>
+          <button id="btn-floor-fit" type="button" aria-label="Fit entire floor plan"
+            class="h-10 px-4 rounded-full bg-white/70 border border-themeBrown/30 text-xs font-semibold hover:bg-white">Fit</button>
+        </div>
+
+        <p id="floor-plan-help" class="shrink-0 text-xs text-themeBrownMuted text-center leading-relaxed">
+          Pinch or use + / − to zoom. Drag to move.<br>
+          <span class="text-[10px]">双指缩放或点击 + / −，拖动查看。</span>
+          <span class="sr-only">Mouse wheel also zooms. Use arrow keys to move, + and − to zoom, and 0 to fit.</span>
         </p>
-
-        <!-- Table guide moved to guest list view for easier reference -->
-
       </div>
     </div>
   </div>
@@ -1042,10 +1120,10 @@
   <!-- 5. CHECK-IN MANAGEMENT PANEL MODAL -->
   <div id="management-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
-      class="bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[850px] h-[90vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
+      class="management-panel bg-[#fbf6e9] border border-themeGold/80 rounded-[32px] w-full max-w-[850px] h-[90vh] flex flex-col shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
 
       <!-- Top Header -->
-      <div class="px-6 pt-5 pb-3 flex items-center justify-between bg-[#edd185]/30 border-b border-themeBrown/10">
+      <div class="px-6 pt-5 pb-3 flex shrink-0 items-center justify-between bg-[#edd185]/30 border-b border-themeBrown/10">
         <div class="flex items-center gap-3">
           <button id="btn-back-management"
             class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition shrink-0"
@@ -1069,7 +1147,7 @@
       </div>
 
       <!-- Split Layout inside Panel Content Area -->
-      <div class="flex-1 overflow-y-auto no-scrollbar p-6">
+      <div id="management-scroll" class="no-scrollbar p-6">
 
         <!-- PAGE 1: GUEST LIST VIEW (Default Active) -->
         <div id="mgmt-list-page" class="space-y-6">
@@ -2160,6 +2238,145 @@
       }
 
 
+      class FloorPlanViewer {
+        constructor() {
+          this.viewport = document.getElementById('floor-plan-viewport');
+          this.image = document.getElementById('zoom-map');
+          this.pointers = new Map();
+          this.scale = 1;
+          this.x = this.y = 0;
+
+          document.getElementById('btn-floor-zoom-in').addEventListener('click', () => this.zoomTo(this.scale * 1.4));
+          document.getElementById('btn-floor-zoom-out').addEventListener('click', () => this.zoomTo(this.scale / 1.4));
+          document.getElementById('btn-floor-fit').addEventListener('click', () => this.reset());
+          this.image.addEventListener('load', () => this.reset());
+          this.resizeObserver = new ResizeObserver(() => this.reset());
+          this.resizeObserver.observe(this.viewport);
+
+          this.viewport.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            this.zoomTo(this.scale * Math.exp(-event.deltaY * 0.002), this._point(event));
+          }, { passive: false });
+
+          this.viewport.addEventListener('pointerdown', (event) => {
+            if (event.pointerType === 'mouse' && event.button !== 0) return;
+            event.preventDefault();
+            this.viewport.focus({ preventScroll: true });
+            this.pointers.set(event.pointerId, this._point(event));
+            this.viewport.setPointerCapture(event.pointerId);
+            this._startGesture();
+            this._render();
+          });
+          this.viewport.addEventListener('pointermove', (event) => {
+            if (!this.pointers.has(event.pointerId)) return;
+            event.preventDefault();
+            this.pointers.set(event.pointerId, this._point(event));
+            const points = [...this.pointers.values()];
+            const start = this.gesture;
+            if (points.length >= 2) {
+              const center = this._center(points);
+              this.scale = this._clamp(start.scale * this._distance(points) / start.distance, 1, 5);
+              const ratio = this.scale / start.scale;
+              this.x = center.x - (start.center.x - start.x) * ratio;
+              this.y = center.y - (start.center.y - start.y) * ratio;
+            } else {
+              this.x = start.x + points[0].x - start.center.x;
+              this.y = start.y + points[0].y - start.center.y;
+            }
+            this._render();
+          });
+          const endGesture = (event) => {
+            if (!this.pointers.delete(event.pointerId)) return;
+            if (this.viewport.hasPointerCapture(event.pointerId)) this.viewport.releasePointerCapture(event.pointerId);
+            this._startGesture();
+            this._render();
+          };
+          ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => this.viewport.addEventListener(type, endGesture));
+          this.viewport.addEventListener('keydown', (event) => {
+            const offsets = { ArrowLeft: [40, 0], ArrowRight: [-40, 0], ArrowUp: [0, 40], ArrowDown: [0, -40] };
+            if (offsets[event.key]) {
+              this.x += offsets[event.key][0];
+              this.y += offsets[event.key][1];
+              this._render();
+            } else if (event.key === '+' || event.key === '=') this.zoomTo(this.scale * 1.4);
+            else if (event.key === '-') this.zoomTo(this.scale / 1.4);
+            else if (event.key === '0' || event.key === 'Home') this.reset();
+            else return;
+            event.preventDefault();
+          });
+        }
+
+        _clamp(value, min, max) {
+          return Math.min(max, Math.max(min, value));
+        }
+
+        _point(event) {
+          const rect = this.viewport.getBoundingClientRect();
+          return { x: event.clientX - rect.left - rect.width / 2, y: event.clientY - rect.top - rect.height / 2 };
+        }
+
+        _center(points) {
+          if (points.length === 1) return points[0];
+          return { x: (points[0].x + points[1].x) / 2, y: (points[0].y + points[1].y) / 2 };
+        }
+
+        _distance(points) {
+          return Math.max(1, Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y));
+        }
+
+        _startGesture() {
+          const points = [...this.pointers.values()];
+          this.gesture = points.length ? {
+            center: this._center(points), distance: points.length >= 2 ? this._distance(points) : 1,
+            scale: this.scale, x: this.x, y: this.y
+          } : null;
+        }
+
+        reset() {
+          const width = this.viewport.clientWidth, height = this.viewport.clientHeight;
+          if (!width || !height) return;
+          const pointerIds = [...this.pointers.keys()];
+          this.pointers.clear();
+          pointerIds.forEach(id => {
+            if (this.viewport.hasPointerCapture(id)) this.viewport.releasePointerCapture(id);
+          });
+          const naturalWidth = this.image.naturalWidth || this.image.width;
+          const naturalHeight = this.image.naturalHeight || this.image.height;
+          const fit = Math.min(width / naturalWidth, height / naturalHeight, 1);
+          this.fitWidth = naturalWidth * fit;
+          this.fitHeight = naturalHeight * fit;
+          this.image.style.width = `${this.fitWidth}px`;
+          this.image.style.height = `${this.fitHeight}px`;
+          this.scale = 1;
+          this.x = this.y = 0;
+          this._startGesture();
+          this._render();
+        }
+
+        zoomTo(scale, point = { x: 0, y: 0 }) {
+          if (!this.fitWidth) return;
+          const next = this._clamp(scale, 1, 5), ratio = next / this.scale;
+          this.x = point.x - (point.x - this.x) * ratio;
+          this.y = point.y - (point.y - this.y) * ratio;
+          this.scale = next;
+          this._render();
+          this._startGesture();
+        }
+
+        _render() {
+          if (!this.fitWidth) return;
+          const maxX = Math.max(0, (this.fitWidth * this.scale - this.viewport.clientWidth) / 2);
+          const maxY = Math.max(0, (this.fitHeight * this.scale - this.viewport.clientHeight) / 2);
+          this.x = this._clamp(this.x, -maxX, maxX);
+          this.y = this._clamp(this.y, -maxY, maxY);
+          this.image.style.transform = `translate(-50%, -50%) translate(${this.x}px, ${this.y}px) scale(${this.scale})`;
+          this.viewport.classList.toggle('is-dragging', this.pointers.size > 0);
+          document.getElementById('floor-plan-zoom').textContent = `${Math.round(this.scale * 100)}%`;
+          document.getElementById('btn-floor-zoom-out').disabled = this.scale <= 1;
+          document.getElementById('btn-floor-zoom-in').disabled = this.scale >= 5;
+        }
+      }
+
       /**
        * MODULE 6: UIManager
        * Modal controls, render managers, visual animations.
@@ -2181,6 +2398,8 @@
 
         init() {
           this._setupModals();
+          this._setupManagementViewport();
+          this.floorPlanViewer = new FloorPlanViewer();
           applyTabVisibilityState();
           populateTabControlForm();
           this._setupFloatingAnimation();
@@ -2210,6 +2429,28 @@
               if (e.target === backdrop) this.closeModal(backdrop.id);
             });
           });
+        }
+
+        _setupManagementViewport() {
+          const syncViewport = () => this._syncManagementViewport();
+          window.addEventListener('resize', syncViewport);
+          window.addEventListener('pageshow', syncViewport);
+          window.visualViewport?.addEventListener('resize', syncViewport);
+          window.visualViewport?.addEventListener('scroll', syncViewport);
+          syncViewport();
+        }
+
+        _syncManagementViewport() {
+          const viewport = window.visualViewport;
+          const modal = document.getElementById('management-modal');
+          modal.style.setProperty('--management-viewport-height', `${viewport?.height || window.innerHeight}px`);
+          modal.style.setProperty('--management-viewport-top', `${viewport?.offsetTop || 0}px`);
+        }
+
+        _resetManagementScroll() {
+          const scroller = document.getElementById('management-scroll');
+          scroller.scrollTop = 0;
+          scroller.scrollLeft = 0;
         }
 
         _readNavigationStack(state) {
@@ -2311,8 +2552,10 @@
 
             // Reset the Management Modal to Page 1 (List View) whenever it is opened
             if (id === 'management-modal' && wasHidden) {
+              this._syncManagementViewport();
               this.showMgmtListView();
             }
+            if (id === 'floor-modal' && wasHidden) this.floorPlanViewer.reset();
             this._syncModalScrollLock();
             if (wasHidden) this._pushNavigationEntry(id);
             if (id === 'schedule-modal') {
@@ -2426,6 +2669,7 @@
           }
           const m = document.getElementById(id);
           if (m) {
+            if (id === 'management-modal' && m.contains(document.activeElement)) document.activeElement.blur();
             this.resetModalState(id);
             m.classList.add('hidden');
             m.classList.remove('flex');
@@ -2475,6 +2719,7 @@
           if (listPage && addPage) {
             listPage.classList.remove('hidden');
             addPage.classList.add('hidden');
+            this._resetManagementScroll();
           }
         }
 
@@ -2487,6 +2732,7 @@
             const wasHidden = addPage.classList.contains('hidden');
             listPage.classList.add('hidden');
             addPage.classList.remove('hidden');
+            this._resetManagementScroll();
             // Restore batch import panel and default labels
             const batchPanel = document.getElementById('batch-import-panel');
             if (batchPanel) batchPanel.classList.remove('hidden');
