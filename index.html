@@ -739,7 +739,7 @@
     <!-- FOOTER WITH LOVE -->
     <footer class="mt-12 text-center px-6">
       <p class="text-xs text-themeBrownMuted">Made with ❤️ for Wai Lik & Cheng Yee's Big Day</p>
-      <p class="text-[10px] text-themeBrownMuted/60 mt-1">© 2026 All Rights Reserved</p>
+      <p class="text-[10px] text-themeBrownMuted/60 mt-1">© 2027 All Rights Reserved</p>
     </footer>
 
   </main>
@@ -908,7 +908,7 @@
         <div id="search-results" class="space-y-3 min-h-[150px]">
           <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
             <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
-            Enter your name to lookup table / 输入姓名开始查询...
+            Enter your name to lookup table <br> 输入姓名开始查询...
           </div>
         </div>
       </div>
@@ -1089,12 +1089,12 @@
           </div>
         </div>
       </div>
-      <div class="px-6 pb-3 text-center"><br>
+      <div class="px-6 py-3 text-center">
         <p class="text-[13px] text-themeBrownMuted mx-auto max-w-[30rem] leading-snug">
-          If the uploader does not display or your file is too large to upload here, please email us at
+          If your file is too large to upload here, please email us at
           <a href="mailto:wailik.chengyee@gmail.com"
             class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>。<br>
-          如果上传界面未显示或文件过大无法通过此处上传，请发送邮件至上述地址。
+          如果文件过大无法上传，请发送邮件至上述电子邮箱。
         </p>
       </div>
       <!-- Content Frame Container -->
@@ -2580,7 +2580,7 @@
               resultsContainer.innerHTML = `
                 <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
                   <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
-                  Enter your name or table to lookup guests / 输入姓名或桌号开始查询...
+                  Enter your name or table to lookup guests <br> 输入姓名或桌号开始查询...
                 </div>
               `;
             }
@@ -2640,10 +2640,8 @@
 
           if (id === 'share-modal') {
             const iframe = document.getElementById('share-iframe');
-            if (iframe && iframe.contentWindow && iframe.src) {
-              const currentSrc = iframe.src;
-              iframe.contentWindow.location.replace('about:blank');
-              setTimeout(() => { iframe.contentWindow.location.replace(currentSrc); }, 50);
+            if (iframe && iframe.src) {
+              iframe.src = iframe.src;
             }
           }
 
@@ -2847,7 +2845,7 @@
             resultsContainer.innerHTML = `
             <div class="text-center py-8 text-themeBrownMuted/50 text-sm">
               <i class="fa-solid fa-users text-2xl mb-2 block text-themeBrown"></i>
-              Enter your name or table to lookup guests / 输入姓名或桌号开始查询...
+              Enter your name or table to lookup guests <br> 输入姓名或桌号开始查询...
             </div>
           `;
             return;
