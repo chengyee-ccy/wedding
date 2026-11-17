@@ -74,6 +74,10 @@
       overscroll-behavior: contain;
     }
 
+    .share-frame-state[hidden] {
+      display: none;
+    }
+
     /* Premium soft champagne/gold theme glassmorphism buttons */
     .glass-btn {
       background: #fbf6e9;
@@ -83,11 +87,18 @@
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .glass-btn:hover {
-      background: #ffffff;
-      border-color: rgba(150, 123, 95, 0.2);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(150, 123, 95, 0.18);
+    @media (hover: hover) and (pointer: fine) {
+      .glass-btn:hover {
+        background: #ffffff;
+        border-color: rgba(150, 123, 95, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(150, 123, 95, 0.18);
+      }
+    }
+
+    .glass-btn:focus-visible {
+      outline: 2px solid #967b5f;
+      outline-offset: 3px;
     }
 
     .glass-btn:active {
@@ -461,8 +472,11 @@
     <!-- HEADER: Seamless top wedding image banner with faded cream mask -->
     <div class="relative w-full h-[45vh] md:h-[60vh] overflow-hidden">
       <!-- High Quality Wedding Photo -->
-      <img src="AT7P8576.jpg" alt="Wai Lik and Cheng Yee" class="w-full h-full object-cover header-photo"
-        onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600'">
+      <picture class="block w-full h-full">
+        <source media="(width > 450px)" srcset="AT7P85762.jpg">
+        <img src="AT7P8576.jpg" alt="Wai Lik and Cheng Yee" class="w-full h-full object-cover header-photo"
+          onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600'">
+      </picture>
 
       <!-- Warm golden gradient fade to match image_5821eb.png colors -->
       <div class="absolute inset-0 bg-gradient-to-t from-[#f5df9e] via-transparent to-black/10"></div>
@@ -1089,29 +1103,21 @@
           </div>
         </div>
       </div>
-      <div class="px-6 py-3 text-center">
-        <p class="text-[13px] text-themeBrownMuted mx-auto max-w-[30rem] leading-snug">
-          If your file is too large to upload here, please email us at
-          <a href="mailto:wailik.chengyee@gmail.com"
-            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>。<br>
-          如果文件过大无法上传，请发送邮件至上述电子邮箱。
-        </p>
-      </div>
       <!-- Content Frame Container -->
-      <div class="flex-1 bg-white relative">
-        <!--div id="share-iframe-loader"
-          class="absolute inset-0 flex flex-col items-center justify-center bg-[#fbf6e9] z-10">
-          <i class="fa-solid fa-spinner fa-spin text-themeBrown text-3xl mb-2"></i>
-          <span class="text-xs text-themeBrownMuted font-bold">Loading Uploader...</span>
-          <span class="text-[10px] text-themeBrownMuted/70 mt-1">正在加载媒体上传页，请稍候...</span>
-        </div-->
-        <iframe id="share-iframe" src="https://chengyee-ccy.github.io/uploader/"
+      <div id="share-frame-container" class="flex-1 min-h-0 bg-white relative" aria-busy="false">
+        <iframe id="share-iframe" src="https://chengyee-ccy.github.io/uploader/" title="Photo and video uploader"
+          onload="this.dataset.loaded = 'true'"
           class="w-full h-full border-none z-20 relative" allow="camera; microphone"></iframe>
-        <div
-          class="absolute left-0 right-0 bottom-0 p-4 bg-white/95 border-t border-themeBrown/10 text-xs text-themeBrownDark text-center">
-          If the uploader screen does not display or your file is too large to upload here, please email us at
-          <a href="mailto:wailik.chengyee@gmail.com"
-            class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>.
+        <div id="share-iframe-error" hidden
+          class="share-frame-state absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#fbf6e9] px-6 text-center">
+          <div role="alert" class="max-w-[30rem] text-[13px] text-themeBrownMuted leading-relaxed">
+            <p class="font-bold text-themeBrownDark mb-3">The uploader couldn't load. / 上传页面无法加载。</p>
+            <p>Please try again, or email your photos and videos to<br>
+              <a href="mailto:wailik.chengyee@gmail.com" class="text-themeBrown font-semibold underline">wailik.chengyee@gmail.com</a>.<br>
+              请重试，或将照片和视频发送至上述电子邮箱。</p>
+          </div>
+          <button id="btn-retry-share" type="button"
+            class="mt-5 px-6 py-3 rounded-xl bg-themeBrown text-white font-semibold text-sm hover:bg-themeBrownDark transition">Try again / 重试</button>
         </div>
       </div>
     </div>
@@ -1612,6 +1618,7 @@
     <!-- ============================================= -->
     <!-- MODULE PATTERN & OBJECT ORIENTED CONTROLLER   -->
     <!-- ============================================= -->
+    <script src="share-uploader.js"></script>
     <script>
       // Global Clear Helpers
       window.toggleClearBtn = function (inputId) {
@@ -2460,7 +2467,10 @@
         }
 
         _setupNavigationHistory() {
-          const initialStack = this._readNavigationStack(history.state);
+          // Opening or refreshing the portal should start on the wedding home.
+          const initialStack = [];
+          history.scrollRestoration = 'manual';
+          window.scrollTo(0, 0);
           history.replaceState({ ...history.state, weddingNavigation: initialStack }, '');
           window.addEventListener('popstate', (event) => {
             const pendingDepth = this.pendingNavigationDepth;
@@ -2556,6 +2566,7 @@
               this.showMgmtListView();
             }
             if (id === 'floor-modal' && wasHidden) this.floorPlanViewer.reset();
+            if (id === 'share-modal' && wasHidden) window.shareUploader.open();
             this._syncModalScrollLock();
             if (wasHidden) this._pushNavigationEntry(id);
             if (id === 'schedule-modal') {
@@ -2639,10 +2650,7 @@
           }
 
           if (id === 'share-modal') {
-            const iframe = document.getElementById('share-iframe');
-            if (iframe && iframe.src) {
-              iframe.src = iframe.src;
-            }
+            window.shareUploader.close();
           }
 
           if (id === 'checkin-modal') {
@@ -2672,6 +2680,8 @@
             m.classList.add('hidden');
             m.classList.remove('flex');
             this._syncModalScrollLock();
+            const activeElement = document.activeElement;
+            if (activeElement?.matches('.glass-btn:not(:focus-visible)')) activeElement.blur();
             if (id === 'schedule-modal') {
               const trigger = document.getElementById('btn-open-schedule');
               trigger.setAttribute('aria-expanded', 'false');
