@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wai Lik & Cheng Yee - Wedding Portal</title>
+  <link rel="stylesheet" href="wishes-wall.css">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -689,64 +690,25 @@
         </div>
       </button>
 
-      <!-- Divider for Social Media Tags -->
-      <div class="flex items-center justify-center py-4 opacity-70 gap-3">
-        <div class="h-[0.5px] bg-gradient-to-r from-transparent to-[#967b5f] flex-1"></div>
-        <span class="text-center text-xs uppercase tracking-widest text-themeBrown font-semibold">Remember to Tag Us!
-          <br>
-          记得标记我们！</span>
-        <div class="h-[0.5px] bg-gradient-to-l from-transparent to-[#967b5f] flex-1"></div>
-      </div>
-
-      <!-- 5. Tag Groom Instagram -->
-      <div onclick="window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer')" role="link"
-        tabindex="0" aria-label="Open Wai Lik Instagram"
-        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/wailikchan/', '_blank', 'noopener,noreferrer'); }"
-        class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
-        <div class="flex items-center gap-4">
-          <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
-          <div
-            class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0"
-            title="打开新郎 Instagram / Open Instagram">
-            <i class="fa-brands fa-instagram text-white text-xl"></i>
-          </div>
+      <section id="wishes-wall" class="wishes-wall" aria-labelledby="wishes-title">
+        <div class="wishes-heading">
           <div>
-            <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新郎 Wai Lik</h2>
-            <p class="text-xs text-themeBrownMuted font-mono font-medium">@wailikchan • Instagram</p>
+            <h2 id="wishes-title">Wishes Wall <span>祝福墙</span></h2>
+            <p>A little love, in your words. / 留下您的美好祝福</p>
           </div>
         </div>
-        <!-- Click to Copy Username Button -->
-        <button type="button" onclick="event.stopPropagation(); window.copyToClipboard('@wailikchan')"
-          class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1 shrink-0 text-themeBrown"
-          title="复制账号 / Copy Username" aria-label="Copy Wai Lik Instagram username">
-          <i class="fa-regular fa-copy text-sm"></i>
-        </button>
-      </div>
-
-      <!-- 6. Tag Bride Instagram -->
-      <div onclick="window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer')" role="link"
-        tabindex="0" aria-label="Open Cheng Yee Instagram"
-        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.open('https://www.instagram.com/chengyee.ccy/', '_blank', 'noopener,noreferrer'); }"
-        class="w-full glass-btn p-3 rounded-[24px] flex items-center justify-between text-left group cursor-pointer">
-        <div class="flex items-center gap-4">
-          <!-- Prominent solid Instagram circular logo container (Click to Open Profile) -->
-          <div
-            class="w-12 h-12 rounded-full bg-[#967b5f] hover:bg-[#bd9e7f] flex items-center justify-center shadow-md transition duration-200 shrink-0"
-            title="打开新娘 Instagram / Open Instagram">
-            <i class="fa-brands fa-instagram text-white text-xl"></i>
+        <div id="wishes-viewport" class="wishes-viewport" role="region" aria-label="Wedding wishes / 婚礼祝福">
+          <div id="wishes-empty" class="wishes-empty">
+            <span aria-hidden="true">♡</span>
+            <p>Your words will make our day.<br><span>Be the first to leave a wish. / 写下第一份祝福吧。</span></p>
           </div>
-          <div>
-            <h2 class="font-bold text-[14px] tracking-wide text-themeBrownDark">记得Tag新娘 Cheng Yee</h2>
-            <p class="text-xs text-themeBrownMuted font-mono font-medium">@chengyee.ccy • Instagram</p>
-          </div>
+          <div id="wishes-lanes"></div>
         </div>
-        <!-- Click to Copy Username Button -->
-        <button type="button" onclick="event.stopPropagation(); window.copyToClipboard('@chengyee.ccy')"
-          class="w-10 h-10 flex items-center justify-center rounded-full bg-[#3b1947]/5 group-hover:bg-[#3b1947]/10 transition mr-1 shrink-0 text-themeBrown"
-          title="复制账号 / Copy Username" aria-label="Copy Cheng Yee Instagram username">
-          <i class="fa-regular fa-copy text-sm"></i>
-        </button>
-      </div>
+        <p id="wishes-status" class="wishes-status" role="status">Connecting the wishes wall… / 正在连接祝福墙…</p>
+        <div class="wishes-actions">
+          <button id="btn-add-wish" class="wishes-add" type="button"><span aria-hidden="true">💌</span> Add a wish / 写下祝福</button>
+        </div>
+      </section>
 
     </div>
 
@@ -758,9 +720,62 @@
 
   </main>
 
+  <aside id="wishes-floating" class="wishes-floating" aria-label="Leave a wedding wish / 留下新婚祝福" hidden>
+    <div id="wishes-floating-messages" class="wishes-floating-messages" role="group" aria-label="Recent wishes / 最近的祝福"></div>
+    <div class="wishes-floating-controls">
+      <button id="btn-floating-add-wish" class="wish-floating-add" type="button" aria-haspopup="dialog" aria-controls="wish-modal">
+        <span>Leave a wish… / 祝福留言…</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 15h10"/></svg>
+      </button>
+      <button id="btn-toggle-floating-wishes" class="wish-floating-toggle" type="button" aria-expanded="true" aria-controls="wishes-floating-messages" aria-label="Hide floating wishes / 隐藏飘动祝福" title="Hide floating wishes / 隐藏飘动祝福">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="wish-floating-eye-slash" d="m3 3 18 18"/></svg>
+      </button>
+    </div>
+  </aside>
+
   <!-- ============================================= -->
   <!-- MODALS SYSTEM (EACH FEATURE OPENS ELEGANTLY) -->
   <!-- ============================================= -->
+
+  <div id="wish-detail-modal" class="modal-backdrop wish-detail-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="wish-detail-panel" role="dialog" aria-modal="true" aria-labelledby="wish-detail-name" aria-describedby="wish-detail-message">
+      <button id="btn-close-wish-detail" class="wish-detail-close" type="button" aria-label="Close wish / 关闭祝福">×</button>
+      <h2 id="wish-detail-name"></h2>
+      <p id="wish-detail-message"></p>
+    </div>
+  </div>
+
+  <div id="wish-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="wish-form-panel" role="dialog" aria-modal="true" aria-labelledby="wish-form-title">
+      <button id="btn-close-wish" class="wish-close" type="button" aria-label="Close / 关闭">×</button>
+      <p class="wish-form-kicker">FOR WAI LIK & CHENG YEE</p>
+      <h2 id="wish-form-title">Leave a little love.</h2>
+      <form id="wish-form">
+        <label for="wish-name">Your name / 您的名字</label>
+        <input id="wish-name" name="name" type="text" maxlength="50" autocomplete="name" required placeholder="How should we sign your wish?">
+        <div class="wish-message-heading">
+          <label for="wish-message">Your wish / 您的祝福</label>
+          <button id="wish-samples-toggle" class="wish-samples-toggle" type="button" aria-expanded="false" aria-controls="wish-samples-panel" title="Choose a sample wish / 选择祝福范例">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+            Samples / 范例
+          </button>
+        </div>
+        <div class="wish-message-input">
+          <textarea id="wish-message" name="message" rows="4" maxlength="300" required placeholder="Wishing you a lifetime of love… / 祝你们幸福美满……"></textarea>
+          <div id="wish-samples-panel" class="wish-samples-panel" hidden>
+            <p id="wish-samples-label">Choose a wish, then make it your own.<br>选择一句祝福，也可自行修改。</p>
+            <ul id="wish-samples-list" aria-labelledby="wish-samples-label"></ul>
+          </div>
+        </div>
+        <div class="wish-form-meta"><span>Shared on our wishes wall / 祝福将展示在墙上</span><span id="wish-character-count">0 / 300</span></div>
+        <p id="wish-form-status" class="wish-form-status" role="status">Connecting the wishes wall… / 正在连接祝福墙…</p>
+        <div class="wish-form-actions">
+          <button id="btn-cancel-wish" class="wish-cancel" type="button">Cancel / 取消</button>
+          <button id="btn-send-wish" class="wishes-add" type="submit" disabled>Send wish / 送上祝福</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- WEDDING SCHEDULE MODAL -->
   <div id="schedule-modal" role="dialog" aria-modal="true" aria-labelledby="schedule-modal-title"
@@ -1353,9 +1368,37 @@
                 class="h-11 w-[300px] bg-white/80 hover:bg-white border border-themeBrown/15 text-themeBrown text-xs font-bold rounded-xl px-6 whitespace-nowrap shadow-sm transition flex items-center justify-center">
                 <i class="fa-solid fa-sliders text-sm mr-1"></i> Button Control / 按钮控制
               </button>
+              <button id="btn-open-wishes-management" type="button"
+                class="h-11 w-11 shrink-0 bg-white/80 hover:bg-white border border-themeBrown/15 text-themeBrown rounded-xl shadow-sm transition flex items-center justify-center"
+                title="Manage Wishes Wall / 管理祝福墙" aria-label="Manage Wishes Wall messages / 管理祝福墙留言">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 9h8M8 13h5"/></svg>
+              </button>
             </div>
           </div>
 
+        </div>
+
+        <!-- Wishes Wall management -->
+        <div id="mgmt-wishes-page" class="hidden space-y-5">
+          <div class="wish-admin-heading">
+            <button id="btn-back-from-wishes" type="button" class="wish-admin-back">← Back to Guest List / 返回宾客列表</button>
+            <h3>Wishes Wall Messages / 祝福墙留言</h3>
+          </div>
+          <div class="wish-admin-feedback">
+            <p id="wish-admin-status" role="status"></p>
+            <button id="btn-retry-wishes-management" type="button" hidden>Try again / 重试</button>
+          </div>
+          <div id="wish-admin-table-scroll" class="wish-admin-table-scroll" role="region" aria-label="Wishes Wall messages / 祝福墙留言" tabindex="0">
+            <table class="wish-admin-table">
+              <thead><tr>
+                <th scope="col" data-wish-sort="name"><button type="button" class="wish-admin-sort">Name / 姓名 <span class="wish-admin-sort-indicator" aria-hidden="true"></span></button></th>
+                <th scope="col" data-wish-sort="message"><button type="button" class="wish-admin-sort">Wish / 祝福内容 <span class="wish-admin-sort-indicator" aria-hidden="true"></span></button></th>
+                <th scope="col" data-wish-sort="createdAt" aria-sort="ascending"><button type="button" class="wish-admin-sort">Submitted / 提交时间 <span class="wish-admin-sort-indicator" aria-hidden="true">▲</span></button></th>
+                <th scope="col">Action / 操作</th>
+              </tr></thead>
+              <tbody id="wish-admin-table-body"></tbody>
+            </table>
+          </div>
         </div>
 
         <!-- PAGE 2: ADD & IMPORT PAGE (Hidden by Default, triggers on ADD button click) -->
@@ -1619,6 +1662,8 @@
     <!-- MODULE PATTERN & OBJECT ORIENTED CONTROLLER   -->
     <!-- ============================================= -->
     <script src="share-uploader.js"></script>
+    <script src="wishes-wall.js"></script>
+    <script src="wishes-manager.js"></script>
     <script>
       // Global Clear Helpers
       window.toggleClearBtn = function (inputId) {
@@ -2462,7 +2507,7 @@
 
         _readNavigationStack(state) {
           const stack = state?.weddingNavigation;
-          return Array.isArray(stack) ? stack.filter(id => id === 'mgmt-add-page' ||
+          return Array.isArray(stack) ? stack.filter(id => ['mgmt-add-page', 'mgmt-wishes-page'].includes(id) ||
             document.getElementById(id)?.classList.contains('modal-backdrop')) : [];
         }
 
@@ -2512,12 +2557,15 @@
               if (id === 'mgmt-add-page') {
                 this.clearSingleAddForm();
                 this.showMgmtListView();
+              } else if (id === 'mgmt-wishes-page') {
+                this.showMgmtListView();
               } else {
                 this.closeModal(id);
               }
             }
             for (const id of nextStack.slice(sharedDepth)) {
               if (id === 'mgmt-add-page') this.showMgmtAddView();
+              else if (id === 'mgmt-wishes-page') this.showMgmtWishesView();
               else this.openModal(id);
             }
             this.navigationStack = [...nextStack];
@@ -2717,7 +2765,7 @@
 
         // Transition to Management List View page
         showMgmtListView() {
-          const navigationIndex = this.navigationStack.indexOf('mgmt-add-page');
+          const navigationIndex = this.navigationStack.findIndex(id => ['mgmt-add-page', 'mgmt-wishes-page'].includes(id));
           if (!this.isRestoringNavigation && navigationIndex !== -1) {
             this._navigateBackToDepth(navigationIndex);
             return;
@@ -2727,6 +2775,8 @@
           if (listPage && addPage) {
             listPage.classList.remove('hidden');
             addPage.classList.add('hidden');
+            document.getElementById('mgmt-wishes-page').classList.add('hidden');
+            window.app?.wishesManager?.close();
             this._resetManagementScroll();
           }
         }
@@ -2740,6 +2790,8 @@
             const wasHidden = addPage.classList.contains('hidden');
             listPage.classList.add('hidden');
             addPage.classList.remove('hidden');
+            document.getElementById('mgmt-wishes-page').classList.add('hidden');
+            window.app?.wishesManager?.close();
             this._resetManagementScroll();
             // Restore batch import panel and default labels
             const batchPanel = document.getElementById('batch-import-panel');
@@ -2749,6 +2801,20 @@
             const singleTitle = document.getElementById('single-add-title');
             if (singleTitle) singleTitle.innerHTML = '<i class="fa-solid fa-user-plus text-sm"></i> SINGLE ADD / 手动新增宾客';
             if (wasHidden) this._pushNavigationEntry('mgmt-add-page');
+          }
+        }
+
+        showMgmtWishesView() {
+          if (!this.auth.isAuthenticated || (this.pendingNavigationDepth !== null && !this.isRestoringNavigation)) return;
+          const page = document.getElementById('mgmt-wishes-page');
+          const wasHidden = page.classList.contains('hidden');
+          document.getElementById('mgmt-list-page').classList.add('hidden');
+          document.getElementById('mgmt-add-page').classList.add('hidden');
+          page.classList.remove('hidden');
+          this._resetManagementScroll();
+          if (wasHidden) {
+            window.app.wishesManager.open();
+            this._pushNavigationEntry('mgmt-wishes-page');
           }
         }
 
@@ -3354,6 +3420,13 @@
           this.db.init();
           this.auth.init();
           this.ui.init();
+          this.wishes = new WishesWall({ auth: this.db.auth, rootRef: this.db.dbRef?.root });
+          this.wishes.init();
+          this.wishesManager = new WishesManager({
+            adminAuth: this.auth, cloudAuth: this.db.auth,
+            wishesRef: this.db.dbRef?.root.child('wishes')
+          });
+          this.wishesManager.init();
 
           // Register controller hooks
           this.db.registerCallback((guests, isOffline) => this._onDatabaseUpdate(guests, isOffline));
@@ -3412,6 +3485,8 @@
             populateTabControlForm();
             this.ui.openModal('tab-control-modal');
           });
+          document.getElementById('btn-open-wishes-management').addEventListener('click', () => this.ui.showMgmtWishesView());
+          document.getElementById('btn-back-from-wishes').addEventListener('click', () => this.ui.showMgmtListView());
           document.querySelectorAll('.tab-visibility-toggle').forEach((button) => {
             button.addEventListener('click', () => {
               const enabled = button.dataset.enabled !== 'true';
@@ -3737,16 +3812,6 @@
       }
 
       // Instantiation and startup
-      window.copyToClipboard = function (text) {
-        const tempInput = document.createElement("input");
-        document.body.appendChild(tempInput);
-        tempInput.value = text;
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        NotificationSystem.show("已复制账号: " + text + " 📋");
-      };
-
       window.app = new WeddingApp();
       window.app.run();
     </script>
