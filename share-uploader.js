@@ -7,8 +7,27 @@
   let ready = false;
   let failed = false;
   let isOpen = false;
+  let refreshRequestId = 0;
+  let refreshPending = false;
   let timeout;
   let poll;
+
+  function refreshGallery() {
+    if (!isOpen || !refreshPending) return;
+    try {
+      // The hosted wedding page and uploader share an origin. This also supports older uploader versions.
+      if (typeof iframe.contentWindow?.fetchLiveCloudGallery === 'function') {
+        iframe.contentWindow.fetchLiveCloudGallery();
+        refreshPending = false;
+        return;
+      }
+    } catch {
+      // Local previews embed the hosted uploader across origins; use its message listener.
+    }
+    iframe.contentWindow?.postMessage({
+      type: 'wedding-uploader:refresh-gallery', requestId: refreshRequestId
+    }, uploaderUrl.origin);
+  }
 
   function stopWaiting() {
     clearTimeout(timeout);
@@ -31,6 +50,7 @@
     failed = false;
     stopWaiting();
     error.hidden = true;
+    refreshGallery();
     if (isOpen && focusWasOnRetry) iframe.focus({ preventScroll: true });
   }
 
@@ -79,8 +99,11 @@
 
   window.shareUploader = {
     open() {
+      if (isOpen) return;
       isOpen = true;
-      if (ready) return;
+      refreshRequestId++;
+      refreshPending = true;
+      if (ready) return refreshGallery();
       if (failed) return showError();
       if (inspectDocument()) return;
       if (iframe.dataset.loaded === 'true') return handleLoad();
@@ -88,6 +111,7 @@
     },
     close() {
       isOpen = false;
+      refreshPending = false;
       stopWaiting();
     }
   };
