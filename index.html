@@ -697,7 +697,7 @@
             <p>A little love, in your words. / 留下您的美好祝福</p>
           </div>
         </div>
-        <div id="wishes-viewport" class="wishes-viewport" role="region" aria-label="Wedding wishes / 婚礼祝福">
+        <div id="wishes-viewport" class="wishes-viewport" role="region" aria-label="Wedding wishes: swipe, drag or use left and right arrow keys / 婚礼祝福：左右滑动或使用方向键浏览" tabindex="0">
           <div id="wishes-empty" class="wishes-empty">
             <span aria-hidden="true">♡</span>
             <p>Your words will make our day.<br><span>Be the first to leave a wish. / 写下第一份祝福吧。</span></p>
@@ -1399,6 +1399,27 @@
               <tbody id="wish-admin-table-body"></tbody>
             </table>
           </div>
+          <div class="wish-admin-actions">
+            <button id="btn-import-wishes" type="button" class="wish-admin-primary" disabled><i class="fa-solid fa-file-excel" aria-hidden="true"></i> Import Excel / 导入Excel</button>
+            <button id="btn-clear-wishes" type="button" class="wish-admin-danger" disabled><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Clear all / 删除全部</button>
+            <input id="wish-excel-input" type="file" accept=".xlsx,.xls" hidden>
+          </div>
+          <p class="wish-import-help">Excel columns: Name / 姓名, Wish / 祝福内容, Submitted / 提交时间 (optional / 选填). Dates use Malaysia time / 日期使用马来西亚时间。 <button id="btn-wish-import-template" type="button">Download template / 下载模板</button></p>
+          <section id="wish-import-preview" class="wish-import-preview" aria-labelledby="wish-import-title" tabindex="-1" hidden>
+            <h4 id="wish-import-title">Import preview / 导入预览</h4>
+            <p id="wish-import-summary" class="wish-import-help"></p>
+            <p id="wish-import-errors" class="wish-import-errors" role="alert" hidden></p>
+            <div id="wish-import-table-wrap" class="wish-admin-table-scroll" hidden>
+              <table class="wish-import-table">
+                <thead><tr><th scope="col">Name / 姓名</th><th scope="col">Wish / 祝福内容</th><th scope="col">Submitted / 提交时间</th></tr></thead>
+                <tbody id="wish-import-table-body"></tbody>
+              </table>
+            </div>
+            <div class="wish-admin-actions">
+              <button id="btn-confirm-wish-import" type="button" class="wish-admin-primary" disabled>Import wishes / 导入祝福</button>
+              <button id="btn-cancel-wish-import" type="button" class="wish-admin-secondary">Cancel / 取消</button>
+            </div>
+          </section>
         </div>
 
         <!-- PAGE 2: ADD & IMPORT PAGE (Hidden by Default, triggers on ADD button click) -->

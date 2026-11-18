@@ -48,6 +48,9 @@ class WishesWall {
     this.posting = false;
     this.draftRef = null;
     this.items = [];
+    this.floatingRows = [];
+    this.floatingActive = new Set();
+    this.floatingQueue = [];
     this.wallVisible = true;
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   }
@@ -68,28 +71,6 @@ class WishesWall {
     this.floatingMessages.addEventListener('click', event => {
       const bubble = event.target.closest('.wish-floating-bubble');
       if (bubble) this.openWishDetails(bubble.dataset.wishId, bubble);
-    });
-    this.floatingMessages.addEventListener('animationend', event => {
-      if (event.animationName !== 'wish-floating-travel' || !event.target.matches('.wish-floating-bubble') || !this.items.length) return;
-      const bubble = event.target;
-      // Rows finish at different times, so reserve wishes still assigned to other rows.
-      const occupied = new Set([...this.floatingMessages.querySelectorAll('.wish-floating-bubble')]
-        .filter(other => other !== bubble).map(other => other.dataset.wishId));
-      const current = Number(bubble.dataset.sequence);
-      let next = current;
-      for (let offset = 1; offset <= this.items.length; offset++) {
-        const candidate = (current + offset) % this.items.length;
-        if (!occupied.has(this.items[candidate].id)) {
-          next = candidate;
-          break;
-        }
-      }
-      this.setFloatingWish(bubble, next);
-      bubble.dataset.initialPhase = '0';
-      bubble.style.animationName = 'none';
-      this.updateFloatingAnimation();
-      void bubble.offsetWidth;
-      bubble.style.removeProperty('animation-name');
     });
     this.floatingMessages.addEventListener('focusin', () => this.updateFloatingVisibility());
     this.floatingMessages.addEventListener('focusout', () => queueMicrotask(() => this.updateFloatingVisibility()));
@@ -155,7 +136,16 @@ class WishesWall {
     this.modalObserver = new MutationObserver(() => this.updateFloatingVisibility());
     this.modalObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     document.addEventListener('visibilitychange', () => this.updateFloatingVisibility());
-    this.reducedMotion.addEventListener('change', () => this.updateFloatingVisibility());
+    this.reducedMotion.addEventListener('change', () => {
+      this.wallLayoutWidth = 0;
+      this.updateAnimation();
+      this.updateFloatingVisibility();
+    });
+    document.fonts?.addEventListener('loadingdone', () => {
+      this.wallLayoutWidth = 0;
+      this.floatingWidth = 0;
+      this.updateAnimation();
+    });
 
     if (!this.auth || !this.wishesRef) {
       this.setStatus('Wishes are temporarily unavailable. Please try again later. / 祝福墙暂时无法连接，请稍后再试。', true);
@@ -202,8 +192,21 @@ class WishesWall {
     let hovered = false;
     let tapped = false;
     let gesture = null;
-    const update = () => this.section.classList.toggle('is-reading', hovered || tapped || Boolean(gesture));
+    let drag = null;
+    let touching = null;
+    const update = () => {
+      this.section.classList.toggle('is-reading', hovered || tapped || Boolean(gesture) || Boolean(drag));
+      this.updateWallPlayback();
+    };
     const cancelGesture = () => { gesture = null; update(); };
+    const finishDrag = event => {
+      if (drag?.id !== event.pointerId) return;
+      const id = drag.id;
+      drag = null;
+      this.viewport.classList.remove('is-dragging');
+      if (this.viewport.hasPointerCapture(id)) this.viewport.releasePointerCapture(id);
+      update();
+    };
 
     ['pointerenter', 'pointerleave'].forEach(type => {
       this.viewport.addEventListener(type, event => {
@@ -213,28 +216,91 @@ class WishesWall {
       });
     });
     this.viewport.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button === 0 && this.wallScrollable &&
+        event.clientY < this.viewport.getBoundingClientRect().top + this.viewport.clientHeight) {
+        event.preventDefault();
+        drag = { id: event.pointerId, x: event.clientX };
+        this.viewport.setPointerCapture(event.pointerId);
+        this.viewport.classList.add('is-dragging');
+        this.pauseWallTemporarily();
+        update();
+        return;
+      }
       if (event.pointerType !== 'touch' || !event.isPrimary) return;
       gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, wasPaused: tapped };
       update();
-    }, { passive: true });
+    });
     this.viewport.addEventListener('pointermove', event => {
+      if (drag?.id === event.pointerId) {
+        this.viewport.scrollLeft += drag.x - event.clientX;
+        drag.x = event.clientX;
+        this.normalizeWallScroll();
+        this.pauseWallTemporarily();
+      }
       if (gesture?.id === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 10) cancelGesture();
     }, { passive: true });
     this.viewport.addEventListener('pointerup', event => {
+      finishDrag(event);
       if (gesture?.id !== event.pointerId) return;
       if (Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) <= 10) tapped = !gesture.wasPaused;
       cancelGesture();
     }, { passive: true });
     this.viewport.addEventListener('pointercancel', event => {
+      finishDrag(event);
       if (gesture?.id === event.pointerId) cancelGesture();
     }, { passive: true });
+    this.viewport.addEventListener('lostpointercapture', finishDrag);
+    this.viewport.addEventListener('touchstart', event => {
+      const point = event.touches[0];
+      touching = point ? { x: point.clientX, y: point.clientY, axis: null } : null;
+    }, { passive: true });
+    this.viewport.addEventListener('touchmove', event => {
+      const point = event.touches[0];
+      if (!touching || !point) return;
+      const dx = point.clientX - touching.x, dy = point.clientY - touching.y;
+      if (!touching.axis && Math.hypot(dx, dy) > 10) touching.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (touching.axis === 'x' && this.wallScrollable) {
+        tapped = true;
+        update();
+      }
+    }, { passive: true });
+    ['touchend', 'touchcancel'].forEach(type => {
+      document.addEventListener(type, () => { touching = null; }, { passive: true });
+    });
+    this.viewport.addEventListener('scroll', () => {
+      this.normalizeWallScroll();
+      if (touching?.axis === 'x') {
+        tapped = true;
+        update();
+      }
+    }, { passive: true });
+    this.viewport.addEventListener('wheel', event => {
+      if (!event.deltaX && !event.shiftKey) return;
+      this.pauseWallTemporarily();
+      if (event.shiftKey && !event.deltaX && this.wallScrollable) {
+        event.preventDefault();
+        this.viewport.scrollLeft += event.deltaY;
+        this.normalizeWallScroll();
+      }
+    }, { passive: false });
+    this.viewport.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key) || !this.wallScrollable) return;
+      event.preventDefault();
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') this.browseWall(event.key === 'ArrowLeft' ? -1 : 1);
+      else {
+        this.pauseWallTemporarily();
+        this.viewport.scrollLeft = event.key === 'Home' ? this.wallCycleWidth : 2 * this.wallCycleWidth - this.viewport.clientWidth;
+      }
+    });
+    this.section.addEventListener('focusin', () => this.updateWallPlayback());
+    this.section.addEventListener('focusout', () => queueMicrotask(() => this.updateWallPlayback()));
     document.addEventListener('pointerdown', event => {
       if (!this.viewport.contains(event.target)) {
         tapped = false;
         cancelGesture();
       }
     }, { passive: true });
-    this.resetReadingPause = () => { hovered = false; tapped = false; cancelGesture(); };
+    this.resetReadingPause = () => { hovered = false; tapped = false; touching = null; cancelGesture(); };
   }
 
   openWishDetails(id, trigger) {
@@ -260,49 +326,129 @@ class WishesWall {
 
   renderFloating() {
     const focusedId = this.floatingMessages.contains(document.activeElement) ? document.activeElement.dataset.wishId : null;
+    this.stopFloatingAnimation();
     this.floatingMessages.replaceChildren();
+    this.floatingRows = [];
+    this.floatingWidth = 0;
     const count = Math.min(3, this.items.length);
     for (let index = 0; index < count; index++) {
       const lane = document.createElement('div');
       lane.className = 'wish-floating-lane';
-      const bubble = document.createElement('button');
-      bubble.type = 'button';
-      bubble.className = 'wish-floating-bubble';
-      bubble.dataset.initialPhase = String((index + 1) / 4);
-      bubble.title = 'Read full wish / 查看完整祝福';
-      bubble.setAttribute('aria-haspopup', 'dialog');
-      bubble.setAttribute('aria-controls', 'wish-detail-modal');
-      const name = document.createElement('strong');
-      const message = document.createElement('span');
-      bubble.append(name, message);
-      this.setFloatingWish(bubble, index);
-      lane.append(bubble);
       this.floatingMessages.append(lane);
+      this.floatingRows.push({ element: lane, speed: 42 + index * 5, bubbles: [] });
     }
+    this.updateFloatingVisibility();
     if (focusedId) {
       const replacement = [...this.floatingMessages.querySelectorAll('button')].find(button => button.dataset.wishId === focusedId);
       (replacement || this.floatingAdd).focus({ preventScroll: true });
     }
-    this.updateFloatingVisibility();
   }
 
-  setFloatingWish(bubble, index) {
-    const wish = this.items[index];
-    bubble.dataset.sequence = String(index);
-    bubble.dataset.wishId = wish.id;
-    bubble.querySelector('strong').textContent = `${wish.name}:`;
-    bubble.querySelector('span').textContent = wish.message;
+  nextFloatingWish() {
+    if (!this.floatingQueue.length) {
+      this.floatingQueue = [...this.items];
+      for (let index = this.floatingQueue.length - 1; index > 0; index--) {
+        const other = Math.floor(Math.random() * (index + 1));
+        [this.floatingQueue[index], this.floatingQueue[other]] = [this.floatingQueue[other], this.floatingQueue[index]];
+      }
+    }
+    let index = this.floatingQueue.findIndex(wish => !this.floatingActive.has(wish.id));
+    if (index < 0) {
+      const available = this.items.filter(wish => !this.floatingActive.has(wish.id));
+      if (!available.length) return null;
+      // Keep the stream moving when the remaining queued wishes are still on screen.
+      return available[Math.floor(Math.random() * available.length)];
+    }
+    return this.floatingQueue.splice(index, 1)[0];
+  }
+
+  addFloatingBubble(row, x) {
+    const wish = this.nextFloatingWish();
+    if (!wish) return null;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'wish-floating-bubble';
+    button.dataset.wishId = wish.id;
+    button.title = 'Read full wish / 查看完整祝福';
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-controls', 'wish-detail-modal');
+    const name = document.createElement('strong');
+    name.textContent = `${wish.name}:`;
+    const message = document.createElement('span');
+    message.textContent = wish.message;
+    button.append(name, message);
+    row.element.append(button);
+    const bubble = { element: button, x, width: button.getBoundingClientRect().width, gap: 24 + Math.random() * 24 };
+    this.floatingActive.add(wish.id);
+    row.bubbles.push(bubble);
+    this.positionFloatingBubble(bubble);
+    return bubble;
+  }
+
+  positionFloatingBubble(bubble) {
+    bubble.element.style.transform = `translate3d(${bubble.x}px, 0, 0)`;
+    const tabIndex = bubble.x < this.floatingWidth && bubble.x + bubble.width > 0 ? 0 : -1;
+    if (bubble.element.tabIndex !== tabIndex) bubble.element.tabIndex = tabIndex;
   }
 
   updateFloatingAnimation() {
     const width = this.floatingMessages.clientWidth;
-    if (!width) return;
-    this.floatingMessages.style.setProperty('--floating-width', `${width}px`);
-    this.floatingMessages.querySelectorAll('.wish-floating-bubble').forEach((bubble, index) => {
-      const duration = Math.max(9, (width + bubble.getBoundingClientRect().width) / (36 + index * 4));
-      bubble.style.setProperty('--floating-duration', `${duration}s`);
-      bubble.style.setProperty('--floating-delay', `${-duration * Number(bubble.dataset.initialPhase)}s`);
+    if (!width || this.floating.hidden || this.floatingMessages.hidden) return this.stopFloatingAnimation();
+    if (width !== this.floatingWidth || this.floatingReduced !== this.reducedMotion.matches) {
+      this.stopFloatingAnimation();
+      this.floatingWidth = width;
+      this.floatingReduced = this.reducedMotion.matches;
+      this.floatingActive.clear();
+      this.floatingQueue = [];
+      this.floatingRows.forEach(row => {
+        row.element.replaceChildren();
+        row.bubbles = [];
+        this.addFloatingBubble(row, this.floatingReduced ? 0 : Math.random() * 36);
+      });
+      // Seed all three rows before filling the remaining horizontal space.
+      if (!this.floatingReduced) {
+        let added;
+        do {
+          added = false;
+          this.floatingRows.forEach(row => {
+            const tail = row.bubbles.at(-1);
+            const x = tail ? tail.x + tail.width + tail.gap : 0;
+            if (x < width && this.addFloatingBubble(row, x)) added = true;
+          });
+        } while (added);
+      }
+    }
+    if (this.floatingMessages.classList.contains('is-reading') || this.floatingReduced) return this.stopFloatingAnimation();
+    if (!this.floatingFrame) this.floatingFrame = requestAnimationFrame(time => this.animateFloating(time));
+  }
+
+  stopFloatingAnimation() {
+    cancelAnimationFrame(this.floatingFrame);
+    this.floatingFrame = 0;
+    this.floatingLastTime = 0;
+  }
+
+  animateFloating(time) {
+    this.floatingFrame = 0;
+    const elapsed = this.floatingLastTime ? Math.min((time - this.floatingLastTime) / 1000, 0.05) : 0;
+    this.floatingLastTime = time;
+    this.floatingRows.forEach(row => {
+      row.bubbles = row.bubbles.filter(bubble => {
+        bubble.x -= row.speed * elapsed;
+        if (bubble.x + bubble.width <= 0) {
+          this.floatingActive.delete(bubble.element.dataset.wishId);
+          bubble.element.remove();
+          return false;
+        }
+        this.positionFloatingBubble(bubble);
+        return true;
+      });
     });
+    this.floatingRows.forEach(row => {
+      const tail = row.bubbles.at(-1);
+      if (!tail || tail.x + tail.width + tail.gap <= this.floatingWidth) this.addFloatingBubble(row, this.floatingWidth);
+    });
+    this.updateFloatingAnimation();
   }
 
   updateFloatingVisibility() {
@@ -315,10 +461,9 @@ class WishesWall {
     this.floatingToggle.title = toggleLabel;
     const reading = Boolean(this.floatingHovered || this.floatingMessages.contains(document.activeElement));
     this.floatingMessages.classList.toggle('is-reading', reading);
-    if (!reading) {
-      this.floatingMessages.querySelectorAll('.wish-floating-lane').forEach(lane => { lane.scrollLeft = 0; });
-    }
-    if (show && this.showFloatingMessages) this.updateFloatingAnimation();
+    this.floatingMessages.querySelectorAll('.wish-floating-lane').forEach(lane => { lane.scrollLeft = 0; });
+    this.updateFloatingAnimation();
+    this.updateWallPlayback();
   }
 
   setupSamples() {
@@ -388,22 +533,32 @@ class WishesWall {
   }
 
   render(wishes) {
+    this.wallAnchor = this.captureWallPosition();
+    this.stopWallAnimation();
     this.items = wishes;
     this.renderFloating();
     this.empty.hidden = wishes.length > 0;
     this.lanes.replaceChildren();
-    for (let row = 0; row < Math.min(2, wishes.length); row++) {
+    this.wallGroup = null;
+    this.wallTrack = null;
+    const shuffled = [...wishes];
+    for (let index = shuffled.length - 1; index > 0; index--) {
+      const other = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[other]] = [shuffled[other], shuffled[index]];
+    }
+    this.wallCards = shuffled.map(wish => this.createCard(wish));
+    this.wallScrollable = false;
+    this.wallLayoutWidth = 0;
+    if (wishes.length) {
       const lane = document.createElement('div');
       lane.className = 'wishes-lane';
-      const track = document.createElement('div');
-      track.className = 'wishes-track';
-      const group = document.createElement('div');
-      group.className = 'wishes-group';
-      wishes.filter((_, index) => index % 2 === row).forEach(wish => group.append(this.createCard(wish)));
-      const duplicate = group.cloneNode(true);
-      duplicate.setAttribute('aria-hidden', 'true');
-      track.append(group, duplicate);
-      lane.append(track);
+      this.wallTrack = document.createElement('div');
+      this.wallTrack.className = 'wishes-track';
+      this.wallGroup = document.createElement('div');
+      this.wallGroup.className = 'wishes-group';
+      this.wallGroup.append(...this.wallCards);
+      this.wallTrack.append(this.wallGroup);
+      lane.append(this.wallTrack);
       this.lanes.append(lane);
     }
     requestAnimationFrame(() => this.updateAnimation());
@@ -412,6 +567,7 @@ class WishesWall {
   createCard(wish) {
     const card = document.createElement('article');
     card.className = 'wish-card';
+    card.dataset.wishId = wish.id;
     const message = document.createElement('p');
     message.className = 'wish-message';
     message.textContent = wish.message;
@@ -422,13 +578,149 @@ class WishesWall {
     return card;
   }
 
-  updateAnimation() {
-    this.viewport.style.setProperty('--wishes-width', `${Math.ceil(this.viewport.clientWidth)}px`);
-    this.lanes.querySelectorAll('.wishes-track').forEach((track, index) => {
-      const width = track.firstElementChild.getBoundingClientRect().width;
-      track.style.setProperty('--wish-duration', `${Math.max(18, width / (index ? 25 : 31))}s`);
+  layoutWall() {
+    this.stopWallAnimation();
+    const anchor = this.wallAnchor || this.wallReadingAnchor || this.captureWallPosition();
+    this.wallAnchor = null;
+    this.wallTrack.replaceChildren(this.wallGroup);
+    this.wallGroup.replaceChildren(...this.wallCards);
+    const gap = parseFloat(getComputedStyle(this.wallGroup).gap) || 18;
+    const cards = this.wallCards.map((card, index) => ({ card, index, height: card.getBoundingClientRect().height }));
+    const tallest = Math.max(...cards.map(card => card.height));
+    const targetHeight = Math.max(tallest, Math.min(420, tallest * 2 + gap));
+    this.wallColumnWidth = cards[0].card.getBoundingClientRect().width + gap;
+    const visibleColumns = Math.ceil((this.viewport.clientWidth + gap) / this.wallColumnWidth);
+    const count = Math.min(cards.length, Math.max(visibleColumns, Math.ceil(cards.reduce((sum, card) => sum + card.height + gap, 0) / (targetHeight + gap))));
+    const columns = Array.from({ length: count }, () => ({ cards: [], height: 0 }));
+    // Balance tall cards first, retaining each card's shuffled position within its column.
+    [...cards].sort((a, b) => b.height - a.height || a.index - b.index).forEach(card => {
+      const column = columns.reduce((shortest, candidate) => candidate.height < shortest.height ? candidate : shortest);
+      column.cards.push(card);
+      column.height += card.height + (column.cards.length > 1 ? gap : 0);
     });
+    // Exchange cards between columns to reduce remaining height differences.
+    for (let pass = 0; pass < 20; pass++) {
+      let best = null;
+      columns.forEach((a, aIndex) => columns.slice(aIndex + 1).forEach(b => {
+        const oldCost = a.height ** 2 + b.height ** 2;
+        a.cards.forEach((cardA, indexA) => b.cards.forEach((cardB, indexB) => {
+          const change = cardB.height - cardA.height;
+          const improvement = oldCost - (a.height + change) ** 2 - (b.height - change) ** 2;
+          if (improvement > (best?.improvement || 1)) best = { a, b, indexA, indexB, change, improvement };
+        }));
+      }));
+      if (!best) break;
+      const { a, b, indexA, indexB, change } = best;
+      [a.cards[indexA], b.cards[indexB]] = [b.cards[indexB], a.cards[indexA]];
+      a.height += change;
+      b.height -= change;
+    }
+    columns.forEach(column => column.cards.sort((a, b) => a.index - b.index));
+    columns.sort((a, b) => a.cards[0].index - b.cards[0].index);
+    this.wallGroup.replaceChildren(...columns.map(column => {
+      const element = document.createElement('div');
+      element.className = 'wish-column';
+      element.append(...column.cards.map(card => card.card));
+      return element;
+    }));
+    const groupBounds = this.wallGroup.getBoundingClientRect();
+    this.wallPositions = [...this.wallGroup.children].map(column => {
+      const bounds = column.getBoundingClientRect();
+      return { id: column.firstElementChild.dataset.wishId, x: bounds.left - groupBounds.left, width: bounds.width };
+    });
+    this.wallCycleWidth = groupBounds.width;
+    this.wallScrollable = this.wallCycleWidth > this.viewport.clientWidth + 1;
+    if (this.wallScrollable) {
+      const previous = this.wallGroup.cloneNode(true);
+      const next = this.wallGroup.cloneNode(true);
+      previous.setAttribute('aria-hidden', 'true');
+      next.setAttribute('aria-hidden', 'true');
+      this.wallTrack.replaceChildren(previous, this.wallGroup, next);
+    }
+    let position = this.wallScrollable ? this.wallCycleWidth : 0;
+    const card = anchor && this.wallCards.find(card => card.dataset.wishId === anchor.id);
+    if (card && this.wallScrollable) position += card.getBoundingClientRect().left - this.wallGroup.getBoundingClientRect().left - anchor.offset;
+    this.viewport.scrollLeft = position;
+    this.normalizeWallScroll();
+  }
+
+  updateAnimation() {
+    const width = this.viewport.clientWidth;
+    this.viewport.style.setProperty('--wishes-width', `${width}px`);
+    if (this.wallGroup && width) {
+      if (this.wallLayoutWidth !== width) {
+        this.wallLayoutWidth = width;
+        this.layoutWall();
+      }
+    }
+    this.updateWallPlayback();
     this.updateFloatingAnimation();
+  }
+
+  captureWallPosition() {
+    if (!this.wallTrack || !this.wallPositions?.length) return null;
+    const left = this.wallScrollable ? ((this.viewport.scrollLeft % this.wallCycleWidth) + this.wallCycleWidth) % this.wallCycleWidth : 0;
+    const column = this.wallPositions.find(column => column.x + column.width > left + 20);
+    if (column) return { id: column.id, offset: column.x - left };
+    return { id: this.wallPositions[0].id, offset: this.wallCycleWidth - left };
+  }
+
+  normalizeWallScroll() {
+    if (this.wallScrollable) {
+      const left = this.viewport.scrollLeft;
+      // Native scroll positions round to pixels; allow that rounding at the loop boundary.
+      if (left < this.wallCycleWidth - 1) this.viewport.scrollLeft = left + this.wallCycleWidth;
+      else if (left >= this.wallCycleWidth * 2) this.viewport.scrollLeft = left - this.wallCycleWidth;
+    }
+    if (this.wallLayoutWidth === this.viewport.clientWidth) this.wallReadingAnchor = this.captureWallPosition();
+  }
+
+  browseWall(direction) {
+    if (!this.wallScrollable) return;
+    this.pauseWallTemporarily();
+    this.viewport.scrollLeft += direction * this.wallColumnWidth;
+    this.normalizeWallScroll();
+  }
+
+  pauseWallTemporarily() {
+    this.wallResumeAt = performance.now() + 5000;
+    this.updateWallPlayback();
+  }
+
+  stopWallAnimation() {
+    cancelAnimationFrame(this.wallFrame);
+    this.wallFrame = 0;
+    this.wallLastTime = 0;
+    this.wallRemainder = 0;
+  }
+
+  updateWallPlayback() {
+    clearTimeout(this.wallResumeTimer);
+    const keyboardReading = this.section.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
+    if (!this.wallTrack || !this.wallScrollable || !this.wallVisible || document.hidden ||
+      document.documentElement.classList.contains('modal-open') || this.reducedMotion.matches ||
+      this.section.classList.contains('is-reading') || keyboardReading) return this.stopWallAnimation();
+    const delay = (this.wallResumeAt || 0) - performance.now();
+    if (delay > 0) {
+      this.stopWallAnimation();
+      this.wallResumeTimer = setTimeout(() => this.updateWallPlayback(), delay);
+      return;
+    }
+    if (!this.wallFrame) this.wallFrame = requestAnimationFrame(time => this.animateWall(time));
+  }
+
+  animateWall(time) {
+    this.wallFrame = 0;
+    const elapsed = this.wallLastTime ? Math.min((time - this.wallLastTime) / 1000, 0.05) : 0;
+    this.wallLastTime = time;
+    this.wallRemainder = (this.wallRemainder || 0) + elapsed * 31;
+    const distance = Math.floor(this.wallRemainder);
+    if (distance) {
+      this.wallRemainder -= distance;
+      this.viewport.scrollLeft += distance;
+      this.normalizeWallScroll();
+    }
+    this.updateWallPlayback();
   }
 
   async postWish() {
